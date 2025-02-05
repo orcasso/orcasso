@@ -1,0 +1,35 @@
+services:
+  app:
+    build:
+      context: ./.docker/
+      dockerfile: Dev.Dockerfile
+      args: { UID: "${UID:-1000}" }
+    environment:
+      COMPOSER_CACHE_DIR: '/home/docker/.cache/composer'
+      COMPOSER_HOME: '/home/docker/.config/composer'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.orcasso.rule=Host(`orcasso.local`)"
+      - "traefik.http.services.orcasso.loadbalancer.server.port=80"
+    networks:
+      - orcasso
+      - web
+    volumes:
+      - ./:/var/www/html
+      - ~/.ssh/:/var/www/.ssh/
+
+  mariadb:
+    image: mariadb:10
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-orca}
+      MARIADB_DATABASE: ${MARIADB_DATABASE:-orcasso}
+      MARIADB_USER: ${MARIADB_USER:-orca}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:-orca}
+    networks:
+      - orcasso
+
+networks:
+  orcasso: ~
+  web:
+    name: web
+    external: true
