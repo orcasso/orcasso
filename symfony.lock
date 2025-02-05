@@ -38,6 +38,9 @@
             ".php-cs-fixer.dist.php"
         ]
     },
+    "kilik/table": {
+        "version": "dev-doctrine-orm-3.2"
+    },
     "knplabs/knp-menu-bundle": {
         "version": "v3.5.0"
     },

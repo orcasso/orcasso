@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "24bedc41d8309148ac1f67a35bd6e6a6",
+    "content-hash": "41e61550deca1380f9c9ef35e2526407",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -1590,6 +1590,61 @@
                 }
             ],
             "time": "2025-02-01T22:28:13+00:00"
+        },
+        {
+            "name": "kilik/table",
+            "version": "dev-doctrine-orm-3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KilikFr/TableBundle.git",
+                "reference": "4dc42cc6933438d3b477762a7f4c0d98758d35ee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KilikFr/TableBundle/zipball/4dc42cc6933438d3b477762a7f4c0d98758d35ee",
+                "reference": "4dc42cc6933438d3b477762a7f4c0d98758d35ee",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/doctrine-bundle": "~1.0||~2.0",
+                "doctrine/orm": "^2.5|^3.2",
+                "ext-json": "*",
+                "php": "^7.4||^8.0",
+                "symfony/form": "^4.0||^5.0||^6.0||^7.0",
+                "twig/twig": "^1.0||^2.0||^3.0"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "^5.0||^6.0||^7.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Kilik\\TableBundle\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michel Naud",
+                    "email": "mitch@kilik.fr",
+                    "role": "Author"
+                }
+            ],
+            "description": "Symfony Ajax Datagrid Bundle for doctrine entities",
+            "homepage": "https://github.com/KilikFr/TableBundle",
+            "keywords": [
+                "jquery",
+                "symfony",
+                "table"
+            ],
+            "support": {
+                "issues": "https://github.com/KilikFr/TableBundle/issues",
+                "source": "https://github.com/KilikFr/TableBundle/tree/doctrine-orm-3.2"
+            },
+            "time": "2025-02-12T14:47:35+00:00"
         },
         {
             "name": "knplabs/knp-menu",
@@ -10623,7 +10678,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "kilik/table": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
