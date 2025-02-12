@@ -1,0 +1,226 @@
+{% extends '_skeleton/_card.html.twig' %}
+
+{# KilikTableBundle::_defaultTableAlt.html.twig #}
+{% use '@KilikTable/_blocks.html.twig' with
+    tableHeadMassActionsColumn as parent_tableHeadMassActionsColumn,
+    tableFilterMassActionsColumn as parent_tableFilterMassActionsColumn,
+    tableBodyMassActionsColumn as parent_tableBodyMassActionsColumn %}
+
+{# @param Kilik\Components\Table table #}
+{% block card %}
+    {{ form_start(table.formView) }}
+
+    {% if table.filters is not empty %}
+        {% embed '_skeleton/_card_without_header.html.twig' %}
+            {% block card_body %}
+                <div class="row">
+                    {% for filter in table.filters %}
+                        <div class="col-lg-6">
+                            {%  set filter_form = attribute(table.formView, filter.name) %}
+                            {% set class = (filter_form.vars.choices is defined) ? 'refreshOnChange' : 'refreshOnKeyup' %}
+                            {{ form_row(filter_form,{'attr': {'class': 'refreshOnChange'}}) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+
+    {{ parent() }}
+    {{ form_end(table.formView) }}
+{% endblock %}
+
+{% block card_content %}
+    {{ parent() }}
+    <div class="card-footer">
+        <div class="row">
+            <div class="col-md-6">
+                {% block tableStats %}
+                    <div id="{{ table.id }}_stats">
+                        {% block tableStatsAjax %}
+                            {% include "@KilikTable/_stats.html.twig" %}
+                        {% endblock tableStatsAjax %}
+                    </div>
+                {% endblock tableStats %}
+            </div>
+            <div class="col-md-6 text-right">
+                {% block tablePagination %}
+                    <div id="{{ table.id }}_pagination" class="btn-group">
+                        {% block tablePaginationAjax %}
+                            {% include '_table/_pagination.html.twig' %}
+                        {% endblock tablePaginationAjax %}
+                    </div>
+                {% endblock tablePagination %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block card_header_container %}
+    <div class="card-header">
+        {% block card_header %}
+            <div class="float-left">
+                {% include "_table/_setup.html.twig" %}
+            </div>
+
+            {% block card_tools_container %}
+                <div class="card-tools">
+                    {% block card_tools %}
+                        {% block card_tools_button_export_table %}
+                            <a href="#" class="btn btn-primary btn-sm btn-export-xlsx-table">
+                                <i aria-hidden="true" class="fa fa-file-excel"></i>
+                                <span class="d-none d-md-inline">{{ 'meta.word.export'|trans }}</span>
+                            </a>
+                            {% if url_cancel is defined or url_create is defined %}
+                                -
+                            {% endif %}
+                        {% endblock %}
+
+                        {% if url_cancel is defined and url_cancel is not null %}
+                            <a href="{{ url_cancel }}" class="btn btn-secondary btn-sm">
+                                <i class="fa fa-chevron-left"></i>
+                                <span class="d-none d-md-inline">{{ 'meta.word.back'|trans }}</span>
+                            </a>
+                        {% endif %}
+
+                        {% if url_create is defined and url_create is not null %}
+                            <a href="{{ url_create }}" type="button" class="btn btn-primary btn-sm">
+                                <i aria-hidden="true" class="fa fa-plus"></i>
+                                <span class="d-none d-md-inline">{{ 'meta.word.add'|trans }}</span>
+                            </a>
+                        {% endif %}
+                    {% endblock %}
+                </div>
+            {% endblock %}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block card_body %}
+    {% block tableLoader %}
+        <div id="{{ table.id }}-table-loading-container" class="table-loading-container">
+            <div class="table-loader">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div></div>{% endblock tableLoader %}
+    {% block tableMetadata %}
+        <div style="display:none;width:0; height:0;" data-kiliktable-id="{{ table.id }}"
+             data-kiliktable-path="{{ table.path }}">{{ table.options | json_encode | raw }}</div>
+    {% endblock tableMetadata %}
+    <div class="table-responsive">
+        <table class="table table-sm table-striped table-hover table-valign-middle" id="{{ table.id }}">
+            <thead>
+            {% block tableHead %}
+                <tr>
+                    {# columns names #}
+                    {% block tableHeadMassActionsColumn %}
+                        {{ block('parent_tableHeadMassActionsColumn') }}
+                    {% endblock %}
+                    {% block tableHeadStdColumns %}
+                        <th>&nbsp;</th>
+                        {% for column in table.columns %}
+                            {% include '_table/_columnName.html.twig' %}
+                        {% endfor %}
+                    {% endblock tableHeadStdColumns %}
+                </tr>
+                {# columns filters #}
+                {% if table.columns|length > 0 %}
+                    <tr>
+                        {% block tableFilterMassActionsColumn %}
+                            {{ block('parent_tableFilterMassActionsColumn') }}
+                        {% endblock %}
+                        {% block tableHeadStdFilters %}
+                            <td>&nbsp;</td>
+                            {% for column in table.columns %}
+                                {% include '_table/_columnFilter.html.twig' %}
+                            {% endfor %}
+                        {% endblock tableHeadStdFilters %}
+                    </tr>
+                {% endif %}
+            {% endblock tableHead %}
+            </thead>
+            <tbody id="{{ table.bodyId }}">
+            {% block tableBody %}
+                {% if tableRenderBody is defined %}
+                    {% for row in rows %}
+                        <tr>
+                            {% block tableBodyMassActionsColumn %}
+                                {{ block('parent_tableBodyMassActionsColumn') }}
+                            {% endblock %}
+                            {% block tableBodyStdColumns %}
+                                <td width="60px">
+                                    {% block show_route_column %}
+                                        {% if (show_route_name is defined and show_route_name is not null or delete_route_name is defined and delete_route_name is not null)  and identifier_name is defined %}
+                                            <div class="btn-group">
+                                                {% if show_route_name is defined and show_route_name is not null %}
+                                                    <a href="{{ path(show_route_name, {(identifier_name) : row.object.id}) }}"
+                                                       class="btn btn-xs btn-outline-primary">
+                                                        <i class="fas fa-search"></i>
+                                                    </a>
+                                                {% elseif delete_route_name is defined and delete_route_name is not null  and (show_route_name is not defined or show_route_name is null) %}
+                                                    <a href="{{ path(delete_route_name, {(identifier_name) : row.object.id}) }}"
+                                                       class="btn btn-xs btn-outline-primary">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </a>
+                                                {% endif %}
+                                                {% if show_route_name is defined and show_route_name is not null and delete_route_name is defined and delete_route_name is not null %}
+                                                    <button class="btn btn-xs btn-outline-primary dropdown-toggle dropdown-icon"
+                                                       data-toggle="dropdown">
+                                                    </button>
+                                                    <div class="dropdown-menu" role="menu">
+                                                        <a class="dropdown-item"
+                                                           href="{{ path(delete_route_name, {(identifier_name) : row.object.id}) }}"><i
+                                                                    class="far fa-trash-alt"></i> {{ 'meta.word.delete'|trans }}
+                                                        </a>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    {% endblock %}
+                                </td>
+
+                                {% for column in table.columns %}
+                                    {% if column.cellTemplate is not null %}
+                                        {# custom cell template is defined ? #}
+                                        {% include column.cellTemplate %}
+                                    {% else %}
+                                        {# cell template fallback #}
+                                        {% include "@KilikTable/_columnCell.html.twig" %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endblock tableBodyStdColumns %}
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            {% endblock tableBody %}
+            </tbody>
+            {% if table.haveTotalColumns %}
+                <tfoot id="{{ table.id }}_foot">
+                {% block tableFoot %}
+                    {% if tableRenderFoot is defined %}
+                        <tr>
+                            <td>&nbsp;</td>
+                            {% block tableFootStdColumns %}
+                                {% for key, column in table.columns %}
+                                    {% if not column.hidden %}
+                                        <td {% if column.displayClass %}class="{{ column.displayClass }}"{% endif %} >
+                                            {% if key == 0 and not column.isUseTotal %}
+                                                {{ 'kiliktable.total' | trans | upper }}
+                                            {% elseif column.isUseTotal %}
+                                                {{ column.total }}
+                                            {% endif %}
+                                        </td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endblock tableFootStdColumns %}
+                        </tr>
+                    {% endif %}
+                {% endblock tableFoot %}
+                </tfoot>
+            {% endif %}
+        </table>
+
+    </div>
+{% endblock %}

@@ -2,7 +2,11 @@ framework:
     asset_mapper:
         # The paths to make available to the asset mapper.
         paths:
-            - assets/
+            assets/: ''
+            vendor/almasaeed2010/adminlte/dist/: 'adminlte'
+            vendor/almasaeed2010/adminlte/plugins/bootstrap/: 'bootstrap'
+            vendor/almasaeed2010/adminlte/plugins/fontawesome-free/: 'fontawesome'
+            vendor/almasaeed2010/adminlte/plugins/jquery/: 'jquery'
         missing_import_mode: strict
 
 when@prod:

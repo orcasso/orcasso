@@ -1,0 +1,48 @@
+{% extends '_skeleton/_card.html.twig' %}
+
+{% block card %}
+    {% block card_form_start %}
+        {{ form_start(form) }}
+    {% endblock %}
+
+    {{ parent() }}
+
+    {% block card_form_end %}
+        {{ form_end(form) }}
+    {% endblock %}
+{% endblock %}
+
+{% block card_tools %}
+    {% block card_form_btn_delete %}
+        {% if url_delete is defined %}
+            <a href="{{ url_delete }}" class="btn btn-danger btn-sm">
+                <i class="fa fa-trash"></i>
+                <span class="d-none d-md-inline">{{ 'meta.word.delete'|trans }}</span>
+            </a>
+            &nbsp;-&nbsp;
+        {% endif %}
+    {% endblock %}
+
+    {% block card_form_btn_cancel %}
+        {% if url_cancel is defined %}
+            <a href="{{ url_cancel }}" class="btn btn-secondary btn-sm">
+                <i class="fa fa-chevron-left"></i>
+                <span class="d-none d-md-inline">{{ 'meta.word.back'|trans }}</span>
+            </a>
+        {% endif %}
+    {% endblock %}
+
+    {% block card_form_btn_submit %}
+        {%- if not form.vars.disabled %}
+            <button type="submit" class="btn btn-success btn-sm">
+                <span class="fa fa-check" aria-hidden="true"></span>
+                <span class="d-none d-md-inline">{{ 'meta.word.save'|trans }}</span>
+            </button>
+        {% endif -%}
+    {% endblock %}
+{% endblock %}
+
+{% block card_body %}
+    {{ form_widget(form) }}
+{% endblock %}
+

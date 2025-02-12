@@ -1,0 +1,9 @@
+{% extends 'layout.html.twig' %}
+
+{% block content_header_title %}{{ 'home.index.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/_card_without_header.html.twig' %}
+        {% block card_body %}{{ 'meta.title'|trans }}{% endblock %}
+    {% endembed %}
+{% endblock %}

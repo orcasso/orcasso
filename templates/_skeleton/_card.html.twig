@@ -1,0 +1,25 @@
+{% block card %}
+    <div class="card {% block card_body_class %}card-primary card-outline{% endblock %}">
+        {% block card_content %}
+
+            {% block card_header_container %}
+                <div class="card-header sticky-top">
+                    {% block card_header %}
+                        <h3 class="card-title">{% block card_title %}{% endblock %}</h3>
+
+                        {% block card_tools_container %}
+                            <div class="card-tools">{% block card_tools %}{% endblock %}</div>
+                        {% endblock %}
+                    {% endblock %}
+                </div>
+            {% endblock %}
+            {% block card_info %}
+            {% endblock %}
+
+            <div class="card-body">
+                {% block card_body %}{% endblock %}
+            </div>
+        {% endblock %}
+    </div>
+    <!-- /.card -->
+{% endblock %}

@@ -1,0 +1,20 @@
+{% block table_javascripts %}
+    <script src="{{ asset('bundles/kiliktable/js/KilikTable.js') }}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var table = new KilikTableFA("{{ table.id }}", "{{ table.path }}", JSON.parse('{{ table.options | json_encode | raw }}'));
+            table.init();
+            window.kilikTable = table;
+
+            const jqBtnExportXlsx = $('.btn-export-xlsx-table');
+            if (1 <= jqBtnExportXlsx.length) {
+                jqBtnExportXlsx.click(function () {
+                    const urlExportCsv = '{{ path('utils_export_table', {'id':table.id}) }}';
+
+                    $('form[name=' + table.getFormName() + ']').attr('action', urlExportCsv).submit();
+                });
+            }
+        });
+    </script>
+{% endblock %}

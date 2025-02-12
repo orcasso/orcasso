@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% from '_macros.html.twig' import alert %}
+
+{% block body_class %}login-page{% endblock body_class %}
+
+{% block body %}
+    <div class="{% block box_class %}login-box{% endblock %}">
+        <div class="login-logo">
+            {% block box_title %}
+                <h3>
+                    <img src="{{ asset('images/orcasso-logo.png') }}" width="150" />
+                </h3>
+            {% endblock %}
+        </div>
+        {% for type, flashMessages in app.session.flashbag.all %}
+            {% for flashMessage in flashMessages %}
+                {{ alert(type, flashMessage) }}
+            {% endfor %}
+        {% endfor %}
+        <!-- /.login-logo -->
+        <div class="card">
+            <div class="card-body {% block card_body_class %}login-card-body{% endblock %}">
+                {% block card_body %}{% endblock %}
+            </div>
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+    <!-- /.login-box -->
+{% endblock %}
+
