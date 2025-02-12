@@ -1,0 +1,43 @@
+{% extends 'security_layout.html.twig' %}
+
+{% block card_body %}
+    <h5 class="login-box-msg">{{ 'security.authentication.login.title'|trans }}</h5>
+
+    <form method="post">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        <div class="input-group mb-3">
+            <input type="email" class="form-control" placeholder="{{ 'user.label.email'|trans({}, 'forms') }}"
+                   value="{{ last_username }}" name="_username" id="username" autocomplete="email"
+                   required autofocus>
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input type="password" name="_password" id="password" class="form-control"
+                   placeholder="{{ 'user.label.password'|trans({}, 'forms') }}" autocomplete="current-password" required>
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <br/>
+        <div class="row">
+            <div class="col-12 text-center">
+                <button type="submit" class="btn btn-primary btn-block">
+                    <i class="fas fa-sign-in-alt"></i> {{ 'security.authentication.login.submit'|trans }}
+                </button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

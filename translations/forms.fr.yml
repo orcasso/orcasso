@@ -1,0 +1,4 @@
+user:
+    label:
+        email: 'Email'
+        password: 'Mot de passe'

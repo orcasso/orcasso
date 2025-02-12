@@ -36,3 +36,9 @@ _menu:
 home:
     index:
         title: 'Bienvenue'
+
+security:
+    authentication:
+        login:
+            submit: 'Se connecter'
+            title: 'Accéder à votre association'
