@@ -1,0 +1,16 @@
+{% extends 'knp_menu.html.twig' %}
+
+{% block label %}
+    {% if item.extras.icon_class is defined %}
+        <i class="nav-icon  {{ item.extras.icon_class }}"></i>
+    {% endif %}
+
+    <p class="title">
+        {{ item.label|trans }}
+    </p>
+    {% if item.childrenAttributes is iterable and item.childrenAttributes is not empty %}
+        <i class="fas fa-angle-left right"></i>
+    {% endif %}
+{% endblock %}
+
+{% block linkElement %}{% import 'knp_menu.html.twig' as knp_menu %}<a href="{{ item.uri }}" class="nav-link {% if matcher.isCurrent(item) or matcher.isAncestor(item) %}active{% endif %}">{{ block('label') }}</a>{% endblock %}

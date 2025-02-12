@@ -1,0 +1,12 @@
+parameters:
+    knp_menu.renderer.twig.options:
+        currentClass: active
+        ancestorClass: active
+        branch_class: nav-item has-treeview
+        leaf_class: nav-item
+
+knp_menu:
+    twig:
+        template: '_menu.html.twig'
+    templating: false
+    default_renderer: twig
