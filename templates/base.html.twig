@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block head_title %}{{ 'meta.title'|trans }}{% endblock head_title %}</title>
+    <meta content="orcAsso, Application pour la gestion des clubs et des associations !" name="description"/>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('adminlte/css/adminlte.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}">
+    {% endblock %}
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}"/>
+</head>
+
+<body class="hold-transition {% block body_class %}sidebar-mini{% endblock body_class %}">
+{% block body %}{% endblock body %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('jquery/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('adminlte/js/adminlte.min.js') }}"></script>
+    {{ importmap('app') }}
+{% endblock javascripts %}
+</body>
 </html>

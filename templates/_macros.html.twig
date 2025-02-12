@@ -1,0 +1,11 @@
+{% macro alert(type, message, trans_domain, trans_parameters) %}
+    {% set trans_parameters = trans_parameters|default({}) %}
+    {% set trans_domain = trans_domain is not empty ? trans_domain : 'flashes' %}
+    <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+        </button>
+        {{ message|trans(trans_parameters, trans_domain) }}
+    </div>
+{% endmacro %}

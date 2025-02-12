@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% from '_macros.html.twig' import alert %}
+
+{% block body %}
+    <div class="wrapper">
+        <!-- Navbar -->
+        {% include '_navbar.html.twig' %}
+
+        <!-- Sidebar -->
+        {% block _sidebar %}
+            {% include '_sidebar.html.twig' %}
+        {% endblock %}
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                {% block content_header %}
+                    <div class="container-fluid">
+                        <div class="row mb-2">
+                            <div class="col-sm-12">
+                                <h4 class="m-0 text-dark">{% block content_header_title %}{% endblock %}</h4>
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                    </div><!-- /.container-fluid -->
+                {% endblock %}
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {% for type, flashMessages in app.session.flashbag.all %}
+                                {% for flashMessage in flashMessages %}
+                                    {{ alert(type, flashMessage) }}
+                                {% endfor %}
+                            {% endfor %}
+
+                            {% block content_body %}{% endblock %}
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+                    <!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+        <!-- Main Footer -->
+        <footer class="main-footer text-sm">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-6 text-center text-md-left">
+                        Copyright &copy; 2021-{{ 'now'|date('Y') }}
+                    </div>
+                    <div class="col-lg-6 text-center text-md-right d-none d-md-block">
+                        <a href="/" title="{{ app_version() }}" target="_blank">{{ 'meta.title'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container -->
+        </footer>
+    </div>
+    <!-- ./wrapper -->
+{% endblock %}
+

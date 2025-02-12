@@ -1,0 +1,31 @@
+meta:
+    title: 'orcAsso | Application pour la gestion des clubs et des associations'
+
+    word:
+        actions: Actions
+        add: Ajouter
+        apply: Appliquer
+        back: Retour
+        cancel: Annuler
+        delete: Supprimer
+        download: Télécharger
+        duplicate: Dupliquer
+        edit: Modifier
+        error: Erreur
+        errors: Erreurs
+        hello: Bonjour
+        import: Importer
+        in_progress: En cours
+        login: Connexion
+        logout: Se déconnecter
+        new: Nouveau
+        next: Suivant
+        no: Non
+        previous: Précédent
+        print: Imprimer
+        save: Enregistrer
+        select: Sélectionner
+        send: Envoyer
+        submit: Valider
+        welcome: Bienvenue
+        yes: Oui

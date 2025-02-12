@@ -1,0 +1,78 @@
+{% if tableRenderPagination is defined %}
+    <ul class="pagination pagination-sm">
+        {# previous page #}
+        <li class="paginate_button page-item previous">
+            <a href="#" class="tablePaginationButton page-link " data-table-page="{{ table.page-1 }}">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        </li>
+
+        {# first page #}
+        {% if table.page > 2 %}
+            <li class="paginate_button">
+                <a href="#" class="tablePaginationButton page-link" data-table-page="1">
+                    1
+                </a>
+            </li>
+        {% endif %}
+
+        {# page - 2 ? #}
+        {% if table.page > 3 %}
+            <li class="paginate_button disabled">
+                <a href="#" class="disabled">
+                    ...
+                </a>
+            </li>
+        {% endif %}
+
+        {# page - 1 ? (previous) #}
+        {% if table.page > 1 %}
+            <li class="paginate_button">
+                <a href="#" class="tablePaginationButton page-link" data-table-page="{{ table.page-1 }}">
+                    {{ table.page-1 }}
+                </a>
+            </li>
+        {% endif %}
+
+        {# page active #}
+        <li class="paginate_button page-item active">
+            <a href="#" class="tablePaginationButton page-link disabled" data-table-page="{{ table.page }}">
+                {{ table.page }}
+            </a>
+        </li>
+
+        {# page + 1 ? (next) #}
+        {% if table.lastPage-table.page > 0 %}
+            <li class="paginate_button">
+                <a href="#" class="tablePaginationButton page-link" data-table-page="{{ table.page+1 }}">
+                    {{ table.page+1 }}
+                </a>
+            </li>
+        {% endif %}
+
+        {# page + 2 ? #}
+        {% if table.lastPage-table.page > 2 %}
+            <li class="paginate_button disabled">
+                <a href="#" class="disabled">
+                    ...
+                </a>
+            </li>
+        {% endif %}
+
+        {# last page #}
+        {% if table.lastPage-table.page > 1 %}
+            <li class="paginate_button">
+                <a href="#" class="tablePaginationButton page-link" data-table-page="{{ table.lastPage }}">
+                    {{ table.lastPage }}
+                </a>
+            </li>
+        {% endif %}
+
+        {# next page #}
+        <li class="paginate_button">
+            <a href="#" class="tablePaginationButton page-link" data-table-page="{{ table.page+1 }}">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        </li>
+    </ul>
+{% endif %}

@@ -1,0 +1,11 @@
+{# @KilikTable/_columnFilter.html.twig #}
+<td data-column="{{ column.name }}"{% if column.filterClass is not null %} class="{{ column.filterClass }}"{% endif %}  data-label="{{column.label}}">
+    {% set column_filter_class = 'form-control refreshOnKeyup refreshOnChange' %}
+    {% if table.massActions and column.filter.options.choices is not defined %}
+        {% set column_filter_class = 'form-control refreshOnKeyup' %}
+    {% endif %}
+
+    {% if column.filter is not null %}
+        {{ form_widget(attribute(table.formView,column.filter.name ),{"attr": {"class": column_filter_class,"data-column": column.name} }) }}
+    {% endif %}
+</td>
