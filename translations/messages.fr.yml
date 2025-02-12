@@ -29,3 +29,10 @@ meta:
         submit: Valider
         welcome: Bienvenue
         yes: Oui
+
+_menu:
+    homepage: Accueil
+
+home:
+    index:
+        title: 'Bienvenue'
