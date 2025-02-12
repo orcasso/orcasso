@@ -91,7 +91,8 @@
         "reset:db": [
             "bin/console doctrine:schema:update --force -n",
             "bin/console doctrine:fixtures:load -n"
-        ]
+        ],
+        "test": "vendor/bin/phpunit --testdox"
     },
     "scripts-descriptions": {
         "lint": "Run php-cs-fixer"
