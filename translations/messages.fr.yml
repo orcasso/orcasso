@@ -1,4 +1,4 @@
-meta:
+_meta:
     title: 'orcAsso | Application pour la gestion des clubs et des associations'
 
     word:
@@ -32,10 +32,25 @@ meta:
 
 _menu:
     homepage: Accueil
+    user: Utilisateurs
+
+    separation:
+        administration: 'Administration'
 
 home:
     index:
         title: 'Bienvenue'
+admin:
+    user:
+        create:
+            title: 'Création d''un utilisateur'
+        delete:
+            confirmation_message: 'Êtes-vous sûr de vouloir supprimer l''utilisateur %email% ?'
+            title: 'Suppression de l''utilisateur'
+        edit:
+            title: 'Modification de l''utilisateur'
+        list:
+            title: 'Liste des utilisateurs'
 
 security:
     authentication:

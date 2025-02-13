@@ -4,16 +4,22 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Timestampable;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, Timestampable
 {
+    use TimestampableEntity;
+
     public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLES = [
         self::ROLE_USER,
+        self::ROLE_ADMIN,
     ];
 
     #[ORM\Id]
@@ -74,9 +80,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setRoles(array $roles): static
     {
-        $this->roles = array_unique($roles);
+        $this->roles = array_unique(array_merge($roles, [static::ROLE_USER]));
 
         return $this;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return \in_array($role, $this->roles);
     }
 
     public function getPassword(): ?string

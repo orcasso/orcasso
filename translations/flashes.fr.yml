@@ -1,0 +1,9 @@
+success:
+    user:
+        created: 'L''utilisateur a bien été créé'
+        deleted: 'L''utilisateur a été supprimé'
+        updated: 'L''utilisateur a bien été modifié'
+
+warning:
+    user:
+        not_removable: 'L''utilisateur ne peut être supprimé'

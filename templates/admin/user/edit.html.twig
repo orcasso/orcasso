@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_user_list') %}
+{% if app.user.id != user.id %}
+    {% set url_delete = path('admin_user_delete', {'user':user.id}) %}
+{% endif %}
+
+{% block content_header_title %}{{ 'admin.user.edit.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_edit.html.twig' with {'entity': user} %}{% endembed %}
+{% endblock %}
