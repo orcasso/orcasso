@@ -5,7 +5,7 @@
         {% if url_delete is defined %}
             <a href="{{ url_delete }}" class="btn btn-danger btn-sm">
                 <i class="fa fa-trash"></i>
-                <span class="d-none d-md-inline">{{ 'meta.word.delete'|trans }}</span>
+                <span class="d-none d-md-inline">{{ '_meta.word.delete'|trans }}</span>
             </a>
             &nbsp;-&nbsp;
         {% endif %}
@@ -15,7 +15,7 @@
         {% if url_cancel is defined %}
             <a href="{{ url_cancel }}" class="btn btn-secondary btn-sm">
                 <i class="fa fa-chevron-left"></i>
-                <span class="d-none d-md-inline">{{ 'meta.word.back'|trans }}</span>
+                <span class="d-none d-md-inline">{{ '_meta.word.back'|trans }}</span>
             </a>
         {% endif %}
     {% endblock %}
@@ -24,7 +24,7 @@
         {% if url_edit is defined %}
             <a href="{{ url_edit }}" class="btn btn-warning btn-sm">
                 <i class="far fa-edit"></i>
-                <span class="d-none d-md-inline">{{ 'meta.word.edit'|trans }}</span>
+                <span class="d-none d-md-inline">{{ '_meta.word.edit'|trans }}</span>
             </a>
         {% endif %}
     {% endblock %}

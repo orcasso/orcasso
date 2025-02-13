@@ -22,5 +22,6 @@ security:
                 target: security_authentication_login
 
     access_control:
+        - { path: ^/admin/, roles: ROLE_ADMIN }
         - { path: ^/login$, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_USER }

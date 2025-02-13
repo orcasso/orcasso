@@ -1,4 +1,13 @@
+_meta:
+    created_at: 'Création le'
+    updated_at: 'Modification le'
+
 user:
+    choice:
+        role:
+            user_admin: 'Administrateur'
     label:
+        confirm_password: 'Confirmation mot de passe'
         email: 'Email'
+        name: 'Nom'
         password: 'Mot de passe'

@@ -9,17 +9,11 @@
             {% endif %}
             <div class="info-box-content">
                 <p>
-                    <b>{{ "entity.label.created_at" | trans({}, 'forms') }} :</b>
+                    <b>{{ "_meta.created_at" | trans({}, 'forms') }} :</b>
                     {{ entity.createdAt | date('d/m/Y à H:i:s') }}<br/>
-                    <b>{{ "entity.label.updated_at" | trans({}, 'forms') }} :</b>
+                    <b>{{ "_meta.updated_at" | trans({}, 'forms') }} :</b>
                     {{ entity.updatedAt | date('d/m/Y à H:i:s') }}<br/>
                 </p>
-                    {% if entity.deletedAt is defined and entity.deletedAt is not null %}
-                       {# <p>#}
-                        <h5>{{ "entity.label.deleted_at" | trans({}, 'forms') }} :
-                        <b>{{ entity.deletedAt | date('d/m/Y à H:i:s') }}</b></h5>
-                        {#</p>#}
-                    {% endif %}
             </div>
         </div>
     {% endif %}

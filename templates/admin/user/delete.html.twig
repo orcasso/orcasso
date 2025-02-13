@@ -1,0 +1,10 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_user_list') %}
+{% set confirmation_message = 'admin.user.delete.confirmation_message'|trans({'%email%':user.email}) %}
+
+{% block content_header_title %}{{ 'admin.user.delete.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_delete.html.twig' %}{% endembed %}
+{% endblock %}
