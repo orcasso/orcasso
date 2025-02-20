@@ -10,7 +10,6 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, Timestampable
 {
     use TimestampableEntity;
@@ -27,7 +26,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Timesta
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(name: 'email', type: 'string', length: 255)]
+    #[ORM\Column(name: 'email', type: 'string', length: 255, unique: true)]
     public string $email;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255)]
