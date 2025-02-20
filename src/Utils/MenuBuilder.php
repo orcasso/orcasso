@@ -25,12 +25,17 @@ class MenuBuilder
                 'role' => 'menu',
                 'data-accordion' => 'false',
             ]);
-        if ($this->security->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $menu->addChild('_menu.homepage', [
-                'route' => 'homepage',
-                'extras' => ['icon_class' => 'fa fa-home'],
-            ]);
-        }
+
+        $menu->addChild('_menu.homepage', [
+            'route' => 'homepage',
+            'extras' => ['icon_class' => 'fa fa-home'],
+        ]);
+
+        $menu->addChild('_menu.activity', [
+            'route' => 'activity_list',
+            'extras' => ['icon_class' => 'fas fa-volleyball-ball'],
+        ]);
+
         $this->buildAdministrationMenu($menu);
 
         return $menu;

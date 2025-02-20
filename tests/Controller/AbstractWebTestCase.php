@@ -4,15 +4,31 @@ namespace App\Tests\Controller;
 
 use App\Dev\DataFixtures\UserFixtures;
 use App\Repository\UserRepository;
+use Doctrine\Persistence\ObjectManager;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AbstractWebTestCase extends WebTestCase
 {
+    protected ?KernelBrowser $client;
+    protected ?ObjectManager $em;
+
     protected function setUp(): void
     {
+        parent::setUp();
         $this->client = static::createClient();
+        $this->em = $this->getContainer()->get('doctrine')->getManager();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        // doing this is recommended to avoid memory leaks
+        $this->em->close();
+        $this->em = null;
     }
 
     protected function authenticateUser(string $email = UserFixtures::USERS[0]): void

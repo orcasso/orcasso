@@ -2,6 +2,17 @@ _meta:
     created_at: 'Création le'
     updated_at: 'Modification le'
 
+activity:
+    help:
+        name: |
+            Créez les activités et cotisations proposées par votre association<br />
+            Ex. <br />
+            - <code>2024/2025 Cours de guitare</code><br />
+            - <code>Cotisation annuelle 2025</code><br />
+            - <code>U13 2024/2025</code>
+    label:
+        name: 'Nom'
+
 user:
     choice:
         role:
