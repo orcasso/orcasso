@@ -1,9 +1,16 @@
 success:
+    activity:
+        created: 'L''activité a bien été créée'
+        deleted: 'L''activité a été supprimée'
+        updated: 'L''activité a bien été modifiée'
+
     user:
         created: 'L''utilisateur a bien été créé'
         deleted: 'L''utilisateur a été supprimé'
         updated: 'L''utilisateur a bien été modifié'
 
 warning:
+    activity:
+        not_removable: 'L''activité ne peut être supprimée car il y a des adhésions liées.'
     user:
         not_removable: 'L''utilisateur ne peut être supprimé'

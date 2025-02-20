@@ -31,6 +31,7 @@ _meta:
         yes: Oui
 
 _menu:
+    activity: Activités & Cotisations
     homepage: Accueil
     user: Utilisateurs
 
@@ -40,6 +41,18 @@ _menu:
 home:
     index:
         title: 'Bienvenue'
+
+activity:
+    create:
+        title: 'Création d''une activité ou d''une cotisation'
+    delete:
+        confirmation_message: 'Êtes-vous sûr de vouloir supprimer %name% ?'
+        title: 'Suppression de l''activité ou cotisation'
+    edit:
+        title: 'Modification de l''activité ou cotisation'
+    list:
+        title: 'Liste des activités et cotisations'
+
 admin:
     user:
         create:
