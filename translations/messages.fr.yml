@@ -33,6 +33,7 @@ _meta:
 _menu:
     activity: Activités & Cotisations
     homepage: Accueil
+    member: Membres
     user: Utilisateurs
 
     separation:
@@ -52,6 +53,17 @@ activity:
         title: 'Modification de l''activité ou cotisation'
     list:
         title: 'Liste des activités et cotisations'
+
+member:
+    create:
+        title: 'Ajout d''un membre ou responsable légal'
+    delete:
+        confirmation_message: 'Êtes-vous sûr de vouloir supprimer %name% ?'
+        title: 'Suppression du membre'
+    edit:
+        title: 'Modification du membre'
+    list:
+        title: 'Liste des membres'
 
 admin:
     user:

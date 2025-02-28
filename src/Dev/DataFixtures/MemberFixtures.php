@@ -25,7 +25,7 @@ class MemberFixtures extends Fixture
                 ->setLastName($faker->lastName)
                 ->setBirthDate(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('-80 years', '-3 years')))
                 ->setPhoneNumber($faker->phoneNumber)
-                ->setEmail($faker->email)
+                ->setEmail(0 === $i ? UserFixtures::USERS[0] : $faker->email)
                 ->setStreet1($faker->streetAddress)
                 ->setStreet2(random_int(0, 1) ? $faker->secondaryAddress : '')
                 ->setStreet3($member->getStreet2() && random_int(0, 1) ? $faker->secondaryAddress : '')

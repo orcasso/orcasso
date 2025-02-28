@@ -35,6 +35,10 @@ class MenuBuilder
             'route' => 'activity_list',
             'extras' => ['icon_class' => 'fas fa-volleyball-ball'],
         ]);
+        $menu->addChild('_menu.member', [
+            'route' => 'member_list',
+            'extras' => ['icon_class' => 'fas fa-users'],
+        ]);
 
         $this->buildAdministrationMenu($menu);
 

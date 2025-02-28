@@ -1,0 +1,21 @@
+App\Entity\Member:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+              fields: ['firstName', 'lastName']
+    properties:
+        birthDate:
+            - Range:
+                  max: 'yesterday'
+        email:
+            - NotBlank: ~
+            - Email: ~
+        firstName:
+            - NotBlank: ~
+            - Length:
+                min: 2
+                max: 255
+        lastName:
+            - NotBlank: ~
+            - Length:
+                min: 2
+                max: 255

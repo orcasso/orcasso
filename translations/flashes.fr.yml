@@ -4,6 +4,11 @@ success:
         deleted: 'L''activité a été supprimée'
         updated: 'L''activité a bien été modifiée'
 
+    member:
+        created: 'Le membre a bien été créé'
+        deleted: 'Le membre a été supprimé'
+        updated: 'Le membre a bien été modifié'
+
     user:
         created: 'L''utilisateur a bien été créé'
         deleted: 'L''utilisateur a été supprimé'
