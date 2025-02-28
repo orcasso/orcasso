@@ -26,6 +26,9 @@ doctrine:
                 alias: App
         controller_resolver:
             auto_mapping: false
+        dql:
+            datetime_functions:
+                TIMESTAMPDIFF: DoctrineExtensions\Query\Mysql\TimestampDiff
 
 when@test:
     doctrine:

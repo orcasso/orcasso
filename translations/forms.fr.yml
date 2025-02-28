@@ -1,4 +1,5 @@
 _meta:
+    age: 'Âge'
     created_at: 'Création le'
     updated_at: 'Modification le'
 
@@ -13,6 +14,23 @@ activity:
     label:
         name: 'Nom'
 
+member:
+    choice:
+        gender:
+            female: Féminin
+            male: Masculin
+    label:
+        birth_date: 'Date de naissance'
+        city: 'Ville'
+        email: 'Email'
+        first_name: 'Prénom'
+        gender: Genre
+        last_name: 'Nom'
+        phone_number: Téléphone
+        postal_code: 'Code postal'
+        street1: Adresse 1
+        street2: Adresse 2
+        street3: Adresse 3
 user:
     choice:
         role:

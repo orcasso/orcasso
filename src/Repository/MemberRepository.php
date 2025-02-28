@@ -2,15 +2,15 @@
 
 namespace App\Repository;
 
-use App\Entity\Activity;
+use App\Entity\Member;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
- * @extends ServiceEntityRepository<Activity>
+ * @extends ServiceEntityRepository<Member>
  */
-class ActivityRepository extends AbstractRepository
+class MemberRepository extends AbstractRepository
 {
-    public const ENTITY_CLASS = Activity::class;
+    public const ENTITY_CLASS = Member::class;
 
     public function isRemovable(object $entity): bool
     {

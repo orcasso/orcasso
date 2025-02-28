@@ -24,6 +24,8 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
 
     public function isRemovable(object $entity): bool
     {
+        $this->checkSupport($entity);
+
         return $this->security->getUser() !== $entity;
     }
 

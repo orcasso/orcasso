@@ -1,0 +1,9 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('member_list') %}
+
+{% block content_header_title %}{{ 'member.create.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_create.html.twig' %}{% endembed %}
+{% endblock %}
