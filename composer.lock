@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "66ef33b92d89d2300760b03680aef6ec",
+    "content-hash": "680af2d1e380d14194a627328c91a182",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -1660,16 +1660,16 @@
         },
         {
             "name": "kilik/table",
-            "version": "dev-doctrine-orm-3.2",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KilikFr/TableBundle.git",
-                "reference": "4dc42cc6933438d3b477762a7f4c0d98758d35ee"
+                "reference": "7e01d148c9fe3d2be1183042adc46c622609eeeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KilikFr/TableBundle/zipball/4dc42cc6933438d3b477762a7f4c0d98758d35ee",
-                "reference": "4dc42cc6933438d3b477762a7f4c0d98758d35ee",
+                "url": "https://api.github.com/repos/KilikFr/TableBundle/zipball/7e01d148c9fe3d2be1183042adc46c622609eeeb",
+                "reference": "7e01d148c9fe3d2be1183042adc46c622609eeeb",
                 "shasum": ""
             },
             "require": {
@@ -1709,9 +1709,9 @@
             ],
             "support": {
                 "issues": "https://github.com/KilikFr/TableBundle/issues",
-                "source": "https://github.com/KilikFr/TableBundle/tree/doctrine-orm-3.2"
+                "source": "https://github.com/KilikFr/TableBundle/tree/3.3.1"
             },
-            "time": "2025-02-12T14:47:35+00:00"
+            "time": "2025-02-21T11:58:39+00:00"
         },
         {
             "name": "knplabs/knp-menu",
@@ -10914,9 +10914,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "kilik/table": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
