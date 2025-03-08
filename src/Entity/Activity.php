@@ -6,6 +6,7 @@ use App\Repository\ActivityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
+#[ORM\Table(name: 't_activity')]
 #[ORM\Entity(repositoryClass: ActivityRepository::class)]
 class Activity
 {

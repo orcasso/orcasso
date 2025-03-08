@@ -6,6 +6,7 @@ use App\Repository\MemberRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
+#[ORM\Table(name: 't_member')]
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
 class Member
 {
