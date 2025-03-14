@@ -1,4 +1,24 @@
 {% block card %}
+    {% block card_info %}
+        {% if entity is defined %}
+            <div class="info-box small">
+                {% if entity.deletedAt is defined and entity.deletedAt is not null %}
+                    <span class="info-box-icon bg-danger"><i class="fa fa-exclamation-triangle"></i></span>
+                {% else %}
+                    <span class="info-box-icon bg-info"><i class="fa fa-info-circle"></i></span>
+                {% endif %}
+                <div class="info-box-content">
+                    <div>
+                        <b>{{ "_meta.created_at" | trans({}, 'forms') }} :</b>
+                        {{ entity.createdAt | date('d/m/Y à H:i:s') }}<br/>
+                        <b>{{ "_meta.updated_at" | trans({}, 'forms') }} :</b>
+                        {{ entity.updatedAt | date('d/m/Y à H:i:s') }}<br/>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endblock %}
+
     <div class="card {% block card_body_class %}card-primary card-outline{% endblock %}">
         {% block card_content %}
 
@@ -12,8 +32,6 @@
                         {% endblock %}
                     {% endblock %}
                 </div>
-            {% endblock %}
-            {% block card_info %}
             {% endblock %}
 
             <div class="card-body">
