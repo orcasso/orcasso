@@ -31,7 +31,7 @@ final class ActivityControllerTest extends AbstractWebTestCase
         $this->authenticateUser();
         $this->client->request(Request::METHOD_GET, $this->getUrl('activity_list_ajax'));
         $this->assertResponseIsSuccessful();
-        $this->assertEquals(\count(ActivityFixtures::ACTIVITIES), $this->getResponseJsonContent()['totalRows']);
+        $this->assertEquals(\count(ActivityFixtures::activities()), $this->getResponseJsonContent()['totalRows']);
     }
 
     public function testEdit()
@@ -48,7 +48,6 @@ final class ActivityControllerTest extends AbstractWebTestCase
             'activity[name]' => $newName = 'Activity edit',
         ]);
 
-        $this->assertResponseRedirects($editUrl, Response::HTTP_FOUND);
         $this->assertTrue($this->client->getResponse()->isRedirect($editUrl));
         $this->assertHasFlash('success', 'success.activity.updated');
 
@@ -67,11 +66,9 @@ final class ActivityControllerTest extends AbstractWebTestCase
             'activity[name]' => $name = 'New activity',
         ]);
 
-        $this->assertEquals(\count(ActivityFixtures::ACTIVITIES) + 1, $this->getDoctrine()->getRepository(Activity::class)->count());
+        $this->assertEquals(\count(ActivityFixtures::activities()) + 1, $this->getDoctrine()->getRepository(Activity::class)->count());
         $this->assertTrue($this->client->getResponse()->isRedirect($this->getEditUrl($activity = $this->getFixtureActivity($name))));
         $this->assertHasFlash('success', 'success.activity.created');
-        $this->getDoctrine()->getManager()->remove($activity);
-        $this->getDoctrine()->getManager()->flush();
     }
 
     public function testDelete()
@@ -83,7 +80,7 @@ final class ActivityControllerTest extends AbstractWebTestCase
         $this->client->followRedirects(false);
         $this->client->submitForm($this->trans('_meta.word.delete'), []);
 
-        $this->assertEquals(\count(ActivityFixtures::ACTIVITIES) - 1, $this->getDoctrine()->getRepository(Activity::class)->count());
+        $this->assertEquals(\count(ActivityFixtures::activities()) - 1, $this->getDoctrine()->getRepository(Activity::class)->count());
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->getUrl('activity_list')));
         $this->assertHasFlash('success', 'success.activity.deleted');
@@ -91,7 +88,7 @@ final class ActivityControllerTest extends AbstractWebTestCase
 
     protected function getFixtureActivity(?string $name = null): Activity
     {
-        $name = $name ?? ActivityFixtures::getCompleteName(ActivityFixtures::ACTIVITIES[1]);
+        $name = $name ?? ActivityFixtures::getCompleteName(ActivityFixtures::activities()[1]);
 
         return $this->getDoctrine()->getRepository(Activity::class)->findOneBy(['name' => $name]);
     }

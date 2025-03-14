@@ -31,6 +31,22 @@ member:
         street1: Adresse 1
         street2: Adresse 2
         street3: Adresse 3
+order:
+    label:
+        id: Numéro
+        lines: Lignes
+        member: Membre
+        notes: Notes
+        total_amount: Montant
+
+order_line:
+    label:
+        allowance_base_amount: Montant base
+        allowance_percentage: Remise (%)
+        amount: Montant
+        label: Désignation
+        subscribed_activity: Adhésion
+
 user:
     choice:
         role:

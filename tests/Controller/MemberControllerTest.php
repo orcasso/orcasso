@@ -6,7 +6,6 @@ use App\Dev\DataFixtures\MemberFixtures;
 use App\Dev\DataFixtures\UserFixtures;
 use App\Entity\Member;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 final class MemberControllerTest extends AbstractWebTestCase
 {
@@ -49,7 +48,6 @@ final class MemberControllerTest extends AbstractWebTestCase
             'member[firstName]' => $newName = 'MemberName',
         ]);
 
-        $this->assertResponseRedirects($editUrl, Response::HTTP_FOUND);
         $this->assertTrue($this->client->getResponse()->isRedirect($editUrl));
         $this->assertHasFlash('success', 'success.member.updated');
 
@@ -74,8 +72,6 @@ final class MemberControllerTest extends AbstractWebTestCase
         $this->assertEquals(MemberFixtures::COUNT + 1, $this->getDoctrine()->getRepository(Member::class)->count());
         $this->assertTrue($this->client->getResponse()->isRedirect($this->getEditUrl($member = $this->getFixtureMember($email))));
         $this->assertHasFlash('success', 'success.member.created');
-        $this->getDoctrine()->getManager()->remove($member);
-        $this->getDoctrine()->getManager()->flush();
     }
 
     public function testDelete()
@@ -87,10 +83,9 @@ final class MemberControllerTest extends AbstractWebTestCase
         $this->client->followRedirects(false);
         $this->client->submitForm($this->trans('_meta.word.delete'), []);
 
-        $this->assertEquals(MemberFixtures::COUNT - 1, $this->getDoctrine()->getRepository(Member::class)->count());
-
         $this->assertTrue($this->client->getResponse()->isRedirect($this->getUrl('member_list')));
         $this->assertHasFlash('success', 'success.member.deleted');
+        $this->assertEquals(MemberFixtures::COUNT - 1, $this->getDoctrine()->getRepository(Member::class)->count());
     }
 
     protected function getFixtureMember(string $email = UserFixtures::USERS[0]): Member

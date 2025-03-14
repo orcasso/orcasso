@@ -39,6 +39,10 @@ class MenuBuilder
             'route' => 'member_list',
             'extras' => ['icon_class' => 'fas fa-users'],
         ]);
+        $menu->addChild('_menu.order', [
+            'route' => 'order_list',
+            'extras' => ['icon_class' => 'fas fa-shopping-cart'],
+        ]);
 
         $this->buildAdministrationMenu($menu);
 

@@ -34,6 +34,7 @@ _menu:
     activity: Activités & Cotisations
     homepage: Accueil
     member: Membres
+    order: Commandes
     user: Utilisateurs
 
     separation:
@@ -64,6 +65,31 @@ member:
         title: 'Modification du membre'
     list:
         title: 'Liste des membres'
+
+order:
+    create:
+        title: 'Création d''une commande'
+    delete:
+        confirmation_message: 'Êtes-vous sûr de vouloir supprimer la commande %id% pour %name% ?'
+        title: 'Suppression de la commande'
+    edit:
+        actions:
+            add_order_line:
+                activity_subscription: Adhésion activité/cotisation
+                allowance: Réduction
+                simple: Ligne simple
+        title: 'Modification de la commande'
+    list:
+        title: 'Liste des commandes'
+
+order_line:
+    create:
+        title: 'Ajout d''une ligne à la commande'
+    delete:
+        confirmation_message: 'Êtes-vous sûr de vouloir supprimer cette ligne ?'
+        title: 'Suppression de la la ligne de commande'
+    edit:
+        title: 'Modification de la ligne de commande'
 
 admin:
     user:
