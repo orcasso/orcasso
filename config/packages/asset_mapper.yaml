@@ -7,6 +7,8 @@ framework:
             vendor/almasaeed2010/adminlte/plugins/bootstrap/: 'bootstrap'
             vendor/almasaeed2010/adminlte/plugins/fontawesome-free/: 'fontawesome'
             vendor/almasaeed2010/adminlte/plugins/jquery/: 'jquery'
+            vendor/almasaeed2010/adminlte/plugins/select2/: 'select2'
+            vendor/almasaeed2010/adminlte/plugins/select2-bootstrap4-theme/: 'select2'
         missing_import_mode: strict
 
 when@prod:

@@ -60,7 +60,6 @@ final class UserControllerTest extends AbstractWebTestCase
             'user[name]' => $newName,
         ]);
 
-        $this->assertResponseRedirects($editUrl, Response::HTTP_FOUND);
         $this->assertTrue($this->client->getResponse()->isRedirect($editUrl));
         $this->assertHasFlash('success', 'success.user.updated');
 
@@ -85,8 +84,6 @@ final class UserControllerTest extends AbstractWebTestCase
         $this->assertEquals(\count(UserFixtures::USERS) + 1, $this->getDoctrine()->getRepository(User::class)->count());
         $this->assertTrue($this->client->getResponse()->isRedirect($this->getEditUrl($user = $this->getFixtureUser($email))));
         $this->assertHasFlash('success', 'success.user.created');
-        $this->getDoctrine()->getManager()->remove($user);
-        $this->getDoctrine()->getManager()->flush();
     }
 
     public function testDelete()
@@ -99,7 +96,6 @@ final class UserControllerTest extends AbstractWebTestCase
         $this->client->submitForm($this->trans('_meta.word.delete'), []);
 
         $this->assertEquals(\count(UserFixtures::USERS) - 1, $this->getDoctrine()->getRepository(User::class)->count());
-
         $this->assertTrue($this->client->getResponse()->isRedirect($this->getUrl('admin_user_list')));
         $this->assertHasFlash('success', 'success.user.deleted');
     }

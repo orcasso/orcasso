@@ -11,6 +11,8 @@
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('adminlte/css/adminlte.min.css') }}">
         <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('select2/css/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('select2/select2-bootstrap4.min.css') }}">
     {% endblock %}
 
     <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}"/>
@@ -23,6 +25,7 @@
     <script type="text/javascript" src="{{ asset('jquery/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('adminlte/js/adminlte.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('select2/js/select2.min.js') }}"></script>
     {{ importmap('app') }}
 {% endblock javascripts %}
 </body>

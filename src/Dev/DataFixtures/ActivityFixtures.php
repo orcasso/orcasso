@@ -11,10 +11,12 @@ use Doctrine\Persistence\ObjectManager;
  */
 class ActivityFixtures extends Fixture
 {
-    public const ACTIVITIES = [
+    public const FOR_THE_LITTLE_ONES = [
         'Éveil musical',
         'Initiation',
-        // Instruments
+    ];
+
+    public const INSTRUMENTS = [
         'Chant',
         'Batterie',
         'Clarinette',
@@ -23,29 +25,42 @@ class ActivityFixtures extends Fixture
         'Basse',
         'Piano',
         'Violon',
-        // FM
+    ];
+
+    public const FM = [
         'Formation musicale 1C1',
         'Formation musicale 1C2',
         'Formation musicale 1C3',
         'Formation musicale 1C4',
         'Formation musicale 2C',
-        // Collectives
+    ];
+
+    public const COLLECTIVES = [
         'Choeur Terpsichore',
         'Atelier musiques actuelles ado',
         'Atelier musiques actuelles adultes',
         'Atelier vocal adulte',
-        // Cotisations
-        'Cotisation familiale',
     ];
+
+    public static function activities(): array
+    {
+        return array_merge(
+            static::FOR_THE_LITTLE_ONES,
+            static::INSTRUMENTS,
+            static::FM,
+            static::COLLECTIVES,
+            ['Cotisation familiale']
+        );
+    }
 
     public function load(ObjectManager $manager): void
     {
-        foreach (static::ACTIVITIES as $index => $name) {
+        foreach (static::activities() as $index => $name) {
             $activity = new Activity();
             $manager->persist($activity
                 ->setName(static::getCompleteName($name))
             );
-            $this->addReference('activity_'.$name, $activity);
+            $this->addReference($name, $activity);
         }
         $manager->flush();
     }

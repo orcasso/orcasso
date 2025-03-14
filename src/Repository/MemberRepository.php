@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Member;
+use App\Entity\Order;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -16,6 +17,6 @@ class MemberRepository extends AbstractRepository
     {
         $this->checkSupport($entity);
 
-        return true;
+        return 0 === $this->getEntityManager()->getRepository(Order::class)->count(['member' => $entity]);
     }
 }

@@ -9,6 +9,16 @@ success:
         deleted: 'Le membre a été supprimé'
         updated: 'Le membre a bien été modifié'
 
+    order:
+        created: 'La commande a bien été créée'
+        deleted: 'La commande a été supprimée'
+        updated: 'La commande a bien été modifiée'
+
+    order_line:
+        created: 'La ligne a bien été créée'
+        deleted: 'La ligne a été supprimée'
+        updated: 'La ligne a bien été modifiée'
+
     user:
         created: 'L''utilisateur a bien été créé'
         deleted: 'L''utilisateur a été supprimé'
