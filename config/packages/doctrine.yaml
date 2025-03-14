@@ -29,6 +29,8 @@ doctrine:
         dql:
             datetime_functions:
                 TIMESTAMPDIFF: DoctrineExtensions\Query\Mysql\TimestampDiff
+            string_functions:
+                GROUP_CONCAT: DoctrineExtensions\Query\Mysql\GroupConcat
 
 when@test:
     doctrine:
