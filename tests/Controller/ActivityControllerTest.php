@@ -5,7 +5,6 @@ namespace App\Tests\Controller;
 use App\Dev\DataFixtures\ActivityFixtures;
 use App\Entity\Activity;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 final class ActivityControllerTest extends AbstractWebTestCase
 {

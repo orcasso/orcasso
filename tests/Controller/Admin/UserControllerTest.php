@@ -6,7 +6,6 @@ use App\Dev\DataFixtures\UserFixtures;
 use App\Entity\User;
 use App\Tests\Controller\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 final class UserControllerTest extends AbstractWebTestCase
 {
