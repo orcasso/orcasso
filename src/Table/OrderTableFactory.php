@@ -74,6 +74,24 @@ class OrderTableFactory
                         ->setField('o.totalAmount')
                         ->setName('o_totalAmount')
                     )
+                    ->setDisplayCallback(fn ($value, $row) => number_format($value, 2, ',', '').' €')
+                ->setDisplayClass('text-center')
+            )
+            ->addColumn(
+                (new Column())->setLabel('order.label.paid_amount')->setTranslateDomain('forms')
+                    ->setSort(['o.paidAmount' => 'asc'])
+                    ->setFilter((new Filter())
+                        ->setField('o.paidAmount')
+                        ->setName('o_paidAmount')
+                    )
+                    ->setDisplayCallback(function ($value, $row) {
+                        /** @var Order $order */
+                        $order = $row['object'];
+                        $class = $order->getPaidAmount() < $order->getTotalAmount() ? ($order->getPaidAmount() > 0 ? 'bg-warning' : 'bg-danger') : 'bg-success';
+
+                        return '<div class="text-center '.$class.'">'.number_format($value, 2, ',', '').' €</div>';
+                    })
+                    ->setRaw(true)
             )
             ->addColumn(
                 (new Column())->setLabel('_meta.created_at')->setTranslateDomain('forms')

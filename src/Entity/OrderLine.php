@@ -44,7 +44,7 @@ class OrderLine
     #[ORM\Column(name: 'allowance_base_amount', type: 'decimal', precision: 10, scale: 2, nullable: true, options: ['default' => null])]
     protected string|int|float|null $allowanceBaseAmount = null;
 
-    #[ORM\Column(name: 'amount', type: 'decimal', precision: 10, scale: 2, options: ['default' => 0.00])]
+    #[ORM\Column(name: 'amount', type: 'decimal', precision: 10, scale: 2)]
     protected string|int|float $amount = 0;
 
     protected function __construct(Order $order)

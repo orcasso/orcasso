@@ -19,6 +19,11 @@ success:
         deleted: 'La ligne a été supprimée'
         updated: 'La ligne a bien été modifiée'
 
+    payment:
+        created: 'Le paiement a bien été créé'
+        deleted: 'Le paiement a été supprimé'
+        updated: 'Le paiement a bien été modifié'
+
     user:
         created: 'L''utilisateur a bien été créé'
         deleted: 'L''utilisateur a été supprimé'
@@ -27,5 +32,7 @@ success:
 warning:
     activity:
         not_removable: 'L''activité ne peut être supprimée car il y a des adhésions liées.'
+    payment:
+        not_removable: 'Le paiement ne peut être supprimé car des commandes sont liées.'
     user:
         not_removable: 'L''utilisateur ne peut être supprimé'

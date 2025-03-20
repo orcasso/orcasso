@@ -43,6 +43,10 @@ class MenuBuilder
             'route' => 'order_list',
             'extras' => ['icon_class' => 'fas fa-shopping-cart'],
         ]);
+        $menu->addChild('_menu.payment', [
+            'route' => 'payment_list',
+            'extras' => ['icon_class' => 'fas fa-credit-card'],
+        ]);
 
         $this->buildAdministrationMenu($menu);
 

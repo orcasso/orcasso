@@ -1,0 +1,10 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('payment_edit', {'payment':order.payment.id}) %}
+{% set url_delete = path('payment_order_delete', {'payment':order.payment.id, 'paymentOrder':order.id}) %}
+
+{% block content_header_title %}{{ 'payment_order.edit.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_edit.html.twig' with {'entity': order} %}{% endembed %}
+{% endblock %}

@@ -25,6 +25,8 @@ class OrderType extends AbstractType
             ->add('notes', TextareaType::class, [
                 'label' => 'order.label.notes',
                 'attr' => ['rows' => 5],
+                'required' => false,
+                'empty_data' => '',
             ])
             ->add('totalAmount', MoneyType::class, [
                 'label' => 'order.label.total_amount',

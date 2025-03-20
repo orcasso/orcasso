@@ -37,7 +37,9 @@ order:
         lines: Lignes
         member: Membre
         notes: Notes
+        paid_amount: Payé
         total_amount: Montant
+        due_amount: 'Montant dû'
 
 order_line:
     label:
@@ -46,6 +48,28 @@ order_line:
         amount: Montant
         label: Désignation
         subscribed_activity: Adhésion
+
+payment:
+    choice:
+        method:
+            bank_transfer: 'Virement bancaire'
+            cheque: 'Chèque'
+            cash: 'Espèces'
+    label:
+        amount: Montant
+        identifier: 'Référence'
+        issued_at: 'Date émission'
+        member: Membre
+        method: Mode
+        notes: Notes
+        orders: Commandes
+        received_at: 'Date réception'
+
+payment_order:
+    label:
+        order: 'Commande'
+        payment: 'Paiement'
+        amount: 'Montant'
 
 user:
     choice:

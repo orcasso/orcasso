@@ -1,0 +1,138 @@
+{% extends 'layout.html.twig' %}
+
+{% block content_header_title %}{{ 'payment.edit.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/_card.html.twig' with {'entity': payment} %}
+        {% block card_tools %}
+            <a href="{{  path('payment_delete', {'payment':payment.id}) }}" class="btn btn-danger btn-sm">
+                <i class="fa fa-trash"></i>
+                <span class="d-none d-md-inline">{{ '_meta.word.delete'|trans }}</span>
+            </a>
+            &nbsp;-&nbsp;
+
+            <a href="{{ path('payment_list') }}" class="btn btn-secondary btn-sm">
+                <i class="fa fa-chevron-left"></i>
+                <span class="d-none d-md-inline">{{ '_meta.word.back'|trans }}</span>
+            </a>
+
+            <a href="{{  path('payment_edit_header', {'payment':payment.id}) }}" class="btn btn-primary btn-sm">
+                <i class="fa fa-edit"></i>
+                <span class="d-none d-md-inline">{{ '_meta.word.edit'|trans }}</span>
+            </a>
+        {% endblock %}
+
+        {% block card_body %}
+            <div class="row">
+                <div class="col-lg-6">
+                    <table class="table table-no-bpaymented">
+                        <tr>
+                            <th>{{ 'payment.label.identifier'|trans({}, 'forms') }}</th>
+                            <th>{{ payment.identifier }}</th>
+                        </tr>
+                        <tr>
+                            <th>{{ 'payment.label.member'|trans({}, 'forms') }}</th>
+                            <td>
+                                <a href="{{ path('member_edit', {'member':payment.member.id}) }}">
+                                    {{ payment.member.fullName }}
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'payment.label.issued_at'|trans({}, 'forms') }}</th>
+                            <td>{{ payment.issuedAt|format_date }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'payment.label.received_at'|trans({}, 'forms') }}</th>
+                            <td>{% if payment.receivedAt %}{{ payment.receivedAt|format_date }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'payment.label.amount'|trans({}, 'forms') }}</th>
+                            <td>{{ payment.amount|format_currency('EUR') }}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-lg-6">
+                    <table class="table table-no-bpaymented">
+                        <tr>
+                            <th>{{ 'payment.label.method'|trans({}, 'forms') }}</th>
+                            <td class="text-left">{{ ('payment.choice.method.' ~ payment.method)|trans({}, 'forms') }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'payment.label.notes'|trans({}, 'forms') }}</th>
+                            <td class="text-left">{{ payment.notes|nl2br }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+
+    <div class="row">
+        <div class="col-md-12">
+            {% embed '_skeleton/_card.html.twig' %}
+                {% block card_tools %}
+                    <a href="{{ path('payment_order_create', {'payment':payment.id}) }}"
+                       class="btn btn-primary btn-sm">
+                        <i class="fa fa-plus"></i>
+                        <span class="d-none d-md-inline">{{ 'payment.edit.actions.add_payment_order'|trans }}</span>
+                    </a>
+                {% endblock %}
+                {% block card_body %}
+                    <div id="payment-lines">
+                        <table class="table table-bpaymented table-sm">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'payment.label.member'|trans({}, 'forms') }}</th>
+                                    <th>{{ 'payment_order.label.order'|trans({}, 'forms') }}</th>
+                                    <th>{{ 'order.label.lines'|trans({}, 'forms') }}</th>
+                                    <th class="text-right">{{ 'payment_order.label.amount'|trans({}, 'forms') }}</th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for order in payment.orders %}
+                                {# @var App\Entity\PaymentOrder order #}
+                                <tr>
+                                    <td><a href="{{ path('member_edit', {'member':order.order.member.id}) }}">{{ order.order.member.fullName }}</a></td>
+                                    <td><a href="{{ path('order_edit', {'order':order.order.id}) }}"># {{ order.order.id }}</a></td>
+                                    <td>{% for line in order.order.lines %}{{ line.label }}{% if not loop.last %}<br />{% endif %}{% endfor %}</td>
+                                    <td class="text-right">{{ order.amount|format_currency('EUR') }}</td>
+                                    <td class="text-center">
+                                        <a href="{{ path('payment_order_edit', {'payment':payment.id, 'paymentOrder':order.id }) }}" class="btn btn-primary btn-sm">
+                                            <span class="fa fa-edit"></span>
+                                        </a>
+                                        <a href="{{ path('payment_order_delete', {'payment':payment.id, 'paymentOrder':order.id }) }}" class="btn btn-danger btn-sm">
+                                            <span class="fa fa-trash"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {#<tr>
+                                    <td><strong>{{ line.position + 1 }}</strong></td>
+                                    <td style="width: 70%">
+                                        {{ line.label|nl2br }}
+                                    </td>
+                                    <td class="text-right">
+                                        {% if line.type == constant('App\\Entity\\PaymentLine::TYPE_ALLOWANCE') and line.allowancePercentage %}
+                                            {{ line.allowancePercentage }}%  <i class="fa fa-times"></i>  {{ line.allowanceBaseAmount|format_currency('EUR') }}
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-right">{{ line.amount|format_currency('EUR') }}</td>
+                                    <td class="text-center">
+                                        <a href="{{ path('payment_line_edit', {'payment':payment.id, 'line':line.id }) }}" class="btn btn-primary btn-sm">
+                                            <span class="fa fa-edit"></span>
+                                        </a>
+                                        <a href="{{ path('payment_line_delete', {'payment':payment.id, 'line':line.id }) }}" class="btn btn-danger btn-sm">
+                                            <span class="fa fa-trash"></span>
+                                        </a>
+                                    </td>
+                                </tr>#}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        </div>
+    </div>
+{% endblock %}
