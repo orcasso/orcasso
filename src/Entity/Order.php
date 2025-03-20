@@ -29,15 +29,25 @@ class Order
     #[ORM\Column(name: 'total_amount', type: 'decimal', precision: 10, scale: 2)]
     protected string|int|float $totalAmount = 0;
 
+    #[ORM\Column(name: 'paid_amount', type: 'decimal', precision: 10, scale: 2)]
+    protected string|int|float $paidAmount = 0;
+
     /**
      * @var Collection<OrderLine>
      */
     #[ORM\OneToMany(targetEntity: OrderLine::class, mappedBy: 'order', cascade: ['persist', 'remove'], orphanRemoval: true)]
     protected Collection $lines;
 
+    /**
+     * @var Collection<Payment>
+     */
+    #[ORM\OneToMany(targetEntity: PaymentOrder::class, mappedBy: 'order')]
+    private Collection $payments;
+
     public function __construct()
     {
         $this->lines = new ArrayCollection();
+        $this->payments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -69,11 +79,6 @@ class Order
         return $this;
     }
 
-    public function getTotalAmountEx(): float
-    {
-        return (float) $this->totalAmount;
-    }
-
     public function getTotalAmount(): float
     {
         return (float) $this->totalAmount;
@@ -99,6 +104,23 @@ class Order
         return $this;
     }
 
+    public function getPaidAmount(): float
+    {
+        return (float) $this->paidAmount;
+    }
+
+    public function setPaidAmount(float $paidAmount): static
+    {
+        $this->paidAmount = $paidAmount;
+
+        return $this;
+    }
+
+    public function getDueAmount(): float
+    {
+        return $this->totalAmount - $this->getPaidAmount();
+    }
+
     /**
      * @return Collection<OrderLine>
      */
@@ -117,5 +139,13 @@ class Order
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<PaymentOrder>
+     */
+    public function getPayments(): Collection
+    {
+        return $this->payments;
     }
 }

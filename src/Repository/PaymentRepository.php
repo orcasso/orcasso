@@ -2,16 +2,15 @@
 
 namespace App\Repository;
 
-use App\Entity\Order;
-use App\Entity\OrderLine;
+use App\Entity\Payment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
- * @extends ServiceEntityRepository<Order>
+ * @extends ServiceEntityRepository<Payment>
  */
-class OrderLineRepository extends AbstractRepository
+class PaymentRepository extends AbstractRepository
 {
-    public const ENTITY_CLASS = OrderLine::class;
+    public const ENTITY_CLASS = Payment::class;
 
     public function isRemovable(object $entity): bool
     {

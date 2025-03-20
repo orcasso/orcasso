@@ -14,6 +14,8 @@ class OrderRepository extends AbstractRepository
 
     public function isRemovable(object $entity): bool
     {
+        $this->checkSupport($entity);
+
         return true;
     }
 }
