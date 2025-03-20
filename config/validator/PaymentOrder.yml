@@ -1,0 +1,8 @@
+App\Entity\PaymentOrder:
+    properties:
+        amount:
+            - GreaterThan: 0
+        payment:
+            - NotBlank: ~
+        order:
+            - NotBlank: ~

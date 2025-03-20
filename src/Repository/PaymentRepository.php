@@ -14,8 +14,9 @@ class PaymentRepository extends AbstractRepository
 
     public function isRemovable(object $entity): bool
     {
+        /* @var Payment $entity */
         $this->checkSupport($entity);
 
-        return true;
+        return $entity->getOrders()->isEmpty();
     }
 }

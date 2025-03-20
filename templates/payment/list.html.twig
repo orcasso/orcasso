@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% use '_table/_assets.html.twig' %}
+
+{% set url_create = path('payment_create') %}
+
+{% block content_header_title %}{{ 'payment.list.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_table/_table.html.twig' with {'table': table, 'url_create':url_create|default(null)} %}
+    {% endembed %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ block('table_javascripts') }}
+{% endblock javascripts %}

@@ -5,6 +5,15 @@
 {% block content_body %}
     {% embed '_skeleton/_card.html.twig' with {'entity': order} %}
         {% block card_tools %}
+            {% if order.dueAmount > 0 %}
+                <a href="{{ path('payment_create_for_order', {'order':order.id}) }}"
+                   class="btn btn-primary btn-sm">
+                    <i class="fas fa-credit-card"></i>
+                    <span class="d-none d-md-inline">{{ 'order.edit.actions.add_payment'|trans }}</span>
+                </a>
+                &nbsp;-&nbsp;
+            {% endif %}
+
             <a href="{{  path('order_delete', {'order':order.id}) }}" class="btn btn-danger btn-sm">
                 <i class="fa fa-trash"></i>
                 <span class="d-none d-md-inline">{{ '_meta.word.delete'|trans }}</span>
@@ -116,13 +125,23 @@
                                 {% if order.paidAmount > 0 %}
                                     <tr>
                                         <td colspan="2" class="border-0">&nbsp;</td>
-                                        <th class="text-right">{{ 'order.label.paid_amount'|trans({}, 'forms') }}</th>
+                                        <th class="text-right">
+                                            {{ 'order.label.paid_amount'|trans({}, 'forms') }}
+                                            {% for payment in order.payments %}
+                                                <br />
+                                                <a href="{{ path('payment_edit', {'payment':payment.payment.id}) }}" class="btn btn-info btn-xs mt-1">
+                                                    <i class="fas fa-credit-card"></i>
+                                                    {{ payment.amount|format_currency('EUR')}}
+                                                    — {{ payment.payment.issuedAt|format_date('medium') }}
+                                                </a>
+                                            {% endfor %}
+                                        </th>
                                         <th class="text-right">{{ order.paidAmount|format_currency('EUR') }}</th>
                                     </tr>
                                     <tr>
                                         <td colspan="2" class="border-0">&nbsp;</td>
                                         <th class="text-right">{{ 'order.label.due_amount'|trans({}, 'forms') }}</th>
-                                        <th class="text-right">{{ (order.totalAmount - order.paidAmount)|format_currency('EUR') }}</th>
+                                        <th class="text-right">{{ (order.dueAmount)|format_currency('EUR') }}</th>
                                     </tr>
                             {% endif %}
                             </tfoot>

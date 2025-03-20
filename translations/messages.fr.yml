@@ -35,6 +35,7 @@ _menu:
     homepage: Accueil
     member: Membres
     order: Commandes
+    payment: Paiements
     user: Utilisateurs
 
     separation:
@@ -78,6 +79,7 @@ order:
                 activity_subscription: Adhésion activité/cotisation
                 allowance: Réduction
                 simple: Ligne simple
+            add_payment: 'Ajouter un paiement'
         title: 'Modification de la commande'
     list:
         title: 'Liste des commandes'
@@ -90,6 +92,28 @@ order_line:
         title: 'Suppression de la la ligne de commande'
     edit:
         title: 'Modification de la ligne de commande'
+
+payment:
+    create:
+        title: 'Ajout d''un paiement'
+    delete:
+        confirmation_message: 'Êtes-vous sûr de vouloir supprimer le paiement %id% pour %name% ?'
+        title: 'Suppression du paiement'
+    edit:
+        actions:
+            add_payment_order: 'Règlement d''une commande'
+        title: 'Modification du paiement'
+    list:
+        title: 'Liste des paiements'
+
+payment_order:
+    create:
+        title: 'Règlement d''une commande sur le paiement'
+    delete:
+        confirmation_message: 'Êtes-vous sûr de vouloir supprimer cette commande ?'
+        title: 'Suppression du règlement de la commande'
+    edit:
+        title: 'Modification du paiement'
 
 admin:
     user:
