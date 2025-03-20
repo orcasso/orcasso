@@ -37,7 +37,9 @@ order:
         lines: Lignes
         member: Membre
         notes: Notes
+        paid_amount: Payé
         total_amount: Montant
+        due_amount: 'Montant dû'
 
 order_line:
     label:

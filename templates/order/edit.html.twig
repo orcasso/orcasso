@@ -113,6 +113,18 @@
                                     <th class="bg-primary text-right">{{ 'order.label.total_amount'|trans({}, 'forms') }}</th>
                                     <th class="bg-primary text-right">{{ order.totalAmount|format_currency('EUR') }}</th>
                                 </tr>
+                                {% if order.paidAmount > 0 %}
+                                    <tr>
+                                        <td colspan="2" class="border-0">&nbsp;</td>
+                                        <th class="text-right">{{ 'order.label.paid_amount'|trans({}, 'forms') }}</th>
+                                        <th class="text-right">{{ order.paidAmount|format_currency('EUR') }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="border-0">&nbsp;</td>
+                                        <th class="text-right">{{ 'order.label.due_amount'|trans({}, 'forms') }}</th>
+                                        <th class="text-right">{{ (order.totalAmount - order.paidAmount)|format_currency('EUR') }}</th>
+                                    </tr>
+                            {% endif %}
                             </tfoot>
                         </table>
                     </div>
