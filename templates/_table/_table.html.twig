@@ -88,7 +88,7 @@
 
 {% block card_body %}
     {% block tableLoader %}
-        <div id="{{ table.id }}-table-loading-container" class="table-loading-container">
+    <div id="{{ table.id }}-table-loading-container" class="table-loading-container">
             <div class="table-loader">
                 <div></div>
                 <div></div>
@@ -157,7 +157,7 @@
                                                 {% endif %}
                                                 {% if show_route_name is defined and show_route_name is not null and delete_route_name is defined and delete_route_name is not null %}
                                                     <button class="btn btn-xs btn-outline-primary dropdown-toggle dropdown-icon"
-                                                       data-toggle="dropdown">
+                                                            data-toggle="dropdown">
                                                     </button>
                                                     <div class="dropdown-menu" role="menu">
                                                         <a class="dropdown-item"
@@ -195,13 +195,13 @@
                             {% block tableFootStdColumns %}
                                 {% for key, column in table.columns %}
                                     {% if not column.hidden %}
-                                        <td {% if column.displayClass %}class="{{ column.displayClass }}"{% endif %} >
+                                        <th {% if column.displayClass %}class="{{ column.displayClass }}"{% endif %} >
                                             {% if key == 0 and not column.isUseTotal %}
                                                 {{ 'kiliktable.total' | trans | upper }}
                                             {% elseif column.isUseTotal %}
                                                 {{ column.total }}
                                             {% endif %}
-                                        </td>
+                                        </th>
                                     {% endif %}
                                 {% endfor %}
                             {% endblock tableFootStdColumns %}

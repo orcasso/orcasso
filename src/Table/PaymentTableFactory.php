@@ -86,7 +86,8 @@ class PaymentTableFactory
                         ->setField('p.amount')
                         ->setName('p_amount')
                     )
-                    ->setDisplayCallback(fn ($value, $row) => number_format($value, 2, ',', '').' €')
+                    ->useTotal()
+                    ->setDisplayCallback(fn ($value) => number_format($value, 2, ',', ' ').' €')
             )
             ->addColumn(
                 (new Column())->setLabel('payment.label.method')->setTranslateDomain('forms')
