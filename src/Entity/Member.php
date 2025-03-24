@@ -121,6 +121,11 @@ class Member
         return $this;
     }
 
+    public function getAge(): int
+    {
+        return $this->birthDate->diff(date_create_immutable())->y;
+    }
+
     public function getEmail(): string
     {
         return $this->email;
