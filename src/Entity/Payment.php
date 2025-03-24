@@ -15,14 +15,22 @@ class Payment
     use TimestampableEntity;
 
     // Up to 20 characters
+    public const METHOD_CB = 'cb';
+    public const METHOD_CB_RECURRENT = 'cb_recurrent'; // @todo verification ?
     public const METHOD_BANK_TRANSFER = 'bank_transfer';
     public const METHOD_CHEQUE = 'cheque';
     public const METHOD_CASH = 'cash';
+    public const METHOD_TOP_DEPART = 'top_depart';
+    public const METHOD_HOLIDAY_VOUCHER = 'holiday_voucher';
 
     public const METHODS = [
+        self::METHOD_CB,
+        self::METHOD_CB_RECURRENT,
         self::METHOD_BANK_TRANSFER,
         self::METHOD_CHEQUE,
         self::METHOD_CASH,
+        self::METHOD_TOP_DEPART,
+        self::METHOD_HOLIDAY_VOUCHER,
     ];
 
     #[ORM\Id]

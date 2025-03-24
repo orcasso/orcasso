@@ -52,9 +52,13 @@ order_line:
 payment:
     choice:
         method:
+            cb: 'Carte bancaire'
+            cb_recurrent: 'Carte bancaire avec récurrence'
             bank_transfer: 'Virement bancaire'
             cheque: 'Chèque'
             cash: 'Espèces'
+            top_depart: 'Top départ'
+            holiday_voucher: 'Chèques vacances'
     label:
         amount: Montant
         identifier: 'Référence'
