@@ -4,14 +4,17 @@ namespace App\Controller\Admin;
 
 use App\Entity\Payment;
 use App\Entity\PaymentOrder;
+use App\Entity\User;
 use App\Form\PaymentOrderType;
 use App\Repository\PaymentOrderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/payment/{payment}/orders')]
+#[IsGranted(User::ROLE_ADMIN_PAYMENT_EDIT)]
 final class PaymentOrderController extends AbstractController
 {
     public function __construct(protected PaymentOrderRepository $repository)

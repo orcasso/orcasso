@@ -5,6 +5,7 @@ namespace App\Tests\Controller\Admin;
 use App\Dev\DataFixtures\MemberFixtures;
 use App\Dev\DataFixtures\UserFixtures;
 use App\Entity\Member;
+use App\Entity\User;
 use App\Tests\Controller\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,6 +18,19 @@ final class MemberControllerTest extends AbstractWebTestCase
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getEditUrl($this->getFixtureMember()));
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getCreateUrl());
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getDeleteUrl($this->getFixtureMember()));
+    }
+
+    public function testRoleNotGranted()
+    {
+        $admin = $this->getUser();
+        $admin->setRoles(array_diff(User::ROLES, [User::ROLE_ADMIN_MEMBER_EDIT]));
+        $this->updateEntity($admin);
+        $this->authenticateUser();
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getUrl('admin_member_list'));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getUrl('admin_member_list_ajax'));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getEditUrl($this->getFixtureMember()));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getCreateUrl());
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getDeleteUrl($this->getFixtureMember()));
     }
 
     public function testList()

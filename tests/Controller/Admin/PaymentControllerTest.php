@@ -4,6 +4,7 @@ namespace App\Tests\Controller\Admin;
 
 use App\Entity\Member;
 use App\Entity\Payment;
+use App\Entity\User;
 use App\Tests\Controller\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,6 +18,21 @@ final class PaymentControllerTest extends AbstractWebTestCase
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getEditHeaderUrl($this->getFixturePayment()));
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getCreateUrl());
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getDeleteUrl($this->getFixturePayment()));
+    }
+
+    public function testRoleNotGranted()
+    {
+        $admin = $this->getUser();
+        $admin->setRoles(array_diff(User::ROLES, [User::ROLE_ADMIN_PAYMENT_EDIT]));
+        $this->updateEntity($admin);
+        $this->authenticateUser();
+
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getUrl('admin_payment_list'));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getUrl('admin_payment_list_ajax'));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getEditUrl($this->getFixturePayment()));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getEditHeaderUrl($this->getFixturePayment()));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getCreateUrl());
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getDeleteUrl($this->getFixturePayment()));
     }
 
     public function testList()

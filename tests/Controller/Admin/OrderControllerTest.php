@@ -3,6 +3,7 @@
 namespace App\Tests\Controller\Admin;
 
 use App\Entity\Order;
+use App\Entity\User;
 use App\Tests\Controller\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -16,6 +17,20 @@ final class OrderControllerTest extends AbstractWebTestCase
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getEditHeaderUrl($this->getFixtureOrder()));
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getCreateUrl());
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getDeleteUrl($this->getFixtureOrder()));
+    }
+
+    public function testRoleNotGranted()
+    {
+        $admin = $this->getUser();
+        $admin->setRoles(array_diff(User::ROLES, [User::ROLE_ADMIN_ORDER_EDIT]));
+        $this->updateEntity($admin);
+        $this->authenticateUser();
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getUrl('admin_order_list'));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getUrl('admin_order_list_ajax'));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getEditUrl($this->getFixtureOrder()));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getEditHeaderUrl($this->getFixtureOrder()));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getCreateUrl());
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getDeleteUrl($this->getFixtureOrder()));
     }
 
     public function testList()

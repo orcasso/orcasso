@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Order;
 use App\Entity\OrderLine;
+use App\Entity\User;
 use App\Form\OrderLineType;
 use App\Repository\ActivityRepository;
 use App\Repository\OrderLineRepository;
@@ -11,8 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/order/{order}/lines')]
+#[IsGranted(User::ROLE_ADMIN_ORDER_EDIT)]
 final class OrderLineController extends AbstractController
 {
     public function __construct(protected OrderLineRepository $repository)

@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use App\Entity\User;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -29,18 +30,25 @@ class MenuBuilder
             'route' => 'admin_dashboard',
             'extras' => ['icon_class' => 'fa fa-home'],
         ]);
-        $menu->addChild('_menu.member', [
-            'route' => 'admin_member_list',
-            'extras' => ['icon_class' => 'fas fa-users'],
-        ]);
-        $menu->addChild('_menu.order', [
-            'route' => 'admin_order_list',
-            'extras' => ['icon_class' => 'fas fa-shopping-cart'],
-        ]);
-        $menu->addChild('_menu.payment', [
-            'route' => 'admin_payment_list',
-            'extras' => ['icon_class' => 'fas fa-credit-card'],
-        ]);
+
+        if ($this->authorizationChecker->isGranted(User::ROLE_ADMIN_MEMBER_EDIT)) {
+            $menu->addChild('_menu.member', [
+                'route' => 'admin_member_list',
+                'extras' => ['icon_class' => 'fas fa-users'],
+            ]);
+        }
+        if ($this->authorizationChecker->isGranted(User::ROLE_ADMIN_ORDER_EDIT)) {
+            $menu->addChild('_menu.order', [
+                'route' => 'admin_order_list',
+                'extras' => ['icon_class' => 'fas fa-shopping-cart'],
+            ]);
+        }
+        if ($this->authorizationChecker->isGranted(User::ROLE_ADMIN_PAYMENT_EDIT)) {
+            $menu->addChild('_menu.payment', [
+                'route' => 'admin_payment_list',
+                'extras' => ['icon_class' => 'fas fa-credit-card'],
+            ]);
+        }
 
         $this->buildConfigurationMenu($menu);
 
@@ -53,19 +61,27 @@ class MenuBuilder
             'attributes' => ['class' => 'nav-header text-uppercase'],
         ]);
 
-        $menu->addChild('_menu.user', [
-            'route' => 'admin_user_list',
-            'extras' => [
-                'icon_class' => ' fa fa-user-shield',
-                'routes' => [
-                    ['pattern' => '/^admin_user_/'],
+        if ($this->authorizationChecker->isGranted(User::ROLE_ADMIN_USER_EDIT)) {
+            $menu->addChild('_menu.user', [
+                'route' => 'admin_user_list',
+                'extras' => [
+                    'icon_class' => ' fa fa-user-shield',
+                    'routes' => [
+                        ['pattern' => '/^admin_user_/'],
+                    ],
                 ],
-            ],
-        ]);
+            ]);
+        }
 
-        $menu->addChild('_menu.activity', [
-            'route' => 'admin_activity_list',
-            'extras' => ['icon_class' => 'fas fa-volleyball-ball'],
-        ]);
+        if ($this->authorizationChecker->isGranted(User::ROLE_ADMIN_ACTIVITY_EDIT)) {
+            $menu->addChild('_menu.activity', [
+                'route' => 'admin_activity_list',
+                'extras' => ['icon_class' => 'fas fa-volleyball-ball'],
+            ]);
+        }
+
+        if ('_menu.separation.configuration' === $menu->getLastChild()->getName()) {
+            $menu->removeChild('_menu.separation.configuration');
+        }
     }
 }

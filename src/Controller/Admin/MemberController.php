@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Member;
+use App\Entity\User;
 use App\Form\MemberType;
 use App\Repository\MemberRepository;
 use App\Table\MemberTableFactory;
@@ -11,8 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/members')]
+#[IsGranted(User::ROLE_ADMIN_MEMBER_EDIT)]
 final class MemberController extends AbstractController
 {
     public function __construct(protected MemberRepository $repository)

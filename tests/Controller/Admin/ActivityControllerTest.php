@@ -4,6 +4,7 @@ namespace App\Tests\Controller\Admin;
 
 use App\Dev\DataFixtures\ActivityFixtures;
 use App\Entity\Activity;
+use App\Entity\User;
 use App\Tests\Controller\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -16,6 +17,19 @@ final class ActivityControllerTest extends AbstractWebTestCase
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getEditUrl($this->getFixtureActivity()));
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getCreateUrl());
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getDeleteUrl($this->getFixtureActivity()));
+    }
+
+    public function testRoleNotGranted()
+    {
+        $admin = $this->getUser();
+        $admin->setRoles(array_diff(User::ROLES, [User::ROLE_ADMIN_ACTIVITY_EDIT]));
+        $this->updateEntity($admin);
+        $this->authenticateUser();
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getUrl('admin_activity_list'));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getUrl('admin_activity_list_ajax'));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getEditUrl($this->getFixtureActivity()));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getCreateUrl());
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getDeleteUrl($this->getFixtureActivity()));
     }
 
     public function testList()

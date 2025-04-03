@@ -4,6 +4,7 @@ namespace App\Tests\Controller\Admin;
 
 use App\Entity\Order;
 use App\Entity\OrderLine;
+use App\Entity\User;
 use App\Tests\Controller\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,6 +16,18 @@ final class OrderLineControllerTest extends AbstractWebTestCase
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getEditUrl($order->getLines()->first()));
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getCreateUrl($order, OrderLine::TYPE_SIMPLE));
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getDeleteUrl($order->getLines()->first()));
+    }
+
+    public function testRoleNotGranted()
+    {
+        $admin = $this->getUser();
+        $admin->setRoles(array_diff(User::ROLES, [User::ROLE_ADMIN_ORDER_EDIT]));
+        $this->updateEntity($admin);
+        $this->authenticateUser();
+        $order = $this->getFixtureOrder();
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getEditUrl($order->getLines()->first()));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getCreateUrl($order, OrderLine::TYPE_SIMPLE));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getDeleteUrl($order->getLines()->first()));
     }
 
     public function testEdit()

@@ -4,6 +4,7 @@ namespace App\Tests\Controller\Admin;
 
 use App\Entity\Payment;
 use App\Entity\PaymentOrder;
+use App\Entity\User;
 use App\Tests\Controller\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -15,6 +16,18 @@ final class PaymentOrderControllerTest extends AbstractWebTestCase
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getEditUrl($payment->getOrders()->first()));
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getCreateUrl($payment));
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getDeleteUrl($payment->getOrders()->first()));
+    }
+
+    public function testRoleNotGranted()
+    {
+        $admin = $this->getUser();
+        $admin->setRoles(array_diff(User::ROLES, [User::ROLE_ADMIN_PAYMENT_EDIT]));
+        $this->updateEntity($admin);
+        $this->authenticateUser();
+        $payment = $this->getFixturePayment();
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getEditUrl($payment->getOrders()->first()));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getCreateUrl($payment));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getDeleteUrl($payment->getOrders()->first()));
     }
 
     public function testEdit()

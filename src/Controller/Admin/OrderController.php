@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Order;
+use App\Entity\User;
 use App\Form\OrderType;
 use App\Repository\OrderRepository;
 use App\Table\OrderTableFactory;
@@ -11,8 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/orders')]
+#[IsGranted(User::ROLE_ADMIN_ORDER_EDIT)]
 final class OrderController extends AbstractController
 {
     public function __construct(protected OrderRepository $repository)
