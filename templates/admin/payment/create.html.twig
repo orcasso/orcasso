@@ -1,0 +1,9 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_payment_list') %}
+
+{% block content_header_title %}{{ 'admin.payment.create.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_create.html.twig' %}{% endembed %}
+{% endblock %}

@@ -34,12 +34,12 @@ class OrderTableFactory
 
         $table = (new Table())
             ->setId($this->getTableId())
-            ->setPath($this->router->generate('order_list_ajax'))
+            ->setPath($this->router->generate('admin_order_list_ajax'))
             ->setQueryBuilder($queryBuilder, 'o')
             ->setEntityLoaderRepository(Order::class)
             ->setTemplate('_table/_table.html.twig')
             ->setTemplateParams([
-                'show_route_name' => 'order_edit',
+                'show_route_name' => 'admin_order_edit',
                 'identifier_name' => 'order',
             ])
             ->addColumn(

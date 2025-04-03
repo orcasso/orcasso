@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -32,6 +33,14 @@ class UserType extends AbstractType
                 'first_options' => ['label' => 'user.label.password'],
                 'second_options' => ['label' => 'user.label.confirm_password'],
                 'constraints' => [new Length(['min' => 8, 'max' => 4096])],
+            ])
+            ->add('roles', ChoiceType::class, [
+                'label' => 'user.label.roles',
+                'multiple' => true,
+                'expanded' => true,
+                'choices' => User::ROLES,
+                'choice_label' => fn (string $role) => 'user.choice.roles.'.$role,
+                'choice_attr' => fn (string $role) => User::ROLE_USER === $role ? ['disabled' => 'disabled'] : [],
             ])
         ;
     }

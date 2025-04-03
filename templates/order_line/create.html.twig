@@ -1,9 +1,0 @@
-{% extends 'layout.html.twig' %}
-
-{% set url_cancel = path('order_edit', {'order':form.vars.data.order.id}) %}
-
-{% block content_header_title %}{{ 'order_line.create.title'|trans }}{% endblock %}
-
-{% block content_body %}
-    {% embed '_skeleton/crud/_create.html.twig' %}{% endembed %}
-{% endblock %}

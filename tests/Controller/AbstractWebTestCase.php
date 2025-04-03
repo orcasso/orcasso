@@ -3,6 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Dev\DataFixtures\UserFixtures;
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -31,12 +32,14 @@ class AbstractWebTestCase extends WebTestCase
         $this->em = null;
     }
 
+    protected function getUser(string $email = UserFixtures::USERS[0]): User
+    {
+        return static::getContainer()->get(UserRepository::class)->findOneBy(['email' => $email]);
+    }
+
     protected function authenticateUser(string $email = UserFixtures::USERS[0]): void
     {
-        $userRepository = static::getContainer()->get(UserRepository::class);
-
-        $testUser = $userRepository->findOneBy(['email' => $email]);
-        $this->client->loginUser($testUser);
+        $this->client->loginUser($this->getUser($email));
     }
 
     protected function assertRedirectToLogin(string $method, string $url): void

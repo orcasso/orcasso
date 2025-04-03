@@ -20,7 +20,10 @@ final class UserControllerTest extends AbstractWebTestCase
 
     public function testRoleNotGranted()
     {
-        $this->authenticateUser(UserFixtures::USERS[1]);
+        $admin = $this->getUser();
+        $admin->setRoles(array_diff(User::ROLES, [User::ROLE_ADMIN_USER_EDIT]));
+        $this->updateEntity($admin);
+        $this->authenticateUser();
         $this->assertAccessDenied(Request::METHOD_GET, $this->getUrl('admin_user_list'));
         $this->assertAccessDenied(Request::METHOD_GET, $this->getUrl('admin_user_list_ajax'));
         $this->assertAccessDenied(Request::METHOD_GET, $this->getEditUrl($this->getFixtureUser()));

@@ -77,10 +77,16 @@ payment_order:
 
 user:
     choice:
-        role:
-            user_admin: 'Administrateur'
+        roles:
+            ROLE_USER: 'Utilisateur'
+            ROLE_ADMIN_ACTIVITY_EDIT: 'Configurer les activités'
+            ROLE_ADMIN_MEMBER_EDIT: 'Gérer les membres'
+            ROLE_ADMIN_ORDER_EDIT: 'Gérer les commandes'
+            ROLE_ADMIN_PAYMENT_EDIT: 'Gérer les paiements'
+            ROLE_ADMIN_USER_EDIT: 'Administrer les utilisateurs'
     label:
         confirm_password: 'Confirmation mot de passe'
         email: 'Email'
         name: 'Nom'
         password: 'Mot de passe'
+        roles: 'Droits'
