@@ -1,0 +1,6 @@
+App\Entity\OrderForm:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: title
+    properties:
+        title:
+            - NotBlank: ~

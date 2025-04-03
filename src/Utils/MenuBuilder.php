@@ -80,6 +80,18 @@ class MenuBuilder
             ]);
         }
 
+        if ($this->authorizationChecker->isGranted(User::ROLE_ADMIN_ORDER_FORM_EDIT)) {
+            $menu->addChild('_menu.order_form', [
+                'route' => 'admin_order_form_list',
+                'extras' => [
+                    'icon_class' => 'fas fa-file-signature',
+                    'routes' => [
+                        ['pattern' => '/^admin_order_form_/'],
+                    ],
+                ],
+            ]);
+        }
+
         if ('_menu.separation.configuration' === $menu->getLastChild()->getName()) {
             $menu->removeChild('_menu.separation.configuration');
         }

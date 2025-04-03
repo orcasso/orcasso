@@ -105,12 +105,12 @@ class OrderFormFieldChoice
         return $this;
     }
 
-    public function getAllowancePercentage(): float
+    public function getAllowancePercentage(): ?float
     {
         return $this->allowancePercentage;
     }
 
-    public function setAllowancePercentage(float $allowancePercentage): static
+    public function setAllowancePercentage(?float $allowancePercentage): static
     {
         if (OrderFormField::TYPE_ALLOWANCE_CHOICE !== $this->getField()->getType()) {
             throw new \InvalidArgumentException('Invalid form field choice');

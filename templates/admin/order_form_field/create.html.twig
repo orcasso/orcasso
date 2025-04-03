@@ -1,0 +1,9 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_order_form_edit', {'orderForm':form.vars.data.form.id}) %}
+
+{% block content_header_title %}{{ 'admin.order_form_field.create.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_create.html.twig' %}{% endembed %}
+{% endblock %}

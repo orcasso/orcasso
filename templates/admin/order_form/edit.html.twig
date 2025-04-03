@@ -1,0 +1,137 @@
+{% extends 'layout.html.twig' %}
+
+{% block content_header_title %}{{ 'admin.order_form.edit.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/_card.html.twig' with {'entity': order_form} %}
+        {% block card_tools %}
+            <a href="{{  path('admin_order_form_delete', {'orderForm':order_form.id}) }}" class="btn btn-danger btn-sm">
+                <i class="fa fa-trash"></i>
+                <span class="d-none d-md-inline">{{ '_meta.word.delete'|trans }}</span>
+            </a>
+            &nbsp;-&nbsp;
+
+            <a href="{{ path('admin_order_form_list') }}" class="btn btn-secondary btn-sm">
+                <i class="fa fa-chevron-left"></i>
+                <span class="d-none d-md-inline">{{ '_meta.word.back'|trans }}</span>
+            </a>
+
+            <a href="{{  path('admin_order_form_edit_header', {'orderForm':order_form.id}) }}" class="btn btn-primary btn-sm">
+                <i class="fa fa-edit"></i>
+                <span class="d-none d-md-inline">{{ '_meta.word.edit'|trans }}</span>
+            </a>
+        {% endblock %}
+
+        {% block card_body %}
+            <div class="row">
+                <div class="col-lg-6">
+                    <table class="table table-no-bordered">
+                        <tr>
+                            <th>{{ 'order_form.label.title'|trans({}, 'forms') }}</th>
+                            <td>{{ order_form.title }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'order_form.label.order_main_line_label'|trans({}, 'forms') }}</th>
+                            <td>{{ order_form.orderMainLineLabel }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'order_form.label.order_main_line_amount'|trans({}, 'forms') }}</th>
+                            <td>{{ order_form.orderMainLineAmount|format_currency('EUR') }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'order_form.label.enabled'|trans({}, 'forms') }}</th>
+                            <td>
+                                {% if order_form.enabled %}
+                                    <i class="fa fa-toggle-on text-success"></i>
+                                {% else %}
+                                    <i class="fa fa-toggle-off"></i>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-lg-6">
+                    <table class="table table-no-bordered">
+                        <tr>
+                            <th>{{ 'order_form.label.description'|trans({}, 'forms') }}</th>
+                            <td class="text-left">{{ order_form.description|nl2br }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+
+    <div class="row">
+        <div class="col-md-12">
+            {% embed '_skeleton/_card.html.twig' %}
+                {% block card_tools %}
+                    <a href="{{ path('admin_order_form_field_create', {'orderForm':order_form.id}) }}"
+                       class="btn btn-primary btn-sm">
+                        <i class="fa fa-plus"></i>
+                        <span class="d-none d-md-inline">{{ '_meta.word.add'|trans }}</span>
+                    </a>
+                {% endblock %}
+                {% block card_body %}
+                    <div id="order-form-fields">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>{{ 'order_form_field.label.question'|trans({}, 'forms') }}</th>
+                                    <th class="text-right">{{ 'order_form_field.label.type'|trans({}, 'forms') }}</th>
+                                    <th>{{ 'order_form_field.label.required'|trans({}, 'forms') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for field in order_form.fields %}
+                                {# @var \App\Entity\OrderFormField field #}
+                                <tr>
+                                    <td><strong>{{ field.position + 1 }}</strong></td>
+                                    <td style="width: 70%">
+                                        {{ field.question|nl2br }}
+                                    </td>
+                                    <td class="text-right">
+                                        {{ ('order_form_field.choice.type.' ~ field.type)|trans({}, 'forms') }}
+                                    </td>
+                                    <td class="text-right">
+                                        {% if field.required %}<i class="fa fa-check"></i>{% else %}<i class="fa fa-times"></i>{% endif %}
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="{{ path('admin_order_form_field_edit', {'field':field.id }) }}" class="btn btn-primary btn-sm">
+                                            <span class="fa fa-edit"></span>
+                                        </a>
+                                        <a href="{{ path('admin_order_form_field_delete', {'field':field.id }) }}" class="btn btn-danger btn-sm">
+                                            <span class="fa fa-trash"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                <td>&nbsp;</td>
+                                <td colspan="2">
+                                    <table class="table no-border">
+                                        {% for choice in field.choices %}
+                                            {# @var \App\Entity\OrderFormFieldChoice choice #}
+                                            <tr>
+                                                {% if choice.activity %}
+                                                    <td>{{ choice.activity.name }}</td>
+                                                    <td class="text-right">
+                                                        {% if choice.activityAmount %}{{ choice.activityAmount|format_currency('EUR') }}{% endif %}
+                                                    </td>
+                                                {% else %}
+                                                    <td>{{ choice.allowanceLabel }}</td>
+                                                    <td class="text-right">{% if choice.allowancePercentage %}{{ choice.allowancePercentage }} %{% endif %}</td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </td>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        </div>
+    </div>
+{% endblock %}

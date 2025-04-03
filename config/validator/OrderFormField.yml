@@ -1,0 +1,7 @@
+App\Entity\OrderFormField:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: ['question', 'form']
+    properties:
+        question:
+            - NotBlank: ~

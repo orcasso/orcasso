@@ -41,6 +41,31 @@ order:
         total_amount: Montant
         due_amount: 'Montant dû'
 
+order_form:
+    label:
+        enabled: Actif
+        title: Titre
+        description: Description
+        order_main_line_amount: 'Montant de la ligne principale'
+        order_main_line_label: 'Désignation de la ligne principale'
+
+order_form_field:
+    choice:
+        type:
+            activity_choice: 'Choix d''une activité'
+            allowance_choice: 'Sélection d''une remise'
+    label:
+        required: Obligatoire ?
+        type: Type
+        question: Question
+
+order_form_field_choice:
+    label:
+        activity: 'Activité / Cotisation'
+        activity_amount: 'Montant lié'
+        allowance_label: 'Libellé de la remise'
+        allowance_percentage: 'Pourcentage de remise'
+
 order_line:
     label:
         allowance_base_amount: Montant base
@@ -82,6 +107,7 @@ user:
             ROLE_ADMIN_ACTIVITY_EDIT: 'Configurer les activités'
             ROLE_ADMIN_MEMBER_EDIT: 'Gérer les membres'
             ROLE_ADMIN_ORDER_EDIT: 'Gérer les commandes'
+            ROLE_ADMIN_ORDER_FORM_EDIT: 'Gérer les formulaires'
             ROLE_ADMIN_PAYMENT_EDIT: 'Gérer les paiements'
             ROLE_ADMIN_USER_EDIT: 'Administrer les utilisateurs'
     label:
