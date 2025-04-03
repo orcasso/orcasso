@@ -34,7 +34,7 @@ class UserFixtures extends Fixture
                 ->setPassword($this->passwordHasher->hashPassword($user, 'password'))
             );
             if (0 === $index) {
-                $user->setRoles([User::ROLE_ADMIN]);
+                $user->setRoles(User::ROLES);
             }
             $this->addReference('user_'.$email, $user);
         }

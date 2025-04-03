@@ -29,11 +29,6 @@ class MenuBuilder
             'route' => 'admin_dashboard',
             'extras' => ['icon_class' => 'fa fa-home'],
         ]);
-
-        $menu->addChild('_menu.activity', [
-            'route' => 'admin_activity_list',
-            'extras' => ['icon_class' => 'fas fa-volleyball-ball'],
-        ]);
         $menu->addChild('_menu.member', [
             'route' => 'admin_member_list',
             'extras' => ['icon_class' => 'fas fa-users'],
@@ -66,6 +61,11 @@ class MenuBuilder
                     ['pattern' => '/^admin_user_/'],
                 ],
             ],
+        ]);
+
+        $menu->addChild('_menu.activity', [
+            'route' => 'admin_activity_list',
+            'extras' => ['icon_class' => 'fas fa-volleyball-ball'],
         ]);
     }
 }

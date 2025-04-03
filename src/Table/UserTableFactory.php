@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Kilik\TableBundle\Components\Column;
 use Kilik\TableBundle\Components\Filter;
+use Kilik\TableBundle\Components\FilterSelect;
 use Kilik\TableBundle\Components\Table;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -55,12 +56,23 @@ class UserTableFactory
                     )
             )
             ->addColumn(
-                (new Column())->setLabel('user.choice.role.user_admin')->setTranslateDomain('forms')
-                    ->setName('u_roles')
+                (new Column())->setLabel('user.label.roles')->setTranslateDomain('forms')
                     ->setSort(['u.roles' => 'asc'])
                     ->setDisplayCallback(function ($value, $row) {
-                        return $row['object']->hasRole(User::ROLE_ADMIN) ? '<i class="fa fa-check text-success"></i>' : '';
+                        $roles = array_map(fn (string $role) => $this->translator->trans('user.choice.roles.'.$role, domain: 'forms'), $value);
+
+                        return '<span class="badge badge-primary" title="'.implode(\PHP_EOL, $roles).'">'.\count($value).'</span>';
                     })
+                    ->setFilter(
+                        (new FilterSelect())
+                            ->setType(Filter::TYPE_LIKE)
+                            ->setChoices(User::ROLES)
+                            ->setChoiceLabel(fn (string $role) => 'user.choice.roles.'.$role)
+                            ->setChoiceTranslationDomain('forms')
+                            ->setField('u.roles')
+                            ->setName('u_roles')
+                            ->setPlaceholder('--')
+                    )
                     ->setDisplayClass('text-center')
                     ->setRaw(true)
             )
