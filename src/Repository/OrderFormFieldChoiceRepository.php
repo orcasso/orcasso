@@ -2,15 +2,15 @@
 
 namespace App\Repository;
 
-use App\Entity\OrderLine;
+use App\Entity\OrderFormFieldChoice;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
- * @extends ServiceEntityRepository<OrderLine>
+ * @extends ServiceEntityRepository<OrderFormFieldChoice>
  */
-class OrderLineRepository extends AbstractRepository
+class OrderFormFieldChoiceRepository extends AbstractRepository
 {
-    public const ENTITY_CLASS = OrderLine::class;
+    public const ENTITY_CLASS = OrderFormFieldChoice::class;
 
     public function isRemovable(object $entity): bool
     {

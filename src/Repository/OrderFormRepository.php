@@ -2,18 +2,19 @@
 
 namespace App\Repository;
 
-use App\Entity\OrderLine;
+use App\Entity\OrderForm;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
- * @extends ServiceEntityRepository<OrderLine>
+ * @extends ServiceEntityRepository<OrderForm>
  */
-class OrderLineRepository extends AbstractRepository
+class OrderFormRepository extends AbstractRepository
 {
-    public const ENTITY_CLASS = OrderLine::class;
+    public const ENTITY_CLASS = OrderForm::class;
 
     public function isRemovable(object $entity): bool
     {
+        /* @var OrderForm $entity */
         $this->checkSupport($entity);
 
         return true;
