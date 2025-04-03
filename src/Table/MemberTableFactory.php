@@ -30,13 +30,13 @@ class MemberTableFactory
 
         $table = (new Table())
             ->setId($this->getTableId())
-            ->setPath($this->router->generate('member_list_ajax'))
+            ->setPath($this->router->generate('admin_member_list_ajax'))
             ->setQueryBuilder($queryBuilder, 'm')
             // ->setDefaultIdentifierFieldNames()
             ->setEntityLoaderRepository(Member::class)
             ->setTemplate('_table/_table.html.twig')
             ->setTemplateParams([
-                'show_route_name' => 'member_edit',
+                'show_route_name' => 'admin_member_edit',
                 'identifier_name' => 'member',
             ])
             ->addColumn(

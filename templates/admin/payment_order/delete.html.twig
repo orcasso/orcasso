@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_payment_edit', {'payment':order.payment.id}) %}
+
+{% set confirmation_message = 'admin.payment_order.delete.confirmation_message'|trans %}
+
+{% block content_header_title %}{{ 'admin.payment_order.delete.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_delete.html.twig' %}{% endembed %}
+{% endblock %}

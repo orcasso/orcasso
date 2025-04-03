@@ -1,0 +1,10 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_activity_list') %}
+{% set confirmation_message = 'admin.activity.delete.confirmation_message'|trans({'%name%':activity.name}) %}
+
+{% block content_header_title %}{{ 'admin.activity.delete.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_delete.html.twig' %}{% endembed %}
+{% endblock %}

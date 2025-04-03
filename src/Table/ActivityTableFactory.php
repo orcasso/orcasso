@@ -29,13 +29,13 @@ class ActivityTableFactory
 
         $table = (new Table())
             ->setId($this->getTableId())
-            ->setPath($this->router->generate('activity_list_ajax'))
+            ->setPath($this->router->generate('admin_activity_list_ajax'))
             ->setQueryBuilder($queryBuilder, 'a')
             ->setDefaultIdentifierFieldNames()
             ->setEntityLoaderRepository(Activity::class)
             ->setTemplate('_table/_table.html.twig')
             ->setTemplateParams([
-                'show_route_name' => 'activity_edit',
+                'show_route_name' => 'admin_activity_edit',
                 'identifier_name' => 'activity',
             ])
             ->addColumn(

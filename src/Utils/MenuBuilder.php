@@ -2,7 +2,6 @@
 
 namespace App\Utils;
 
-use App\Entity\User;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -27,39 +26,35 @@ class MenuBuilder
             ]);
 
         $menu->addChild('_menu.homepage', [
-            'route' => 'homepage',
+            'route' => 'admin_dashboard',
             'extras' => ['icon_class' => 'fa fa-home'],
         ]);
 
         $menu->addChild('_menu.activity', [
-            'route' => 'activity_list',
+            'route' => 'admin_activity_list',
             'extras' => ['icon_class' => 'fas fa-volleyball-ball'],
         ]);
         $menu->addChild('_menu.member', [
-            'route' => 'member_list',
+            'route' => 'admin_member_list',
             'extras' => ['icon_class' => 'fas fa-users'],
         ]);
         $menu->addChild('_menu.order', [
-            'route' => 'order_list',
+            'route' => 'admin_order_list',
             'extras' => ['icon_class' => 'fas fa-shopping-cart'],
         ]);
         $menu->addChild('_menu.payment', [
-            'route' => 'payment_list',
+            'route' => 'admin_payment_list',
             'extras' => ['icon_class' => 'fas fa-credit-card'],
         ]);
 
-        $this->buildAdministrationMenu($menu);
+        $this->buildConfigurationMenu($menu);
 
         return $menu;
     }
 
-    protected function buildAdministrationMenu(ItemInterface $menu): void
+    protected function buildConfigurationMenu(ItemInterface $menu): void
     {
-        if (!$this->authorizationChecker->isGranted(User::ROLE_ADMIN)) {
-            return;
-        }
-
-        $menu->addChild('_menu.separation.administration', [
+        $menu->addChild('_menu.separation.configuration', [
             'attributes' => ['class' => 'nav-header text-uppercase'],
         ]);
 

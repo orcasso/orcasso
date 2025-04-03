@@ -4,6 +4,13 @@ controllers:
         namespace: App\Controller
     type: attribute
 
+admin:
+    resource:
+        path: ../src/Controller/Admin
+        namespace: App\Controller\Admin
+    type: attribute
+    prefix: '/admin'
+
 when@dev:
     _errors:
         resource: '@FrameworkBundle/Resources/config/routing/errors.xml'

@@ -40,82 +40,79 @@ _menu:
 
     separation:
         administration: 'Administration'
-
-home:
-    index:
-        title: 'Bienvenue'
-
-activity:
-    create:
-        title: 'Création d''une activité ou d''une cotisation'
-    delete:
-        confirmation_message: 'Êtes-vous sûr de vouloir supprimer %name% ?'
-        title: 'Suppression de l''activité ou cotisation'
-    edit:
-        title: 'Modification de l''activité ou cotisation'
-    list:
-        title: 'Liste des activités et cotisations'
-
-member:
-    create:
-        title: 'Ajout d''un membre ou responsable légal'
-    delete:
-        confirmation_message: 'Êtes-vous sûr de vouloir supprimer %name% ?'
-        title: 'Suppression du membre'
-    edit:
-        title: 'Modification du membre'
-    list:
-        title: 'Liste des membres'
-
-order:
-    create:
-        title: 'Création d''une commande'
-    delete:
-        confirmation_message: 'Êtes-vous sûr de vouloir supprimer la commande %id% pour %name% ?'
-        title: 'Suppression de la commande'
-    edit:
-        actions:
-            add_order_line:
-                activity_subscription: Adhésion activité/cotisation
-                allowance: Réduction
-                simple: Ligne simple
-            add_payment: 'Ajouter un paiement'
-        title: 'Modification de la commande'
-    list:
-        title: 'Liste des commandes'
-
-order_line:
-    create:
-        title: 'Ajout d''une ligne à la commande'
-    delete:
-        confirmation_message: 'Êtes-vous sûr de vouloir supprimer cette ligne ?'
-        title: 'Suppression de la la ligne de commande'
-    edit:
-        title: 'Modification de la ligne de commande'
-
-payment:
-    create:
-        title: 'Ajout d''un paiement'
-    delete:
-        confirmation_message: 'Êtes-vous sûr de vouloir supprimer le paiement %id% pour %name% ?'
-        title: 'Suppression du paiement'
-    edit:
-        actions:
-            add_payment_order: 'Règlement d''une commande'
-        title: 'Modification du paiement'
-    list:
-        title: 'Liste des paiements'
-
-payment_order:
-    create:
-        title: 'Règlement d''une commande sur le paiement'
-    delete:
-        confirmation_message: 'Êtes-vous sûr de vouloir supprimer cette commande ?'
-        title: 'Suppression du règlement de la commande'
-    edit:
-        title: 'Modification du paiement'
+        configuration: 'Configuration'
 
 admin:
+    activity:
+        create:
+            title: 'Création d''une activité ou d''une cotisation'
+        delete:
+            confirmation_message: 'Êtes-vous sûr de vouloir supprimer %name% ?'
+            title: 'Suppression de l''activité ou cotisation'
+        edit:
+            title: 'Modification de l''activité ou cotisation'
+        list:
+            title: 'Liste des activités et cotisations'
+
+    member:
+        create:
+            title: 'Ajout d''un membre ou responsable légal'
+        delete:
+            confirmation_message: 'Êtes-vous sûr de vouloir supprimer %name% ?'
+            title: 'Suppression du membre'
+        edit:
+            title: 'Modification du membre'
+        list:
+            title: 'Liste des membres'
+    
+    order:
+        create:
+            title: 'Création d''une commande'
+        delete:
+            confirmation_message: 'Êtes-vous sûr de vouloir supprimer la commande %id% pour %name% ?'
+            title: 'Suppression de la commande'
+        edit:
+            actions:
+                add_order_line:
+                    activity_subscription: Adhésion activité/cotisation
+                    allowance: Réduction
+                    simple: Ligne simple
+                add_payment: 'Ajouter un paiement'
+            title: 'Modification de la commande'
+        list:
+            title: 'Liste des commandes'
+    
+    order_line:
+        create:
+            title: 'Ajout d''une ligne à la commande'
+        delete:
+            confirmation_message: 'Êtes-vous sûr de vouloir supprimer cette ligne ?'
+            title: 'Suppression de la la ligne de commande'
+        edit:
+            title: 'Modification de la ligne de commande'
+    
+    payment:
+        create:
+            title: 'Ajout d''un paiement'
+        delete:
+            confirmation_message: 'Êtes-vous sûr de vouloir supprimer le paiement %id% pour %name% ?'
+            title: 'Suppression du paiement'
+        edit:
+            actions:
+                add_payment_order: 'Règlement d''une commande'
+            title: 'Modification du paiement'
+        list:
+            title: 'Liste des paiements'
+    
+    payment_order:
+        create:
+            title: 'Règlement d''une commande sur le paiement'
+        delete:
+            confirmation_message: 'Êtes-vous sûr de vouloir supprimer cette commande ?'
+            title: 'Suppression du règlement de la commande'
+        edit:
+            title: 'Modification du paiement'
+
     user:
         create:
             title: 'Création d''un utilisateur'
@@ -126,6 +123,9 @@ admin:
             title: 'Modification de l''utilisateur'
         list:
             title: 'Liste des utilisateurs'
+home:
+    index:
+        title: 'Bienvenue'
 
 security:
     authentication:

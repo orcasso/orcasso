@@ -14,7 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-#[Route('/admin/users')]
+#[Route('/users')]
 final class UserController extends AbstractController
 {
     public function __construct(protected UserRepository $repository, protected TranslatorInterface $translator,

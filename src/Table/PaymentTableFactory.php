@@ -31,12 +31,12 @@ class PaymentTableFactory
 
         $table = (new Table())
             ->setId($this->getTableId())
-            ->setPath($this->router->generate('payment_list_ajax'))
+            ->setPath($this->router->generate('admin_payment_list_ajax'))
             ->setQueryBuilder($queryBuilder, 'p')
             ->setEntityLoaderRepository(Payment::class)
             ->setTemplate('_table/_table.html.twig')
             ->setTemplateParams([
-                'show_route_name' => 'payment_edit',
+                'show_route_name' => 'admin_payment_edit',
                 'identifier_name' => 'payment',
             ])
             ->addColumn(
