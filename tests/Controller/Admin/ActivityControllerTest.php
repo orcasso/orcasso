@@ -102,7 +102,7 @@ final class ActivityControllerTest extends AbstractWebTestCase
 
     protected function getFixtureActivity(?string $name = null): Activity
     {
-        $name = $name ?? ActivityFixtures::getCompleteName(ActivityFixtures::activities()[1]);
+        $name = $name ?? ActivityFixtures::activities()[1];
 
         return $this->getDoctrine()->getRepository(Activity::class)->findOneBy(['name' => $name]);
     }

@@ -56,19 +56,10 @@ class ActivityFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         foreach (static::activities() as $index => $name) {
-            $activity = new Activity();
-            $manager->persist($activity
-                ->setName(static::getCompleteName($name))
-            );
+            $activity = (new Activity())->setName($name);
+            $manager->persist($activity);
             $this->addReference($name, $activity);
         }
         $manager->flush();
-    }
-
-    public static function getCompleteName(string $name): string
-    {
-        $year = (int) date_create_immutable('-7 months')->format('Y');
-
-        return \sprintf('%d/%d %s', $year, $year + 1, $name);
     }
 }
