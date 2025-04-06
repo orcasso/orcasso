@@ -24,10 +24,13 @@ success:
         deleted: 'Le champ du formulaire a été supprimé'
         updated: 'Le champ du formulaire a bien été modifié'
 
+    order_form_reply:
+        created: 'Votre demande d''adhésion a bien été enregistrée'
+
     order_line:
         created: 'La ligne a bien été créée'
         deleted: 'La ligne a été supprimée'
-        updated: 'La ligne a bien été modifiée'
+        updated: 'La ligne a bien été modifiée' 
 
     payment:
         created: 'Le paiement a bien été créé'

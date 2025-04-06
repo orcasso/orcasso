@@ -44,6 +44,12 @@
             <!-- Main content -->
             <div class="content">
                 <div class="container">
+                    {% for type, flashMessages in app.session.flashbag.all %}
+                        {% for flashMessage in flashMessages %}
+                            {{ alert(type, flashMessage) }}
+                        {% endfor %}
+                    {% endfor %}
+
                     {% block content_body %}{% endblock %}
                 </div>
             </div>

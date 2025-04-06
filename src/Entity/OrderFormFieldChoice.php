@@ -119,4 +119,21 @@ class OrderFormFieldChoice
 
         return $this;
     }
+
+    public function toOrderLine(Order $order): OrderLine
+    {
+        if (OrderFormField::TYPE_ACTIVITY_CHOICE === $this->getField()->getType()) {
+            return OrderLine::createActivitySubscription($order, $this->getActivity())
+                ->setAmount($this->getActivityAmount());
+        }
+        if (OrderFormField::TYPE_ALLOWANCE_CHOICE === $this->getField()->getType()) {
+            return OrderLine::createAllowance($order)
+                ->setLabel($this->getAllowanceLabel())
+                ->setAllowanceBaseAmount($order->getLinesTotalAmount(ignoreAllowances: false))
+                ->setAllowancePercentage($this->getAllowancePercentage())
+            ;
+        }
+
+        throw new \InvalidArgumentException('Invalid form field choice');
+    }
 }

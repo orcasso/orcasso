@@ -101,15 +101,19 @@ final class OrderFormControllerTest extends AbstractWebTestCase
 
     public function testDelete()
     {
-        $orderCount = $this->em->getRepository(OrderForm::class)->count();
+        $orderForm = new OrderForm();
+        $this->em->persist($orderForm);
+        $this->em->flush();
+
+        $formCount = $this->em->getRepository(OrderForm::class)->count();
         $this->authenticateUser();
-        $this->client->request(Request::METHOD_GET, $this->getDeleteUrl($this->getFixtureOrderForm()));
+        $this->client->request(Request::METHOD_GET, $this->getDeleteUrl($orderForm));
         $this->assertResponseIsSuccessful();
 
         $this->client->followRedirects(false);
         $this->client->submitForm($this->trans('_meta.word.delete'), []);
 
-        $this->assertEquals($orderCount - 1, $this->getDoctrine()->getRepository(OrderForm::class)->count());
+        $this->assertEquals($formCount - 1, $this->getDoctrine()->getRepository(OrderForm::class)->count());
         $this->assertTrue($this->client->getResponse()->isRedirect($this->getUrl('admin_order_form_list')));
         $this->assertHasFlash('success', 'success.order_form.deleted');
     }

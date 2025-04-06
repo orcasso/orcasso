@@ -58,7 +58,7 @@ order_form:
 order_form_field:
     choice:
         type:
-            activity_choice: 'Choix d''une activité'
+            activity_choice: 'Choix d''une activité/cotisation'
             allowance_choice: 'Sélection d''une remise'
     label:
         required: Obligatoire ?
@@ -72,13 +72,17 @@ order_form_field_choice:
         allowance_label: 'Libellé de la remise'
         allowance_percentage: 'Pourcentage de remise'
 
+order_form_reply:
+    label:
+        member_data: 'Informations de l''adhérent'
+
 order_line:
     label:
         allowance_base_amount: Montant base
         allowance_percentage: Remise (%)
         amount: Montant
         label: Désignation
-        subscribed_activity: Adhésion
+        subscribed_activity: Activité / Cotisation
 
 payment:
     choice:
@@ -114,6 +118,7 @@ user:
             ROLE_ADMIN_MEMBER_EDIT: 'Gérer les membres'
             ROLE_ADMIN_ORDER_EDIT: 'Gérer les commandes'
             ROLE_ADMIN_ORDER_FORM_EDIT: 'Gérer les formulaires'
+            ROLE_ADMIN_ORDER_FORM_REPLY_EDIT: 'Gérer les demandes d''adhésion'
             ROLE_ADMIN_PAYMENT_EDIT: 'Gérer les paiements'
             ROLE_ADMIN_USER_EDIT: 'Administrer les utilisateurs'
     label:

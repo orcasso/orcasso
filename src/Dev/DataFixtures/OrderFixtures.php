@@ -2,7 +2,6 @@
 
 namespace App\Dev\DataFixtures;
 
-use App\Entity\Activity;
 use App\Entity\Member;
 use App\Entity\Order;
 use App\Entity\OrderLine;
@@ -22,14 +21,14 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
     {
         $this->faker = Factory::create('fr_FR');
 
-        foreach ($manager->getRepository(Member::class)->findAll() as $member) {
-            if (UserFixtures::USERS[0] === $member->getEmail() || random_int(0, 1)) {
+        $index = 0;
+        foreach ($manager->getRepository(Member::class)->findBy([], ['id' => 'ASC']) as $member) {
+            ++$index;
+            if (UserFixtures::USERS[0] === $member->getEmail() || $index > 10) {
                 continue;
             }
 
             $order = $this->createOrder($member);
-            $order->setStatus(random_int(0, 4) ? Order::STATUS_VALIDATED : Order::STATUS_PENDING);
-            $order->setStatus(random_int(0, 20) ? $order->getStatus() : Order::STATUS_CANCELLED);
             $manager->persist($order);
         }
         $manager->flush();
@@ -42,20 +41,14 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
 
     protected function createOrder(Member $member): Order
     {
-        $order = new Order();
-        $order->setTotalAmount($this->faker->randomFloat(2, 100, 800));
-        $order->setMember($member);
-        $order->setNotes($this->faker->text);
-
-        $mainLine = OrderLine::createSimple($order)->setLabel('Cursus complet')->setAmount(573);
-        if (random_int(0, 1)) {
-            OrderLine::createAllowance($order)->setLabel('Remise quotient familial')
-                ->setAllowancePercentage($this->faker->randomElement([5, 10, 15]))
-                ->setAllowanceBaseAmount($mainLine->getAmount())
-            ;
-        }
-        $instrument = $this->getReference($this->faker->randomElement(ActivityFixtures::INSTRUMENTS), Activity::class);
-        OrderLine::createActivitySubscription($order, $instrument);
+        $order = (new Order())
+            ->setMember($member)
+            ->setNotes($this->faker->text)
+            ->setStatus(Order::STATUS_VALIDATED)
+            ->setCreatedAt($orderDate = $this->faker->dateTimeBetween('first day of january'))
+            ->setUpdatedAt($orderDate)
+        ;
+        OrderLine::createSimple($order)->setLabel('Don exceptionnel')->setAmount($this->faker->randomFloat(0, 50, 200));
 
         return $order;
     }

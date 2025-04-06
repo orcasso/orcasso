@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\OrderForm;
+use App\Entity\OrderFormReply;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -17,6 +18,6 @@ class OrderFormRepository extends AbstractRepository
         /* @var OrderForm $entity */
         $this->checkSupport($entity);
 
-        return true;
+        return 0 === $this->getEntityManager()->getRepository(OrderFormReply::class)->count(['form' => $entity->getId()]);
     }
 }
