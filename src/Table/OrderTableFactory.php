@@ -6,6 +6,7 @@ use App\Entity\Order;
 use App\Repository\OrderRepository;
 use Kilik\TableBundle\Components\Column;
 use Kilik\TableBundle\Components\Filter;
+use Kilik\TableBundle\Components\FilterSelect;
 use Kilik\TableBundle\Components\Table;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -90,6 +91,25 @@ class OrderTableFactory
                         $class = $order->getPaidAmount() < $order->getTotalAmount() ? ($order->getPaidAmount() > 0 ? 'bg-warning' : 'bg-danger') : 'bg-success';
 
                         return '<div class="text-center '.$class.'">'.number_format($value, 2, ',', '').' €</div>';
+                    })
+                    ->setRaw(true)
+            )
+            ->addColumn(
+                (new Column())->setLabel('order.label.status')->setTranslateDomain('forms')
+                    ->setSort(['o.status' => 'asc'])
+                    ->setFilter((new FilterSelect())
+                        ->setField('o.status')
+                        ->setName('o_status')
+                        ->setChoices(Order::STATUSES)
+                        ->setChoiceLabel(fn (string $status) => "order.choice.status.$status")
+                        ->setChoiceTranslationDomain('forms')
+                        ->setPlaceholder('--')
+                    )
+                    ->setDisplayCallback(fn ($value, $row) => $this->translator->trans("order.choice.status.$value", [], 'forms'))
+                    ->setDisplayCallback(function ($value, $row) {
+                        $class = Order::STATUS_VALIDATED === $value ? '' : (Order::STATUS_PENDING === $value ? 'text-warning' : 'text-danger');
+
+                        return '<span class="'.$class.'">'.$this->translator->trans("order.choice.status.$value", [], 'forms').'</span>';
                     })
                     ->setRaw(true)
             )

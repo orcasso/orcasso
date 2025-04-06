@@ -32,14 +32,20 @@ member:
         street2: Adresse 2
         street3: Adresse 3
 order:
+    choice:
+        status:
+            cancelled: Annulée
+            pending: En attente
+            validated: Validée
     label:
+        due_amount: 'Montant dû'
         id: Numéro
         lines: Lignes
         member: Membre
         notes: Notes
         paid_amount: Payé
+        status: Statut
         total_amount: Montant
-        due_amount: 'Montant dû'
 
 order_form:
     label:

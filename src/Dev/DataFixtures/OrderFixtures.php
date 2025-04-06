@@ -28,6 +28,8 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
             }
 
             $order = $this->createOrder($member);
+            $order->setStatus(random_int(0, 4) ? Order::STATUS_VALIDATED : Order::STATUS_PENDING);
+            $order->setStatus(random_int(0, 20) ? $order->getStatus() : Order::STATUS_CANCELLED);
             $manager->persist($order);
         }
         $manager->flush();

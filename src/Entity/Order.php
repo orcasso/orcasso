@@ -14,6 +14,17 @@ class Order
 {
     use TimestampableEntity;
 
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_CANCELLED = 'cancelled';
+    public const STATUS_VALIDATED = 'validated';
+
+    // Available statuses (up to 10 characters)
+    public const STATUSES = [
+        self::STATUS_PENDING,
+        self::STATUS_CANCELLED,
+        self::STATUS_VALIDATED,
+    ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -31,6 +42,9 @@ class Order
 
     #[ORM\Column(name: 'paid_amount', type: 'decimal', precision: 10, scale: 2)]
     protected string|int|float $paidAmount = 0;
+
+    #[ORM\Column(name: 'status', type: 'string', length: 10, options: ['default' => self::STATUS_PENDING])]
+    protected string $status = self::STATUS_PENDING;
 
     /**
      * @var Collection<OrderLine>
@@ -119,6 +133,24 @@ class Order
     public function getDueAmount(): float
     {
         return $this->totalAmount - $this->getPaidAmount();
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        if (!\in_array($status, self::STATUSES, true)) {
+            throw new \InvalidArgumentException(\sprintf('Invalid status: %s', $status));
+        }
+        if (self::STATUS_CANCELLED === $status && !$this->payments->isEmpty()) {
+            throw new \RuntimeException('Cannot set status to cancelled');
+        }
+        $this->status = $status;
+
+        return $this;
     }
 
     /**

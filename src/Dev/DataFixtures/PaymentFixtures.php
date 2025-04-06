@@ -25,7 +25,7 @@ class PaymentFixtures extends Fixture implements DependentFixtureInterface
         $this->faker = Factory::create('fr_FR');
 
         foreach ($manager->getRepository(Order::class)->findAll() as $order) {
-            if (random_int(0, 4)) {
+            if (Order::STATUS_VALIDATED !== $order->getStatus()) {
                 continue;
             }
 
