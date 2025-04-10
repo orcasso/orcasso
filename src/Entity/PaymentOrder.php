@@ -31,7 +31,7 @@ class PaymentOrder
     {
         $this->payment = $payment;
         if ($order) {
-            $this->order = $order;
+            $this->setOrder($order);
         }
     }
 
@@ -52,6 +52,9 @@ class PaymentOrder
 
     public function setOrder(Order $order): self
     {
+        if ($order::STATUS_CANCELLED === $order->getStatus()) {
+            throw new \RuntimeException('Unable to add payment to cancelled order');
+        }
         $this->order = $order;
 
         return $this;

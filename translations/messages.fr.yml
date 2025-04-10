@@ -35,6 +35,8 @@ _menu:
     homepage: Accueil
     member: Membres
     order: Commandes
+    order_form: Formulaires d'adhésion
+    order_form_reply: Demandes d'adhésion
     payment: Paiements
     user: Utilisateurs
 
@@ -64,7 +66,7 @@ admin:
             title: 'Modification du membre'
         list:
             title: 'Liste des membres'
-    
+
     order:
         create:
             title: 'Création d''une commande'
@@ -81,7 +83,36 @@ admin:
             title: 'Modification de la commande'
         list:
             title: 'Liste des commandes'
-    
+
+    order_form:
+        create:
+            title: 'Création d''un formulaire'
+        delete:
+            confirmation_message: 'Êtes-vous sûr de vouloir supprimer le formulaire `%title%` ?'
+            title: 'Suppression du formulaire'
+        edit:
+            title: 'Modification du formulaire'
+        list:
+            title: 'Liste des formulaires'
+
+    order_form_field:
+        create:
+            title: 'Ajout d''un champ au formulaire'
+        delete:
+            confirmation_message: 'Êtes-vous sûr de vouloir supprimer ce champ `%question%` ?'
+            title: 'Suppression du champ du formulaire'
+        edit:
+            title: 'Modification du champ du formulaire'
+
+    order_form_field_choice:
+        create:
+            title: 'Ajout d''un choix'
+        delete:
+            confirmation_message: 'Êtes-vous sûr de vouloir ce choix ?'
+            title: 'Suppression du choix'
+        edit:
+            title: 'Modification du choix'
+
     order_line:
         create:
             title: 'Ajout d''une ligne à la commande'
@@ -90,7 +121,7 @@ admin:
             title: 'Suppression de la la ligne de commande'
         edit:
             title: 'Modification de la ligne de commande'
-    
+
     payment:
         create:
             title: 'Ajout d''un paiement'
@@ -103,7 +134,7 @@ admin:
             title: 'Modification du paiement'
         list:
             title: 'Liste des paiements'
-    
+
     payment_order:
         create:
             title: 'Règlement d''une commande sur le paiement'
@@ -126,6 +157,8 @@ admin:
 home:
     index:
         title: 'Bienvenue'
+        actions:
+            reply_order_form: 'Adhérer !'
 
 security:
     authentication:

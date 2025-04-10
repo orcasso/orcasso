@@ -32,14 +32,49 @@ member:
         street2: Adresse 2
         street3: Adresse 3
 order:
+    choice:
+        status:
+            cancelled: Annulée
+            pending: En attente
+            validated: Validée
     label:
+        due_amount: 'Montant dû'
         id: Numéro
         lines: Lignes
         member: Membre
         notes: Notes
         paid_amount: Payé
+        status: Statut
         total_amount: Montant
-        due_amount: 'Montant dû'
+
+order_form:
+    label:
+        enabled: Actif
+        title: Titre
+        description: Description
+        order_main_line_amount: 'Montant de la ligne principale'
+        order_main_line_label: 'Désignation de la ligne principale'
+
+order_form_field:
+    choice:
+        type:
+            activity_choice: 'Choix d''une activité/cotisation'
+            allowance_choice: 'Sélection d''une remise'
+    label:
+        required: Obligatoire ?
+        type: Type
+        question: Question
+
+order_form_field_choice:
+    label:
+        activity: 'Activité / Cotisation'
+        activity_amount: 'Montant lié'
+        allowance_label: 'Libellé de la remise'
+        allowance_percentage: 'Pourcentage de remise'
+
+order_form_reply:
+    label:
+        member_data: 'Informations de l''adhérent'
 
 order_line:
     label:
@@ -47,7 +82,7 @@ order_line:
         allowance_percentage: Remise (%)
         amount: Montant
         label: Désignation
-        subscribed_activity: Adhésion
+        subscribed_activity: Activité / Cotisation
 
 payment:
     choice:
@@ -82,6 +117,8 @@ user:
             ROLE_ADMIN_ACTIVITY_EDIT: 'Configurer les activités'
             ROLE_ADMIN_MEMBER_EDIT: 'Gérer les membres'
             ROLE_ADMIN_ORDER_EDIT: 'Gérer les commandes'
+            ROLE_ADMIN_ORDER_FORM_EDIT: 'Gérer les formulaires'
+            ROLE_ADMIN_ORDER_FORM_REPLY_EDIT: 'Gérer les demandes d''adhésion'
             ROLE_ADMIN_PAYMENT_EDIT: 'Gérer les paiements'
             ROLE_ADMIN_USER_EDIT: 'Administrer les utilisateurs'
     label:

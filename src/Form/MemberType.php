@@ -24,16 +24,20 @@ class MemberType extends AbstractType
             ])
             ->add('firstName', TextType::class, [
                 'label' => 'member.label.first_name',
+                'empty_data' => '',
             ])
             ->add('lastName', TextType::class, [
                 'label' => 'member.label.last_name',
+                'empty_data' => '',
             ])
             ->add('birthDate', DateType::class, [
                 'label' => 'member.label.birth_date',
                 'widget' => 'single_text',
+                'empty_data' => '',
             ])
             ->add('email', EmailType::class, [
                 'label' => 'member.label.email',
+                'empty_data' => '',
             ])
             ->add('phoneNumber', TelType::class, [
                 'label' => 'member.label.phone_number',

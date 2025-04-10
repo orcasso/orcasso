@@ -1,0 +1,4 @@
+App\Entity\OrderFormFieldChoice:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: ['activity', 'field']

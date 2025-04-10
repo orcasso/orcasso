@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_order_form_field_edit', {'field':choice.field.id}) %}
+
+{% set confirmation_message = 'admin.order_form_field_choice.delete.confirmation_message'|trans %}
+
+{% block content_header_title %}{{ 'admin.order_form_field_choice.delete.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_delete.html.twig' %}{% endembed %}
+{% endblock %}

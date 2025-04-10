@@ -103,7 +103,14 @@ final class OrderControllerTest extends AbstractWebTestCase
     {
         $orderCount = $this->em->getRepository(Order::class)->count();
         $this->authenticateUser();
-        $this->client->request(Request::METHOD_GET, $this->getDeleteUrl($this->getFixtureOrder()));
+
+        $order = $this->getFixtureOrder();
+        foreach ($order->getPayments() as $payment) {
+            $order->getPayments()->removeElement($payment);
+            $this->em->remove($payment);
+            $this->em->flush();
+        }
+        $this->client->request(Request::METHOD_GET, $this->getDeleteUrl($order));
         $this->assertResponseIsSuccessful();
 
         $this->client->followRedirects(false);

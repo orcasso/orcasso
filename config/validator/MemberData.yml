@@ -1,0 +1,18 @@
+App\Model\MemberData:
+    properties:
+        birthDate:
+            - Range:
+                  max: 'yesterday'
+        email:
+            - NotBlank: ~
+            - Email: ~
+        firstName:
+            - NotBlank: ~
+            - Length:
+                min: 2
+                max: 255
+        lastName:
+            - NotBlank: ~
+            - Length:
+                min: 2
+                max: 255

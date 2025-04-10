@@ -1,0 +1,46 @@
+{% extends 'public_layout.html.twig' %}
+
+{% set url_cancel = path('homepage') %}
+
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block content_header_title %}{{ order_form.title }}{% endblock %}
+
+{% block content_body %}
+    <div class="row">
+        <div class="col-lg-8">
+            {% embed '_skeleton/crud/_create.html.twig' %}
+                {% block card_body %}
+                    {{ parent() }}
+                    <div class="text-right">
+                        {{ block('card_tools') }}
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        </div>
+
+        <div class="col-lg-4" >
+            <div class="card card-primary card-outline sticky-top" style="align-self: flex-start;">
+                <div class="card-body sticky-top" id="total_amount"></div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="application/javascript">
+        $(document).ready(function () {
+            let form = $('form[name="{{ form.vars.name }}"]');
+            form.change(function () {
+                $.ajax({
+                    type: "POST",
+                    url: '{{ path('order_form_reply_show_total_amount_ajax', {'orderForm': order_form.id}) }}',
+                    data: form.serialize(),
+                    success: function(data) { $('#total_amount').html(data) }
+                });
+            });
+            form.change();
+        });
+    </script>
+{% endblock %}

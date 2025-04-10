@@ -5,6 +5,21 @@
 
 {% block content_body %}
     <div class="row">
-        {{ 'home.index.title'|trans }}
+        {% for order_form in order_forms %}
+            <div class="col-lg-6">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h5 class="card-title m-0">{{ order_form.title }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ order_form.description|nl2br }}</p>
+
+                        <a href="{{ path('order_form_reply', {'orderForm':order_form.id}) }}" class="btn btn-primary">
+                            {{ 'home.index.actions.reply_order_form'|trans }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
