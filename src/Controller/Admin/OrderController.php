@@ -84,6 +84,27 @@ final class OrderController extends AbstractController
         ]);
     }
 
+    #[Route('/{order}/change-status/{status}', name: 'admin_order_change_status', methods: ['GET', 'POST'])]
+    public function changeStatus(Request $request, Order $order, string $status)
+    {
+        $form = $this->createFormBuilder()->setMethod(Request::METHOD_POST)->getForm();
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $order->setStatus($status);
+            $this->repository->update($order);
+            $this->addFlash('success', 'success.order.updated');
+
+            return $this->redirectToRoute('admin_order_edit', ['order' => $order->getId()]);
+        }
+
+        return $this->render('admin/order/change_status.html.twig', [
+            'order' => $order,
+            'status' => $status,
+            'form' => $form->createView(),
+        ]);
+    }
+
     #[Route('/{order}/delete', name: 'admin_order_delete', methods: ['GET', 'POST'])]
     public function delete(Request $request, Order $order): Response
     {

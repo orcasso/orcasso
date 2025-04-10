@@ -68,6 +68,9 @@ admin:
             title: 'Liste des membres'
 
     order:
+        change_status:
+            confirmation_message: 'Êtes vous sûr de passer la commande %id% en statut `%status%` ?'
+            title: 'Changer le statut'
         create:
             title: 'Création d''une commande'
         delete:
@@ -80,6 +83,9 @@ admin:
                     allowance: Réduction
                     simple: Ligne simple
                 add_payment: 'Ajouter un paiement'
+                cancel: 'Annuler la commande'
+                set_pending: 'Mettre en attente'
+                validate: 'Valider la commande'
             title: 'Modification de la commande'
         list:
             title: 'Liste des commandes'

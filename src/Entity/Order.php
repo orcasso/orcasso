@@ -58,6 +58,9 @@ class Order
     #[ORM\OneToMany(targetEntity: PaymentOrder::class, mappedBy: 'order')]
     private Collection $payments;
 
+    #[ORM\OneToOne(targetEntity: OrderFormReply::class, mappedBy: 'order')]
+    protected ?OrderFormReply $sourceFormReply = null;
+
     public function __construct()
     {
         $this->lines = new ArrayCollection();
@@ -145,12 +148,22 @@ class Order
         if (!\in_array($status, self::STATUSES, true)) {
             throw new \InvalidArgumentException(\sprintf('Invalid status: %s', $status));
         }
-        if (self::STATUS_CANCELLED === $status && !$this->payments->isEmpty()) {
+        if (self::STATUS_CANCELLED === $status && !$this->canBeCancelled()) {
             throw new \RuntimeException('Cannot set status to cancelled');
         }
         $this->status = $status;
 
         return $this;
+    }
+
+    public function canBeRemoved(): bool
+    {
+        return $this->canBeCancelled() && !$this->sourceFormReply;
+    }
+
+    public function canBeCancelled(): bool
+    {
+        return $this->payments->isEmpty();
     }
 
     /**
@@ -179,5 +192,17 @@ class Order
     public function getPayments(): Collection
     {
         return $this->payments;
+    }
+
+    public function getSourceFormReply(): ?OrderFormReply
+    {
+        return $this->sourceFormReply;
+    }
+
+    public function setSourceFormReply(?OrderFormReply $sourceFormReply): static
+    {
+        $this->sourceFormReply = $sourceFormReply;
+
+        return $this;
     }
 }

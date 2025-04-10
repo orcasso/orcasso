@@ -14,11 +14,13 @@
                 &nbsp;-&nbsp;
             {% endif %}
 
-            <a href="{{  path('admin_order_delete', {'order':order.id}) }}" class="btn btn-danger btn-sm">
-                <i class="fa fa-trash"></i>
-                <span class="d-none d-md-inline">{{ '_meta.word.delete'|trans }}</span>
-            </a>
-            &nbsp;-&nbsp;
+            {% if order.canBeRemoved %}
+                <a href="{{  path('admin_order_delete', {'order':order.id}) }}" class="btn btn-danger btn-sm">
+                    <i class="fa fa-trash"></i>
+                    <span class="d-none d-md-inline">{{ '_meta.word.delete'|trans }}</span>
+                </a>
+                &nbsp;-&nbsp;
+            {% endif %}
 
             <a href="{{ path('admin_order_list') }}" class="btn btn-secondary btn-sm">
                 <i class="fa fa-chevron-left"></i>
@@ -37,7 +39,42 @@
                     <table class="table table-no-bordered">
                         <tr>
                             <th>{{ 'order.label.id'|trans({}, 'forms') }}</th>
-                            <th># {{ order.id }}</th>
+                            <th>
+                                # {{ order.id }}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>{{ 'order.label.status'|trans({}, 'forms') }}</th>
+                            <th>
+                                <h4>
+                                    {% if order.status == constant('App\\Entity\\Order::STATUS_VALIDATED') %}
+                                        <span class="badge badge-success">{{ 'order.choice.status.validated'|trans({}, 'forms') }}</span>
+                                    {% elseif order.status == constant('App\\Entity\\Order::STATUS_PENDING') %}
+                                        <span class="badge badge-info">{{ 'order.choice.status.pending'|trans({}, 'forms') }}</span>
+                                    {% elseif order.status == constant('App\\Entity\\Order::STATUS_CANCELLED') %}
+                                        <span class="badge badge-warning">{{ 'order.choice.status.cancelled'|trans({}, 'forms') }}</span>
+                                    {% endif %}
+                                </h4>
+
+                                {% if constant('App\\Entity\\Order::STATUS_CANCELLED') != order.status and order.canBeCancelled %}
+                                    <a href="{{  path('admin_order_change_status', {'order':order.id, 'status':constant('App\\Entity\\Order::STATUS_CANCELLED')}) }}" class="btn btn-danger btn-xs">
+                                        <i class="fas fa-times"></i>
+                                        <span class="d-none d-md-inline">{{ 'admin.order.edit.actions.cancel'|trans }}</span>
+                                    </a>
+                                {% endif %}
+
+                                {% if constant('App\\Entity\\Order::STATUS_PENDING') != order.status %}
+                                    <a href="{{  path('admin_order_change_status', {'order':order.id, 'status':constant('App\\Entity\\Order::STATUS_PENDING')}) }}" class="btn btn-primary btn-xs">
+                                        <i class="far fa-clock"></i>
+                                        <span class="d-none d-md-inline">{{ 'admin.order.edit.actions.set_pending'|trans }}</span>
+                                    </a>
+                                {% elseif constant('App\\Entity\\Order::STATUS_VALIDATED') != order.status %}
+                                    <a href="{{  path('admin_order_change_status', {'order':order.id, 'status':constant('App\\Entity\\Order::STATUS_VALIDATED')}) }}" class="btn btn-success btn-xs">
+                                        <i class="fas fa-clipboard-check"></i>
+                                        <span class="d-none d-md-inline">{{ 'admin.order.edit.actions.validate'|trans }}</span>
+                                    </a>
+                                {% endif %}
+                            </th>
                         </tr>
                         <tr>
                             <th>{{ 'order.label.member'|trans({}, 'forms') }}</th>

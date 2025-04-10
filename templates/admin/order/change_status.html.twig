@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_order_edit', {'order': order.id}) %}
+
+{% block content_header_title %}{{ 'admin.order.change_status.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/_card_with_form.html.twig' %}
+        {% block card_body %}
+            {{ parent() }}
+            <p class="lead">{{ 'admin.order.change_status.confirmation_message'|trans({
+                '%id%': order.id,
+                '%status%':(('order.choice.status.' ~ status)|trans({}, 'forms'))
+            }) }}</p>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

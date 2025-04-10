@@ -15,6 +15,7 @@ final class OrderControllerTest extends AbstractWebTestCase
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getUrl('admin_order_list_ajax'));
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getEditUrl($this->getFixtureOrder()));
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getEditHeaderUrl($this->getFixtureOrder()));
+        $this->assertRedirectToLogin(Request::METHOD_GET, $this->getChangeStatusUrl($this->getFixtureOrder()));
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getCreateUrl());
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getDeleteUrl($this->getFixtureOrder()));
     }
@@ -29,6 +30,7 @@ final class OrderControllerTest extends AbstractWebTestCase
         $this->assertAccessDenied(Request::METHOD_GET, $this->getUrl('admin_order_list_ajax'));
         $this->assertAccessDenied(Request::METHOD_GET, $this->getEditUrl($this->getFixtureOrder()));
         $this->assertAccessDenied(Request::METHOD_GET, $this->getEditHeaderUrl($this->getFixtureOrder()));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getChangeStatusUrl($this->getFixtureOrder()));
         $this->assertAccessDenied(Request::METHOD_GET, $this->getCreateUrl());
         $this->assertAccessDenied(Request::METHOD_GET, $this->getDeleteUrl($this->getFixtureOrder()));
     }
@@ -79,6 +81,28 @@ final class OrderControllerTest extends AbstractWebTestCase
 
         $order = $this->getFixtureOrder($order->getId());
         $this->assertEquals($newNotes, $order->getNotes());
+    }
+
+    public function testChangeStatus()
+    {
+        $order = $this->getFixtureOrder();
+        $order->setStatus(Order::STATUS_PENDING);
+        $this->updateEntity($order);
+
+        $url = $this->getChangeStatusUrl($order, $newStatus = Order::STATUS_VALIDATED);
+
+        $this->authenticateUser();
+        $this->client->request(Request::METHOD_GET, $url);
+        $this->assertResponseIsSuccessful();
+
+        $this->client->followRedirects(false);
+        $this->client->submitForm($this->trans('_meta.word.save'));
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->getEditUrl($order)));
+        $this->assertHasFlash('success', 'success.order.updated');
+
+        $order = $this->getFixtureOrder($order->getId());
+        $this->assertEquals($newStatus, $order->getStatus());
     }
 
     public function testCreate()
@@ -144,5 +168,10 @@ final class OrderControllerTest extends AbstractWebTestCase
     protected function getDeleteUrl(Order $order): string
     {
         return $this->getUrl('admin_order_delete', ['order' => $order->getId()]);
+    }
+
+    protected function getChangeStatusUrl(Order $order, string $status = Order::STATUS_VALIDATED): string
+    {
+        return $this->getUrl('admin_order_change_status', ['order' => $order->getId(), 'status' => $status]);
     }
 }

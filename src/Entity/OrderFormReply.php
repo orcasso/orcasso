@@ -26,7 +26,7 @@ class OrderFormReply
 
     public ?MemberData $memberData = null;
 
-    #[ORM\OneToOne(targetEntity: Order::class)]
+    #[ORM\OneToOne(targetEntity: Order::class, inversedBy: 'sourceFormReply')]
     #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id', unique: true, nullable: true, onDelete: 'SET NULL')]
     protected ?Order $order = null;
 
@@ -132,6 +132,7 @@ class OrderFormReply
     public function setOrder(?Order $order): static
     {
         $this->order = $order;
+        $order?->setSourceFormReply($this);
 
         return $this;
     }
