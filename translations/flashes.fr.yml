@@ -30,7 +30,7 @@ success:
     order_line:
         created: 'La ligne a bien été créée'
         deleted: 'La ligne a été supprimée'
-        updated: 'La ligne a bien été modifiée' 
+        updated: 'La ligne a bien été modifiée'
 
     payment:
         created: 'Le paiement a bien été créé'
@@ -45,6 +45,8 @@ success:
 warning:
     activity:
         not_removable: 'L''activité ne peut être supprimée car il y a des adhésions liées.'
+    order:
+        not_removable: 'Une commande avec des paiements, ne peut être supprimée'
     payment:
         not_removable: 'Le paiement ne peut être supprimé car des commandes sont liées.'
     user:
