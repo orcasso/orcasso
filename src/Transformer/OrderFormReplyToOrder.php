@@ -20,7 +20,7 @@ class OrderFormReplyToOrder
             'lastName' => $reply->getMemberData()->lastName]
         );
         $member = $reply->getMemberData()->toMember($member);
-        $order = (new Order())->setMember($member)->setNotes('');
+        $order = (new Order())->setMember($member)->setNotes($reply->notes);
         $reply->setOrder($order);
 
         $form = $reply->getForm();

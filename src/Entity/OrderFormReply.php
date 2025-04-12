@@ -26,6 +26,9 @@ class OrderFormReply
 
     public ?MemberData $memberData = null;
 
+    #[ORM\Column(name: 'notes', type: 'text', options: ['default' => ''])]
+    public string $notes = '';
+
     #[ORM\OneToOne(targetEntity: Order::class, inversedBy: 'sourceFormReply')]
     #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id', unique: true, nullable: true, onDelete: 'SET NULL')]
     protected ?Order $order = null;

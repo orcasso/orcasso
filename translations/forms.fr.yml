@@ -75,6 +75,7 @@ order_form_field_choice:
 order_form_reply:
     label:
         member_data: 'Informations de l''adhérent'
+        notes: Avez-vous des remarques ou informations complémentaires ?
 
 order_line:
     label:
