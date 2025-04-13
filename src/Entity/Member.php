@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MemberRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -58,9 +60,16 @@ class Member
     #[ORM\Column(name: 'city', type: 'string', length: 255)]
     protected string $city = '';
 
+    /**
+     * @var Collection<int, MemberDocument>
+     */
+    #[ORM\OneToMany(targetEntity: MemberDocument::class, mappedBy: 'member', orphanRemoval: true)]
+    private Collection $documents;
+
     public function __construct()
     {
         $this->birthDate = date_create_immutable();
+        $this->documents = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -206,6 +215,35 @@ class Member
     public function setCity(string $city): static
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, MemberDocument>
+     */
+    public function getDocuments(): Collection
+    {
+        return $this->documents;
+    }
+
+    public function addDocument(MemberDocument $filename): static
+    {
+        if (!$this->documents->contains($filename)) {
+            $this->documents->add($filename);
+            $filename->setMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocument(MemberDocument $filename): static
+    {
+        if ($this->documents->removeElement($filename)) {
+            if ($filename->getMember() === $this) {
+                $filename->setMember(null);
+            }
+        }
 
         return $this;
     }

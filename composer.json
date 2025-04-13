@@ -93,6 +93,7 @@
         ],
         "reset:db": [
             "bin/console doctrine:schema:update --force -n",
+            "rm -fr var/member_documents",
             "bin/console doctrine:fixtures:load -n"
         ],
         "test": "vendor/bin/phpunit --testdox"
