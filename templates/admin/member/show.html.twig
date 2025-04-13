@@ -7,6 +7,38 @@
 
 {% block content_body %}
     {% embed '_skeleton/_card_with_header.html.twig' with {'entity':member} %}
+        {% block card_info %}
+            <div class="row">
+                <div class="col-lg-6">{{ parent() }}</div>
+                <div class="col-lg-6">
+                    <div class="info-box small">
+                        <span class="info-box-icon bg-warning"><i class="fas fa-file-pdf"></i></span>
+                        <div class="info-box-content">
+                            <strong class="info-box-text">
+                                {{ 'member.label.documents'|trans({}, 'forms') }}
+                                <a href="{{ path('admin_member_document_create', {'member':member.id}) }}" class="btn btn-primary btn-xs" title="{{ '_meta.word.add'|trans }}">
+                                    <i class="fas fa-plus"></i>
+                                </a>
+                            </strong>
+                            <ul class="list-unstyled">
+                                {% for document in member.documents %}
+                                    <li>
+                                        {{ document.name }} -
+                                        <a href="{{ path('admin_member_document_download', {'document':document.id}) }}">{{ document.fileName }}</a>
+
+                                        <a href="{{ path('admin_member_document_edit', {'document':document.id}) }}" class="btn btn-primary btn-xs" title="{{ '_meta.word.edit'|trans }}">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </li>
+                                {% else %}
+                                    <li><i>{{ 'admin.member.show.no_document'|trans }}</i></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
         {% block card_tools %}
             <a href="{{ url_cancel }}" class="btn btn-secondary btn-sm">
                 <i class="fa fa-chevron-left"></i>

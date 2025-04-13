@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Member;
 use App\Entity\MemberDocument;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -30,7 +29,7 @@ class MemberDocumentRepository extends AbstractRepository
         return true;
     }
 
-    public function createFromUploadedFile(Member $member, string $name, UploadedFile $file): MemberDocument
+    public function storeFromUploadedFile(MemberDocument $document, UploadedFile $file): MemberDocument
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), \PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);

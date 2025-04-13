@@ -9,6 +9,11 @@ success:
         deleted: 'Le membre a été supprimé'
         updated: 'Le membre a bien été modifié'
 
+    member_document:
+        created: 'Le document a bien été créé'
+        deleted: 'Le document a été supprimé'
+        updated: 'Le document a bien été modifié'
+
     order:
         created: 'La commande a bien été créée'
         deleted: 'La commande a été supprimée'
