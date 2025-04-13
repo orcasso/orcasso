@@ -26,7 +26,10 @@ class OrderRepository extends AbstractRepository
     public function findWaitingPayment(): array
     {
         $qb = $this->createQueryBuilder('o')->innerJoin('o.member', 'm');
-        $qb->andWhere($qb->expr()->gt('o.totalAmount', 'o.paidAmount'))
+        $qb
+            ->andWhere($qb->expr()->gt('o.totalAmount', 'o.paidAmount'))
+            ->andWhere($qb->expr()->neq('o.status', ':status_cancelled'))
+            ->setParameter('status_cancelled', Order::STATUS_CANCELLED)
             ->orderBy('m.firstName', 'ASC')
             ->addOrderBy('m.lastName', 'ASC')
             ->addOrderBy('o.id', 'ASC');
