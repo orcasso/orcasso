@@ -2,6 +2,7 @@ _meta:
     age: 'Âge'
     created_at: 'Création le'
     updated_at: 'Modification le'
+    years: 'Ans'
 
 activity:
     help:
@@ -24,6 +25,7 @@ member:
         city: 'Ville'
         email: 'Email'
         first_name: 'Prénom'
+        full_address: 'Adresse'
         gender: Genre
         last_name: 'Nom'
         phone_number: Téléphone
@@ -83,6 +85,7 @@ order_line:
         allowance_percentage: Remise (%)
         amount: Montant
         label: Désignation
+        order: Commande
         subscribed_activity: Activité / Cotisation
 
 payment:

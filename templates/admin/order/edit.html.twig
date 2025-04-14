@@ -79,7 +79,7 @@
                         <tr>
                             <th>{{ 'order.label.member'|trans({}, 'forms') }}</th>
                             <td>
-                                <a href="{{ path('admin_member_edit', {'member':order.member.id}) }}">
+                                <a href="{{ path('admin_member_show', {'member':order.member.id}) }}">
                                     {{ order.member.fullName }}
                                 </a>
                             </td>

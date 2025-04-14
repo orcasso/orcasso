@@ -66,6 +66,9 @@ admin:
             title: 'Modification du membre'
         list:
             title: 'Liste des membres'
+        show:
+            no_activity: 'Aucune activité ou cotisation'
+            no_order: 'Aucune commande'
 
     order:
         change_status:

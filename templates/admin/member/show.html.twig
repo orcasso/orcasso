@@ -1,0 +1,131 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_member_list') %}
+{% set url_delete = path('admin_member_delete', {'member':member.id}) %}
+
+{% block content_header_title %}#{{ member.id }} : {{ member.fullName }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/_card_with_header.html.twig' with {'entity':member} %}
+        {% block card_tools %}
+            <a href="{{ url_cancel }}" class="btn btn-secondary btn-sm">
+                <i class="fa fa-chevron-left"></i>
+                <span class="d-none d-md-inline">{{ '_meta.word.back'|trans }}</span>
+            </a>
+            <a href="{{  path('admin_member_edit', {'member':member.id}) }}" class="btn btn-primary btn-sm">
+                <i class="fa fa-edit"></i>
+                <span class="d-none d-md-inline">{{ '_meta.word.edit'|trans }}</span>
+            </a>
+        {% endblock %}
+        {% block card_body %}
+            <div class="row">
+                <div class="col-lg-6">
+                    <table class="table table-no-bordered">
+                        <tr>
+                            <th>{{ 'member.label.gender'|trans({}, 'forms') }}</th>
+                            <td>{{ ('member.choice.gender.' ~ member.gender)|trans({}, 'forms') }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'member.label.first_name'|trans({}, 'forms') }}</th>
+                            <td>{{ member.firstName }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'member.label.last_name'|trans({}, 'forms') }}</th>
+                            <td>{{ member.lastName }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ '_meta.age'|trans({}, 'forms') }}</th>
+                            <td>
+                                {{ date().diff(date(member.birthDate)).y }} {{ '_meta.years'|trans({}, 'forms')|lower }}
+                                —
+                                {{ member.birthDate|format_date }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-lg-6">
+                    <table class="table table-no-bordered">
+                        <tr>
+                            <th>{{ 'member.label.email'|trans({}, 'forms') }}</th>
+                            <td>{{ member.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'member.label.phone_number'|trans({}, 'forms') }}</th>
+                            <td>{{ member.phoneNumber }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'member.label.full_address'|trans({}, 'forms') }}</th>
+                            <td>{{ member.fullAddress|nl2br }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+    <div class="row">
+        <div class="col-lg-6">
+            {% embed '_skeleton/_card.html.twig' %}
+                {% block card_title %}{{ '_menu.order'|trans }}{% endblock %}
+                {% block card_body %}
+                    {% if orders is not empty %}
+                        <table class="table table-condensed table-striped">
+                            <tr>
+                                <th>#</th>
+                                <th class="text-center">{{ '_meta.created_at'|trans({}, 'forms') }}</th>
+                                <th class="text-right">{{ 'order.label.total_amount'|trans({}, 'forms') }}</th>
+                                <th class="text-right">{{ 'order.label.paid_amount'|trans({}, 'forms') }}</th>
+                            </tr>
+                        {% for order in orders %}
+                            {# @var \App\Entity\Order order #}
+                            <tr>
+                                <td><a href="{{ path('admin_order_edit', {'order':order.id}) }}">{{ order.id }}</a></td>
+                                <td class="text-center">{{ order.createdAt|date('d/m/Y') }}</td>
+                                <td class="text-right">{{ order.totalAmount|format_currency('EUR') }}</td>
+                                <td class="text-right {{ order.paidAmount < order.totalAmount ? 'text-danger' : 'text-success' }}">
+                                    <b>{{ order.paidAmount|format_currency('EUR') }}</b>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </table>
+                    {% else %}
+                        <i>{{ 'admin.member.show.no_order'|trans }}</i>
+                    {% endif %}
+                {% endblock %}
+            {% endembed %}
+        </div>
+        <div class="col-lg-6">
+            {% embed '_skeleton/_card.html.twig' %}
+                {% block card_title %}{{ '_menu.activity'|trans }}{% endblock %}
+                {% block card_body %}
+                    {% set activities = [] %}
+                    {% for order in orders %}
+                        {% for line in order.lines %}
+                            {% if line.type == constant('App\\Entity\\OrderLine::TYPE_ACTIVITY_SUBSCRIPTION') %}
+                                {% set activities = activities|merge([line]) %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    {% if activities is not empty %}
+                        <table class="table table-condensed table-striped">
+                            <tr>
+                                <th>{{ 'order_line.label.order'|trans({}, 'forms') }}</th>
+                                <th>{{ 'order_line.label.subscribed_activity'|trans({}, 'forms') }}</th>
+                                <th class="text-right">{{ '_meta.created_at'|trans({}, 'forms') }}</th>
+                            </tr>
+                            {% for activity in activities %}
+                                <tr>
+                                    <td><a href="{{ path('admin_order_edit', {'order':activity.order.id}) }}">{{ activity.order.id }}</a></td>
+                                    <td>{{ activity.subscribedActivity.name }}</td>
+                                    <td class="text-right">{{ activity.order.createdAt|date('d/m/Y') }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    {% else %}
+                        <i>{{ 'admin.member.show.no_activity'|trans }}</i>
+                    {% endif %}
+                {% endblock %}
+            {% endembed %}
+        </div>
+    </div>
+{% endblock %}

@@ -36,7 +36,7 @@ class MemberTableFactory
             ->setEntityLoaderRepository(Member::class)
             ->setTemplate('_table/_table.html.twig')
             ->setTemplateParams([
-                'show_route_name' => 'admin_member_edit',
+                'show_route_name' => 'admin_member_show',
                 'identifier_name' => 'member',
             ])
             ->addColumn(

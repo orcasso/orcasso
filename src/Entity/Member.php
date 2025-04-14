@@ -195,6 +195,11 @@ class Member
         return $this;
     }
 
+    public function getStreets(string $separator = \PHP_EOL): string
+    {
+        return trim(implode($separator, array_filter([$this->street1, $this->street2, $this->street3])));
+    }
+
     public function getPostalCode(): string
     {
         return $this->postalCode;
@@ -217,6 +222,14 @@ class Member
         $this->city = $city;
 
         return $this;
+    }
+
+    public function getFullAddress(string $streetsSeparator = \PHP_EOL, string $linesSeparator = \PHP_EOL): string
+    {
+        return trim(implode($linesSeparator, array_filter([
+            $this->getStreets($streetsSeparator),
+            implode(' ', array_filter([$this->postalCode, $this->city])),
+        ])));
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Entity\Member;
 use App\Entity\User;
 use App\Form\MemberType;
 use App\Repository\MemberRepository;
+use App\Repository\OrderRepository;
 use App\Table\MemberTableFactory;
 use Kilik\TableBundle\Services\TableService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,7 +50,7 @@ final class MemberController extends AbstractController
             $this->repository->update($member);
             $this->addFlash('success', 'success.member.created');
 
-            return $this->redirectToRoute('admin_member_edit', ['member' => $member->getId()]);
+            return $this->redirectToRoute('admin_member_show', ['member' => $member->getId()]);
         }
 
         return $this->render('admin/member/create.html.twig', [
@@ -57,7 +58,16 @@ final class MemberController extends AbstractController
         ]);
     }
 
-    #[Route('/{member}', name: 'admin_member_edit', methods: ['GET', 'POST'])]
+    #[Route('/{member}', name: 'admin_member_show', methods: ['GET'])]
+    public function show(Member $member, OrderRepository $orderRepository): Response
+    {
+        return $this->render('admin/member/show.html.twig', [
+            'member' => $member,
+            'orders' => $orderRepository->findActivesForMember($member),
+        ]);
+    }
+
+    #[Route('/{member}/edit', name: 'admin_member_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Member $member): Response
     {
         $form = $this->createForm(MemberType::class, $member);
@@ -67,7 +77,7 @@ final class MemberController extends AbstractController
             $this->repository->update($member);
             $this->addFlash('success', 'success.member.updated');
 
-            return $this->redirectToRoute('admin_member_edit', ['member' => $member->getId()]);
+            return $this->redirectToRoute('admin_member_show', ['member' => $member->getId()]);
         }
 
         return $this->render('admin/member/edit.html.twig', [
@@ -82,7 +92,7 @@ final class MemberController extends AbstractController
         if (!$this->repository->isRemovable($member)) {
             $this->addFlash('warning', 'warning.member.not_removable');
 
-            return $this->redirectToRoute('admin_member_edit', ['member' => $member->getId()]);
+            return $this->redirectToRoute('admin_member_show', ['member' => $member->getId()]);
         }
 
         $form = $this->createFormBuilder()->setMethod(Request::METHOD_POST)->getForm();
