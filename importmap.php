@@ -16,4 +16,7 @@ return [
         'path' => './assets/app.js',
         'entrypoint' => true,
     ],
+    'bs-custom-file-input' => [
+        'version' => '1.3.4',
+    ],
 ];
