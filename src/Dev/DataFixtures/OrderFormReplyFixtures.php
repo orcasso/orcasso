@@ -5,6 +5,7 @@ namespace App\Dev\DataFixtures;
 use App\Entity\Member;
 use App\Entity\Order;
 use App\Entity\OrderForm;
+use App\Entity\OrderFormField;
 use App\Entity\OrderFormFieldChoice;
 use App\Entity\OrderFormReply;
 use App\Transformer\OrderFormReplyToOrder;
@@ -41,6 +42,9 @@ class OrderFormReplyFixtures extends Fixture implements DependentFixtureInterfac
             $memberData->fromMember($member);
             foreach ($form->getFields() as $field) {
                 if (!$field->isRequired() && random_int(0, 1)) {
+                    continue;
+                }
+                if (OrderFormField::TYPE_DOCUMENT === $field->getType()) {
                     continue;
                 }
                 /** @var OrderFormFieldChoice $choice */

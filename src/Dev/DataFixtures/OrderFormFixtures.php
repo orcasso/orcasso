@@ -80,6 +80,10 @@ class OrderFormFixtures extends Fixture implements DependentFixtureInterface
         (new OrderFormFieldChoice($field))->setAllowanceLabel('900 < QF < 1300')->setAllowancePercentage(10);
         (new OrderFormFieldChoice($field))->setAllowanceLabel('QF > 1300')->setAllowancePercentage(0);
 
+        (new OrderFormField($form))->setType(OrderFormField::TYPE_DOCUMENT)
+            ->setQuestion('Merci de fournir l\'attestation de quotient familial si inférieur à 1300.')
+        ;
+
         $field = (new OrderFormField($form))
             ->setType(OrderFormField::TYPE_ACTIVITY_CHOICE)
             ->setQuestion('Merci de sélectionner la cotisation familiale si vous ne l\'avez pas encore réglé pour un autre membre de la famille.')
@@ -111,6 +115,7 @@ class OrderFormFixtures extends Fixture implements DependentFixtureInterface
         $form1->getFields()[2]->clone($form);
         $form1->getFields()[4]->clone($form);
         $form1->getFields()[5]->clone($form);
+        $form1->getFields()[6]->clone($form);
 
         $manager->flush();
     }

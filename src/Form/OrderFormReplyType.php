@@ -2,15 +2,19 @@
 
 namespace App\Form;
 
+use App\Entity\OrderFormField;
 use App\Entity\OrderFormFieldChoice;
 use App\Entity\OrderFormReply;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class OrderFormReplyType extends AbstractType
 {
@@ -26,31 +30,15 @@ class OrderFormReplyType extends AbstractType
         ;
 
         foreach ($reply->getForm()->getFields() as $field) {
-            $choiceValue = function (?OrderFormFieldChoice $choice) {
-                if (null === $choice) {
-                    return null;
-                }
-
-                return $choice->getActivity()?->getName() ?? $choice->getAllowanceLabel();
-            };
-
-            $choices = array_map($choiceValue, $field->getChoices()->toArray());
-            $choices = array_combine($choices, $choices);
-
-            $builder
-                ->add('fieldValues_'.$field->getPosition(), ChoiceType::class, [
-                    'label' => $field->getQuestion(),
-                    'translation_domain' => null,
-                    'mapped' => false,
-                    'choices' => $choices,
-                    'required' => $field->isRequired(),
-                    'placeholder' => '--',
-                ]);
+            $this->buildFieldType($builder, $field, $reply);
 
             $builder
                 ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use ($reply) {
                     foreach ($reply->getForm()->getFields() as $field) {
-                        $fieldValue = $event->getForm()->get('fieldValues_'.$field->getPosition())->getData();
+                        $fieldValue = $event->getForm()->get(static::getFieldName($field))->getData();
+                        if ($fieldValue instanceof UploadedFile) {
+                            continue;
+                        }
                         $reply->setFieldValue($field->getQuestion(), $fieldValue ?? '');
                     }
                 })
@@ -71,5 +59,56 @@ class OrderFormReplyType extends AbstractType
             'data_class' => OrderFormReply::class,
             'translation_domain' => 'forms',
         ]);
+    }
+
+    public static function getFieldName(OrderFormField $field): string
+    {
+        return "fieldValues_{$field->getPosition()}";
+    }
+
+    protected function buildFieldType(FormBuilderInterface $builder, OrderFormField $field, OrderFormReply $reply): void
+    {
+        if (OrderFormField::TYPE_DOCUMENT === $field->getType()) {
+            $builder
+                ->add(static::getFieldName($field), FileType::class, [
+                    'label' => $field->getQuestion(),
+                    'required' => $field->isRequired(),
+                    'mapped' => false,
+                    'constraints' => [
+                        new File([
+                            'maxSize' => '2048k',
+                            'mimeTypes' => [
+                                'application/pdf',
+                                'application/x-pdf',
+                                'image/jpeg',
+                                'image/png',
+                            ],
+                        ]),
+                    ],
+                ]);
+
+            return;
+        }
+
+        $choiceValue = function (?OrderFormFieldChoice $choice) {
+            if (null === $choice) {
+                return null;
+            }
+
+            return $choice->getActivity()?->getName() ?? $choice->getAllowanceLabel();
+        };
+
+        $choices = array_map($choiceValue, $field->getChoices()->toArray());
+        $choices = array_combine($choices, $choices);
+
+        $builder
+            ->add(static::getFieldName($field), ChoiceType::class, [
+                'label' => $field->getQuestion(),
+                'translation_domain' => null,
+                'mapped' => false,
+                'choices' => $choices,
+                'required' => $field->isRequired(),
+                'placeholder' => '--',
+            ]);
     }
 }

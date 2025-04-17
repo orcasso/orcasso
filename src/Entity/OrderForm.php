@@ -131,6 +131,10 @@ class OrderForm
 
     public function addField(OrderFormField $field): static
     {
+        $field->setPosition(1);
+        foreach ($this->getFields() as $already) {
+            $field->setPosition(max($field->getPosition(), $already->getPosition() + 1));
+        }
         if ($field->getForm() !== $this) {
             throw new \InvalidArgumentException('Invalid field');
         }

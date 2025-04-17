@@ -2,14 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\MemberDocument;
 use App\Entity\OrderForm;
+use App\Entity\OrderFormField;
 use App\Entity\OrderFormReply;
 use App\Form\OrderFormReplyType;
+use App\Repository\MemberDocumentRepository;
 use App\Repository\MemberRepository;
 use App\Repository\OrderFormReplyRepository;
 use App\Repository\OrderRepository;
 use App\Transformer\OrderFormReplyToOrder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,7 +21,8 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/order-form-reply')]
 final class OrderFormReplyController extends AbstractController
 {
-    public function __construct(protected OrderFormReplyRepository $repository, protected OrderRepository $orderRepository, protected MemberRepository $memberRepository)
+    public function __construct(protected OrderFormReplyRepository $repository, protected OrderRepository $orderRepository,
+        protected MemberRepository $memberRepository, protected MemberDocumentRepository $memberDocumentRepository)
     {
     }
 
@@ -36,6 +41,16 @@ final class OrderFormReplyController extends AbstractController
                 $order = $toOrder->toOrder($reply);
                 $this->memberRepository->update($order->getMember(), false);
                 $this->orderRepository->update($order);
+                foreach ($orderForm->getFields() as $field) {
+                    if (OrderFormField::TYPE_DOCUMENT !== $field->getType()) {
+                        continue;
+                    }
+                    $value = $form->get(OrderFormReplyType::getFieldName($field))->getData();
+                    if (!$value instanceof UploadedFile) {
+                        continue;
+                    }
+                    $this->memberDocumentRepository->storeFromUploadedFile(new MemberDocument($order->getMember()), $value);
+                }
                 $this->addFlash('success', 'success.order.created');
             } catch (\Exception $exception) {
                 $this->addFlash('danger', 'Unable to store order');

@@ -8,58 +8,60 @@
 {% block content_body %}
     {% embed '_skeleton/crud/_edit.html.twig' with {'entity': field} %}{% endembed %}
 
-    <div class="row">
-        <div class="col-md-12">
-            {% embed '_skeleton/_card.html.twig' %}
-                {% block card_tools %}
-                    <a href="{{ path('admin_order_form_field_choice_create', {'field':field.id}) }}"
-                       class="btn btn-primary btn-sm">
-                        <i class="fa fa-plus"></i>
-                        <span class="d-none d-md-inline">{{ '_meta.word.add'|trans }}</span>
-                    </a>
-                {% endblock %}
+    {% if field.type != constant('App\\Entity\\OrderFormField::TYPE_DOCUMENT') %}
+        <div class="row">
+            <div class="col-md-12">
+                {% embed '_skeleton/_card.html.twig' %}
+                    {% block card_tools %}
+                        <a href="{{ path('admin_order_form_field_choice_create', {'field':field.id}) }}"
+                           class="btn btn-primary btn-sm">
+                            <i class="fa fa-plus"></i>
+                            <span class="d-none d-md-inline">{{ '_meta.word.add'|trans }}</span>
+                        </a>
+                    {% endblock %}
 
-                {% block card_body %}
-                    <div id="order-form-fields">
-                        <table class="table table-bordered table-sm">
-                            <thead>
-                            <tr>
-                                {% if field.type == constant('App\\Entity\\OrderFormField::TYPE_ACTIVITY_CHOICE') %}
-                                    <th>{{ 'order_form_field_choice.label.activity'|trans({}, 'forms') }}</th>
-                                    <th>{{ 'order_form_field_choice.label.activity_amount'|trans({}, 'forms') }}</th>
-                                {% else %}
-                                    <th>{{ 'order_form_field_choice.label.allowance_label'|trans({}, 'forms') }}</th>
-                                    <th>{{ 'order_form_field_choice.label.allowance_percentage'|trans({}, 'forms') }}</th>
-                                {% endif %}
-                            </tr>
-                            </thead>
-                            <tbody>
-                                {% for choice in field.choices %}
-                                    {# @var \App\Entity\OrderFormFieldChoice choice #}
-                                    <tr>
-                                        {% if choice.activity %}
-                                            <td>{{ choice.activity.name }}</td>
-                                            <td>{% if choice.activityAmount %}{{ choice.activityAmount|format_currency('EUR') }}{% else %}0{% endif %}</td>
-                                        {% else %}
-                                            <td>{{ choice.allowanceLabel }}</td>
-                                            <td>{{ choice.allowancePercentage }} %</td>
-                                        {% endif %}
+                    {% block card_body %}
+                        <div id="order-form-fields">
+                            <table class="table table-bordered table-sm">
+                                <thead>
+                                <tr>
+                                    {% if field.type == constant('App\\Entity\\OrderFormField::TYPE_ACTIVITY_CHOICE') %}
+                                        <th>{{ 'order_form_field_choice.label.activity'|trans({}, 'forms') }}</th>
+                                        <th>{{ 'order_form_field_choice.label.activity_amount'|trans({}, 'forms') }}</th>
+                                    {% elseif field.type == constant('App\\Entity\\OrderFormField::TYPE_ALLOWANCE_CHOICE') %}
+                                        <th>{{ 'order_form_field_choice.label.allowance_label'|trans({}, 'forms') }}</th>
+                                        <th>{{ 'order_form_field_choice.label.allowance_percentage'|trans({}, 'forms') }}</th>
+                                    {% endif %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {% for choice in field.choices %}
+                                        {# @var \App\Entity\OrderFormFieldChoice choice #}
+                                        <tr>
+                                            {% if choice.activity %}
+                                                <td>{{ choice.activity.name }}</td>
+                                                <td>{% if choice.activityAmount %}{{ choice.activityAmount|format_currency('EUR') }}{% else %}0{% endif %}</td>
+                                            {% else %}
+                                                <td>{{ choice.allowanceLabel }}</td>
+                                                <td>{{ choice.allowancePercentage }} %</td>
+                                            {% endif %}
 
-                                        <td class="text-center">
-                                            <a href="{{ path('admin_order_form_field_choice_edit', {'choice':choice.id }) }}" class="btn btn-primary btn-sm">
-                                                <span class="fa fa-edit"></span>
-                                            </a>
-                                            <a href="{{ path('admin_order_form_field_choice_delete', {'choice':choice.id }) }}" class="btn btn-danger btn-sm">
-                                                <span class="fa fa-trash"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                {% endblock %}
-            {% endembed %}
+                                            <td class="text-center">
+                                                <a href="{{ path('admin_order_form_field_choice_edit', {'choice':choice.id }) }}" class="btn btn-primary btn-sm">
+                                                    <span class="fa fa-edit"></span>
+                                                </a>
+                                                <a href="{{ path('admin_order_form_field_choice_delete', {'choice':choice.id }) }}" class="btn btn-danger btn-sm">
+                                                    <span class="fa fa-trash"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endblock %}
+                {% endembed %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}

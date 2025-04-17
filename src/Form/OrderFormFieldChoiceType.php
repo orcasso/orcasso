@@ -34,7 +34,7 @@ class OrderFormFieldChoiceType extends AbstractType
                     'empty_data' => 0,
                 ])
             ;
-        } else {
+        } elseif (OrderFormField::TYPE_ALLOWANCE_CHOICE === $choice->getField()->getType()) {
             $builder
                 ->add('allowanceLabel', TextType::class, [
                     'label' => 'order_form_field_choice.label.allowance_label',

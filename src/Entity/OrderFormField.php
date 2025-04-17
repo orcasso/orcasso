@@ -10,15 +10,18 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: OrderFormFieldRepository::class)]
 #[ORM\UniqueConstraint(fields: ['form', 'question'])]
+#[ORM\UniqueConstraint(fields: ['form', 'position'])]
 class OrderFormField
 {
     use TimestampableEntity;
 
     public const TYPE_ACTIVITY_CHOICE = 'activity_choice';
     public const TYPE_ALLOWANCE_CHOICE = 'allowance_choice';
+    public const TYPE_DOCUMENT = 'document';
     public const TYPES = [
         self::TYPE_ACTIVITY_CHOICE,
         self::TYPE_ALLOWANCE_CHOICE,
+        self::TYPE_DOCUMENT,
     ];
 
     #[ORM\Id]
@@ -52,9 +55,6 @@ class OrderFormField
     {
         $this->form = $form;
         $this->position = 0;
-        foreach ($form->getFields() as $field) {
-            $this->position = max($this->position, $field->position + 1);
-        }
         $this->form->addField($this);
         $this->choices = new ArrayCollection();
     }
@@ -149,6 +149,9 @@ class OrderFormField
     {
         if ($choice->getField() !== $this) {
             throw new \InvalidArgumentException('Invalid choice');
+        }
+        if ($this->getType() === static::TYPE_DOCUMENT) {
+            throw new \InvalidArgumentException('No choice expected for document type field');
         }
         if (!$this->choices->contains($choice)) {
             $this->choices->add($choice);

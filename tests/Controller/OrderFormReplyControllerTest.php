@@ -4,9 +4,11 @@ namespace App\Tests\Controller;
 
 use App\Entity\Order;
 use App\Entity\OrderForm;
+use App\Entity\OrderFormField;
 use App\Entity\OrderFormFieldChoice;
 use App\Entity\OrderFormReply;
 use Faker\Factory;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
 final class OrderFormReplyControllerTest extends AbstractWebTestCase
@@ -31,6 +33,12 @@ final class OrderFormReplyControllerTest extends AbstractWebTestCase
             $form['order_form_reply[memberData][city]'] = $faker->city();
             foreach ($orderForm->getFields() as $field) {
                 if (!$field->isRequired() && random_int(0, 1)) {
+                    continue;
+                }
+                if (OrderFormField::TYPE_DOCUMENT === $field->getType()) {
+                    $form["order_form_reply[fieldValues_{$field->getPosition()}]"] =
+                        new UploadedFile(__DIR__.'/../../src/Dev/DataFixtures/data/quotient_familial.jpeg', 'quotient_familial.jpeg')
+                    ;
                     continue;
                 }
                 /** @var OrderFormFieldChoice $choice */
