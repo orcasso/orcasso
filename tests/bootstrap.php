@@ -10,5 +10,6 @@ if (file_exists(dirname(__DIR__).'/config/bootstrap.php')) {
     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
 }
 
+passthru('rm -fr /tmp/app-test-storage-member-documents');
 passthru(sprintf('php "%s/../bin/console" doctrine:schema:update --force --env test', __DIR__));
 passthru(sprintf('php "%s/../bin/console" doctrine:fixtures:load --no-interaction --env test', __DIR__));

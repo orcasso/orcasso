@@ -66,6 +66,19 @@ admin:
             title: 'Modification du membre'
         list:
             title: 'Liste des membres'
+        show:
+            no_activity: 'Aucune activité ou cotisation'
+            no_order: 'Aucune commande'
+            no_document: 'Aucun document'
+
+    member_document:
+        create:
+            title: 'Ajout d''un document'
+        delete:
+            confirmation_message: 'Êtes-vous sûr de vouloir supprimer ce document `%name%` ?'
+            title: 'Suppression du document'
+        edit:
+            title: 'Modification du document'
 
     order:
         change_status:

@@ -1,4 +1,5 @@
 import './styles/app.css';
+import bsCustomFileInput from 'bs-custom-file-input'
 
 window.initializeSelect2s = function () {
     $('.select2-ajax-loader').select2({
@@ -29,4 +30,5 @@ window.initializeSelect2s = function () {
 $(document).ready(function () {
     $.fn.select2.defaults.set('theme', 'bootstrap4');
     window.initializeSelect2s();
+    bsCustomFileInput.init()
 });

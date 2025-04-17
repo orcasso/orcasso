@@ -15,6 +15,7 @@ final class MemberControllerTest extends AbstractWebTestCase
     {
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getUrl('admin_member_list'));
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getUrl('admin_member_list_ajax'));
+        $this->assertRedirectToLogin(Request::METHOD_GET, $this->getShowUrl($this->getFixtureMember()));
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getEditUrl($this->getFixtureMember()));
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getCreateUrl());
         $this->assertRedirectToLogin(Request::METHOD_GET, $this->getDeleteUrl($this->getFixtureMember()));
@@ -28,6 +29,7 @@ final class MemberControllerTest extends AbstractWebTestCase
         $this->authenticateUser();
         $this->assertAccessDenied(Request::METHOD_GET, $this->getUrl('admin_member_list'));
         $this->assertAccessDenied(Request::METHOD_GET, $this->getUrl('admin_member_list_ajax'));
+        $this->assertAccessDenied(Request::METHOD_GET, $this->getShowUrl($this->getFixtureMember()));
         $this->assertAccessDenied(Request::METHOD_GET, $this->getEditUrl($this->getFixtureMember()));
         $this->assertAccessDenied(Request::METHOD_GET, $this->getCreateUrl());
         $this->assertAccessDenied(Request::METHOD_GET, $this->getDeleteUrl($this->getFixtureMember()));
@@ -49,6 +51,16 @@ final class MemberControllerTest extends AbstractWebTestCase
         $this->assertEquals(MemberFixtures::COUNT, $this->getResponseJsonContent()['totalRows']);
     }
 
+    public function testShow()
+    {
+        $member = $this->getFixtureMember();
+        $showUrl = $this->getShowUrl($member);
+
+        $this->authenticateUser();
+        $this->client->request(Request::METHOD_GET, $showUrl);
+        $this->assertResponseIsSuccessful();
+    }
+
     public function testEdit()
     {
         $member = $this->getFixtureMember();
@@ -63,7 +75,7 @@ final class MemberControllerTest extends AbstractWebTestCase
             'member[firstName]' => $newName = 'MemberName',
         ]);
 
-        $this->assertTrue($this->client->getResponse()->isRedirect($editUrl));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->getShowUrl($member)));
         $this->assertHasFlash('success', 'success.member.updated');
 
         $member = $this->getFixtureMember();
@@ -85,7 +97,7 @@ final class MemberControllerTest extends AbstractWebTestCase
         ]);
 
         $this->assertEquals(MemberFixtures::COUNT + 1, $this->getDoctrine()->getRepository(Member::class)->count());
-        $this->assertTrue($this->client->getResponse()->isRedirect($this->getEditUrl($member = $this->getFixtureMember($email))));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->getShowUrl($this->getFixtureMember($email))));
         $this->assertHasFlash('success', 'success.member.created');
     }
 
@@ -106,6 +118,11 @@ final class MemberControllerTest extends AbstractWebTestCase
     protected function getFixtureMember(string $email = UserFixtures::USERS[0]): Member
     {
         return $this->getDoctrine()->getRepository(Member::class)->findOneBy(['email' => $email]);
+    }
+
+    protected function getShowUrl(Member $member): string
+    {
+        return $this->getUrl('admin_member_show', ['member' => $member->getId()]);
     }
 
     protected function getEditUrl(Member $member): string

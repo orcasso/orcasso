@@ -1,7 +1,9 @@
 _meta:
     age: 'Âge'
     created_at: 'Création le'
+    file: 'Fichier'
     updated_at: 'Modification le'
+    years: 'Ans'
 
 activity:
     help:
@@ -22,8 +24,10 @@ member:
     label:
         birth_date: 'Date de naissance'
         city: 'Ville'
+        documents: 'Documents'
         email: 'Email'
         first_name: 'Prénom'
+        full_address: 'Adresse'
         gender: Genre
         last_name: 'Nom'
         phone_number: Téléphone
@@ -31,6 +35,11 @@ member:
         street1: Adresse 1
         street2: Adresse 2
         street3: Adresse 3
+
+member_document:
+    label:
+        name: Titre du document
+
 order:
     choice:
         status:
@@ -83,6 +92,7 @@ order_line:
         allowance_percentage: Remise (%)
         amount: Montant
         label: Désignation
+        order: Commande
         subscribed_activity: Activité / Cotisation
 
 payment:

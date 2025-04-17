@@ -2,11 +2,7 @@
     {% block card_info %}
         {% if entity is defined %}
             <div class="info-box small">
-                {% if entity.deletedAt is defined and entity.deletedAt is not null %}
-                    <span class="info-box-icon bg-danger"><i class="fa fa-exclamation-triangle"></i></span>
-                {% else %}
-                    <span class="info-box-icon bg-info"><i class="fa fa-info-circle"></i></span>
-                {% endif %}
+                <span class="info-box-icon bg-info"><i class="fa fa-info-circle"></i></span>
                 <div class="info-box-content">
                     <div>
                         <b>{{ "_meta.created_at" | trans({}, 'forms') }} :</b>

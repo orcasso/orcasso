@@ -1,0 +1,10 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_member_show', {'member':form.vars.data.member.id}) %}
+{% set url_delete = path('admin_member_document_delete', {'document':document.id}) %}
+
+{% block content_header_title %}{{ 'admin.member_document.edit.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_edit.html.twig' with {'entity': document} %}{% endembed %}
+{% endblock %}

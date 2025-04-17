@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_member_document_edit', {'document':document.id}) %}
+
+{% set confirmation_message = 'admin.member_document.delete.confirmation_message'|trans({'%name%': document.name}) %}
+
+{% block content_header_title %}{{ 'admin.member_document.delete.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_delete.html.twig' %}{% endembed %}
+{% endblock %}
