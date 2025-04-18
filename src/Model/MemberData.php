@@ -28,6 +28,11 @@ class MemberData
 
     public string $city = '';
 
+    /**
+     * @var LegalRepresentativeData[]
+     */
+    public array $legalRepresentatives = [];
+
     public static function denormalize(array $memberData): static
     {
         $object = new static();
@@ -78,6 +83,16 @@ class MemberData
         $member->setPostalCode($this->postalCode);
         $member->setCity($this->city);
 
+        foreach ($this->legalRepresentatives as $representative) {
+            $found = null;
+            foreach ($member->getLegalRepresentatives() as $already) {
+                if ($already->getFirstName() === $representative->firstName && $already->getLastName() === $representative->lastName) {
+                    $found = $already;
+                }
+            }
+            $representative->toLegalRepresentative($found, $member);
+        }
+
         return $member;
     }
 
@@ -95,6 +110,15 @@ class MemberData
         $this->postalCode = $member->getPostalCode();
         $this->city = $member->getCity();
 
+        foreach ($member->getLegalRepresentatives() as $representative) {
+            $this->legalRepresentatives[] = (new LegalRepresentativeData())->fromLegalRepresentative($representative);
+        }
+
         return $this;
+    }
+
+    public function getAge(): int
+    {
+        return $this->birthDate->diff(date_create_immutable())->y;
     }
 }

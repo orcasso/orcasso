@@ -2,7 +2,18 @@
 
 {% set url_cancel = path('homepage') %}
 
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' '_form/jquery.collection.html.twig' _self %}
+
+{% block member_data_label %}<h5 class="text-primary">{{ 'order_form_reply.label.member_data'|trans({}, 'forms') }}</h5>{% endblock %}
+
+{% block _order_form_reply_memberData_legalRepresentatives_row %}
+    <h5 class="text-primary">{{ 'member.label.legal_representatives'|trans({}, 'forms') }}</h5>
+    {{ block('collection_widget') }}
+    <hr />
+    <h5 class="text-primary">{{ 'order_form_reply.label.fieldValues'|trans({}, 'forms') }}</h5>
+{% endblock %}
+
+{% block legal_representative_data_type_label %}{% endblock %}
 
 {% block content_header_title %}{{ order_form.title }}{% endblock %}
 
