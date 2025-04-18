@@ -32,7 +32,34 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="info-box small">
+                            <span class="info-box-icon bg-danger"><i class="fas fa-child"></i></span>
+                            <div class="info-box-content">
+                                <strong class="info-box-text">
+                                    {{ 'member.label.legal_representatives'|trans({}, 'forms') }}
+                                    <a href="{{ path('admin_legal_representative_create', {'member':member.id}) }}" title="{{ '_meta.word.add'|trans }}">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                </strong>
+                                <ul class="list-unstyled">
+                                    {% for representative in member.legalRepresentatives %}
+                                        <li>
+                                            <a href="{{ path('admin_legal_representative_edit', {'representative':representative.id}) }}"
+                                               title="{{ '_meta.word.edit'|trans }}">
+                                                {{ representative.fullName }}
+                                                {{ representative.email }}
+                                                {{ representative.phoneNumber }}
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li><i>{{ 'admin.member.show.no_legal_representative'|trans }}</i></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
             </div>
         {% endblock %}
         {% block card_tools %}

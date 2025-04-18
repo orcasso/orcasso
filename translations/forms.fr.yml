@@ -30,6 +30,7 @@ member:
         full_address: 'Adresse'
         gender: Genre
         last_name: 'Nom'
+        legal_representatives: 'Représentants légaux'
         phone_number: Téléphone
         postal_code: 'Code postal'
         street1: Adresse 1
