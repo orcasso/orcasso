@@ -66,10 +66,17 @@ class Member
     #[ORM\OneToMany(targetEntity: MemberDocument::class, mappedBy: 'member', orphanRemoval: true)]
     private Collection $documents;
 
+    /**
+     * @var Collection<int, LegalRepresentative>
+     */
+    #[ORM\OneToMany(targetEntity: LegalRepresentative::class, mappedBy: 'member', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $legalRepresentatives;
+
     public function __construct()
     {
         $this->birthDate = date_create_immutable();
         $this->documents = new ArrayCollection();
+        $this->legalRepresentatives = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -257,6 +264,30 @@ class Member
                 $filename->setMember(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LegalRepresentative>
+     */
+    public function getLegalRepresentatives(): Collection
+    {
+        return $this->legalRepresentatives;
+    }
+
+    public function addLegalRepresentative(LegalRepresentative $representative): static
+    {
+        if (!$this->legalRepresentatives->contains($representative)) {
+            $this->legalRepresentatives->add($representative);
+        }
+
+        return $this;
+    }
+
+    public function removeLegalRepresentative(LegalRepresentative $representative): static
+    {
+        $this->legalRepresentatives->removeElement($representative);
 
         return $this;
     }

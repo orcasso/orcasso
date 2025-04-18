@@ -6,5 +6,16 @@
 {% block content_header_title %}{{ 'admin.member_document.edit.title'|trans }}{% endblock %}
 
 {% block content_body %}
-    {% embed '_skeleton/crud/_edit.html.twig' with {'entity': document} %}{% endembed %}
+    {% embed '_skeleton/crud/_edit.html.twig' with {'entity': document} %}
+
+        {% block card_form_btn_delete %}
+            {{ parent() }}
+
+            <a href="{{ path('admin_member_document_download', {'document':document.id}) }}" class="btn btn-primary btn-sm">
+                <i class="fa fa-download"></i>
+                <span class="d-none d-md-inline">{{ '_meta.word.download'|trans }}</span>
+            </a>
+            &nbsp;-&nbsp;
+        {% endblock %}
+    {% endembed %}
 {% endblock %}

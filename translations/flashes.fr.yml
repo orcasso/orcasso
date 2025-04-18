@@ -4,6 +4,11 @@ success:
         deleted: 'L''activité a été supprimée'
         updated: 'L''activité a bien été modifiée'
 
+    legal_representative:
+        created: 'Le responsable légal a bien été créé'
+        deleted: 'Le responsable légal a été supprimé'
+        updated: 'Le responsable légal a bien été modifié'
+
     member:
         created: 'Le membre a bien été créé'
         deleted: 'Le membre a été supprimé'

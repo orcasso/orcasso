@@ -56,9 +56,18 @@ admin:
         list:
             title: 'Liste des activités et cotisations'
 
+    legal_representative:
+        create:
+            title: 'Ajout d''un représentant légal'
+        delete:
+            confirmation_message: 'Êtes-vous sûr de vouloir supprimer ce représentant légal `%name%` ?'
+            title: 'Suppression du représentant légal'
+        edit:
+            title: 'Modification du représentant légal'
+
     member:
         create:
-            title: 'Ajout d''un membre ou responsable légal'
+            title: 'Ajout d''un membre'
         delete:
             confirmation_message: 'Êtes-vous sûr de vouloir supprimer %name% ?'
             title: 'Suppression du membre'
@@ -70,6 +79,7 @@ admin:
             no_activity: 'Aucune activité ou cotisation'
             no_order: 'Aucune commande'
             no_document: 'Aucun document'
+            no_legal_representative: 'Aucun représentant légal'
 
     member_document:
         create:

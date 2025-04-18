@@ -1,0 +1,20 @@
+App\Entity\LegalRepresentative:
+    properties:
+        email:
+            - NotBlank: ~
+            - Email: ~
+        firstName:
+            - NotBlank: ~
+            - Length:
+                min: 2
+                max: 255
+        lastName:
+            - NotBlank: ~
+            - Length:
+                min: 2
+                max: 255
+        phoneNumber:
+            - NotBlank: ~
+            - Length:
+                min: 10
+

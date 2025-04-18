@@ -30,6 +30,7 @@ member:
         full_address: 'Adresse'
         gender: Genre
         last_name: 'Nom'
+        legal_representatives: 'Représentants légaux'
         phone_number: Téléphone
         postal_code: 'Code postal'
         street1: Adresse 1
@@ -83,6 +84,7 @@ order_form_field_choice:
 
 order_form_reply:
     label:
+        fieldValues: 'Formulaire d''adhésion'
         member_data: 'Informations de l''adhérent'
         notes: Avez-vous des remarques ou informations complémentaires ?
 

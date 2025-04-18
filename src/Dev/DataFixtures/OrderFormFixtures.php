@@ -78,7 +78,7 @@ class OrderFormFixtures extends Fixture implements DependentFixtureInterface
         (new OrderFormFieldChoice($field))->setAllowanceLabel('900 < QF < 1300')->setAllowancePercentage(10);
         (new OrderFormFieldChoice($field))->setAllowanceLabel('QF > 1300')->setAllowancePercentage(0);
 
-        (new OrderFormField($form))->setType(OrderFormField::TYPE_DOCUMENT)
+        (new OrderFormField($form))->setType(OrderFormField::TYPE_DOCUMENT)->setRequired(false)
             ->setQuestion('Merci de fournir l\'attestation de quotient familial si inférieur à 1300.')
         ;
 

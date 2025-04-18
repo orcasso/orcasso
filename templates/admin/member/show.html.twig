@@ -9,25 +9,21 @@
     {% embed '_skeleton/_card_with_header.html.twig' with {'entity':member} %}
         {% block card_info %}
             <div class="row">
-                <div class="col-lg-6">{{ parent() }}</div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">{{ parent() }}</div>
+                <div class="col-lg-4">
                     <div class="info-box small">
                         <span class="info-box-icon bg-warning"><i class="fas fa-file-pdf"></i></span>
                         <div class="info-box-content">
                             <strong class="info-box-text">
                                 {{ 'member.label.documents'|trans({}, 'forms') }}
-                                <a href="{{ path('admin_member_document_create', {'member':member.id}) }}" class="btn btn-primary btn-xs" title="{{ '_meta.word.add'|trans }}">
-                                    <i class="fas fa-plus"></i>
+                                <a href="{{ path('admin_member_document_create', {'member':member.id}) }}" title="{{ '_meta.word.add'|trans }}">
+                                    <i class="fas fa-plus-circle"></i>
                                 </a>
                             </strong>
                             <ul class="list-unstyled">
                                 {% for document in member.documents %}
-                                    <li>
-                                        {{ document.name }} -
-                                        <a href="{{ path('admin_member_document_download', {'document':document.id}) }}">{{ document.fileName }}</a>
-
-                                        <a href="{{ path('admin_member_document_edit', {'document':document.id}) }}" class="btn btn-primary btn-xs" title="{{ '_meta.word.edit'|trans }}">
-                                            <i class="fas fa-edit"></i>
+                                    <li><a href="{{ path('admin_member_document_edit', {'document':document.id}) }}" title="{{ '_meta.word.edit'|trans }}">
+                                            {{ document.name ?: document.fileName }}
                                         </a>
                                     </li>
                                 {% else %}
@@ -36,7 +32,34 @@
                             </ul>
                         </div>
                     </div>
-                </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="info-box small">
+                            <span class="info-box-icon bg-danger"><i class="fas fa-child"></i></span>
+                            <div class="info-box-content">
+                                <strong class="info-box-text">
+                                    {{ 'member.label.legal_representatives'|trans({}, 'forms') }}
+                                    <a href="{{ path('admin_legal_representative_create', {'member':member.id}) }}" title="{{ '_meta.word.add'|trans }}">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
+                                </strong>
+                                <ul class="list-unstyled">
+                                    {% for representative in member.legalRepresentatives %}
+                                        <li>
+                                            <a href="{{ path('admin_legal_representative_edit', {'representative':representative.id}) }}"
+                                               title="{{ '_meta.word.edit'|trans }}">
+                                                {{ representative.fullName }}
+                                                {{ representative.email }}
+                                                {{ representative.phoneNumber }}
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li><i>{{ 'admin.member.show.no_legal_representative'|trans }}</i></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
             </div>
         {% endblock %}
         {% block card_tools %}

@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_legal_representative_edit', {'representative':representative.id}) %}
+
+{% set confirmation_message = 'admin.legal_representative.delete.confirmation_message'|trans({'%name%': representative.fullName}) %}
+
+{% block content_header_title %}{{ 'admin.legal_representative.delete.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_delete.html.twig' %}{% endembed %}
+{% endblock %}
