@@ -57,10 +57,8 @@ class OrderFormFixtures extends Fixture implements DependentFixtureInterface
             ->setType(OrderFormField::TYPE_ALLOWANCE_CHOICE)
             ->setQuestion('Quelle est votre commune ?')
         ;
-        (new OrderFormFieldChoice($field))->setAllowanceLabel('Commune adhérente : Grane')->setAllowancePercentage(18);
-        (new OrderFormFieldChoice($field))->setAllowanceLabel('Commune adhérente : Allex')->setAllowancePercentage(18);
-        (new OrderFormFieldChoice($field))->setAllowanceLabel('Commune participante : Chabrillan')->setAllowancePercentage(5);
-        (new OrderFormFieldChoice($field))->setAllowanceLabel('Commune participante : La Roche-sur-Grane')->setAllowancePercentage(5);
+        (new OrderFormFieldChoice($field))->setAllowanceLabel('Commune adhérente (Grane/Allex)')->setAllowancePercentage(18);
+        (new OrderFormFieldChoice($field))->setAllowanceLabel('Commune participante (Chabrillan/Roche-sur-Grane)')->setAllowancePercentage(5);
         (new OrderFormFieldChoice($field))->setAllowanceLabel('Autre commune')->setAllowancePercentage(0);
 
         $field = (new OrderFormField($form))
