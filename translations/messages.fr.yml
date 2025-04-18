@@ -58,7 +58,7 @@ admin:
 
     member:
         create:
-            title: 'Ajout d''un membre ou responsable légal'
+            title: 'Ajout d''un membre'
         delete:
             confirmation_message: 'Êtes-vous sûr de vouloir supprimer %name% ?'
             title: 'Suppression du membre'
