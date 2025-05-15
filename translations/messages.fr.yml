@@ -194,6 +194,17 @@ home:
         actions:
             reply_order_form: 'Adhérer !'
 
+order:
+    pay:
+        msg: |
+            Merci pour votre inscription !
+            
+            Vous pouvez régler votre commande en choisissant une des méthodes de paiement ci-dessous.
+
+        payment_method_bank_transfer_iban: 'IBAN'
+        payment_method_bank_transfer_bic: 'BIC'
+        payment_method_bank_transfer_msg: 'Merci d''indiquer le numéro de commande `%order%` dans la référence de virement.'
+
 security:
     authentication:
         login:
