@@ -134,7 +134,7 @@
                         {% for order in orders %}
                             {# @var \App\Entity\Order order #}
                             <tr>
-                                <td><a href="{{ path('admin_order_edit', {'order':order.id}) }}">{{ order.id }}</a></td>
+                                <td><a href="{{ path('admin_order_edit', {'order':order.id}) }}">{{ order.identifier }}</a></td>
                                 <td class="text-center">{{ order.createdAt|date('d/m/Y') }}</td>
                                 <td class="text-right">{{ order.totalAmount|format_currency('EUR') }}</td>
                                 <td class="text-right {{ order.paidAmount < order.totalAmount ? 'text-danger' : 'text-success' }}">
@@ -170,7 +170,7 @@
                             </tr>
                             {% for activity in activities %}
                                 <tr>
-                                    <td><a href="{{ path('admin_order_edit', {'order':activity.order.id}) }}">{{ activity.order.id }}</a></td>
+                                    <td><a href="{{ path('admin_order_edit', {'order':activity.order.id}) }}">{{ activity.order.identifier }}</a></td>
                                     <td>{{ activity.subscribedActivity.name }}</td>
                                     <td class="text-right">{{ activity.order.createdAt|date('d/m/Y') }}</td>
                                 </tr>

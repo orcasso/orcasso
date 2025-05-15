@@ -49,7 +49,7 @@ order:
             validated: Validée
     label:
         due_amount: 'Montant dû'
-        id: Numéro
+        identifier: Numéro
         lines: Lignes
         member: Membre
         notes: Notes

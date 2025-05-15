@@ -1,7 +1,7 @@
 {% extends 'layout.html.twig' %}
 
 {% set url_cancel = path('admin_order_list') %}
-{% set confirmation_message = 'admin.order.delete.confirmation_message'|trans({'%id%': order.id, '%name%':(order.member.fullName)}) %}
+{% set confirmation_message = 'admin.order.delete.confirmation_message'|trans({'%id%': order.identifier, '%name%':(order.member.fullName)}) %}
 
 {% block content_header_title %}{{ 'admin.order.delete.title'|trans }}{% endblock %}
 
