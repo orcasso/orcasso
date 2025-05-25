@@ -1,0 +1,9 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_dashboard') %}
+
+{% block content_header_title %}{{ 'admin.configuration.edit.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_edit.html.twig' %}{% endembed %}
+{% endblock %}

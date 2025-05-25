@@ -4,6 +4,9 @@ success:
         deleted: 'L''activité a été supprimée'
         updated: 'L''activité a bien été modifiée'
 
+    configuration:
+        updated: 'La configuration a bien été enregistrée'
+
     legal_representative:
         created: 'Le responsable légal a bien été créé'
         deleted: 'Le responsable légal a été supprimé'

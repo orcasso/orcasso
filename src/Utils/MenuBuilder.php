@@ -92,6 +92,18 @@ class MenuBuilder
             ]);
         }
 
+        if ($this->authorizationChecker->isGranted(User::ROLE_ADMIN_CONFIGURATION_EDIT)) {
+            $menu->addChild('_menu.configuration', [
+                'route' => 'admin_configuration_edit',
+                'extras' => [
+                    'icon_class' => 'fas fa-cogs',
+                    'routes' => [
+                        ['pattern' => '/^admin_configuration_edit/'],
+                    ],
+                ],
+            ]);
+        }
+
         if ('_menu.separation.configuration' === $menu->getLastChild()->getName()) {
             $menu->removeChild('_menu.separation.configuration');
         }
