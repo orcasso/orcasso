@@ -1,3 +1,12 @@
+OrcAsso
+======
+
+Open-source Registry for Clubs and Associations
+----------------------
+
+L'application OrcAsso facilite la gestion des adhérents pour votre association à but non lucratif.
+Le code source est libre et l'application gratuite.
+
 Installation
 ------------
 
