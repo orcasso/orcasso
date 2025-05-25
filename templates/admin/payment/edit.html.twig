@@ -95,7 +95,7 @@
                                 {# @var App\Entity\PaymentOrder order #}
                                 <tr>
                                     <td><a href="{{ path('admin_member_show', {'member':order.order.member.id}) }}">{{ order.order.member.fullName }}</a></td>
-                                    <td><a href="{{ path('admin_order_edit', {'order':order.order.id}) }}"># {{ order.order.id }}</a></td>
+                                    <td><a href="{{ path('admin_order_edit', {'order':order.order.id}) }}">{{ order.order.identifier }}</a></td>
                                     <td>{% for line in order.order.lines %}{{ line.label }}{% if not loop.last %}<br />{% endif %}{% endfor %}</td>
                                     <td class="text-right">{{ order.amount|format_currency('EUR') }}</td>
                                     <td class="text-center">

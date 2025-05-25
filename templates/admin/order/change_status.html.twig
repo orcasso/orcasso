@@ -9,7 +9,7 @@
         {% block card_body %}
             {{ parent() }}
             <p class="lead">{{ 'admin.order.change_status.confirmation_message'|trans({
-                '%id%': order.id,
+                '%id%': order.identifier,
                 '%status%':(('order.choice.status.' ~ status)|trans({}, 'forms'))
             }) }}</p>
         {% endblock %}

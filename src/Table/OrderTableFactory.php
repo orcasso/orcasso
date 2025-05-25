@@ -44,11 +44,11 @@ class OrderTableFactory
                 'identifier_name' => 'order',
             ])
             ->addColumn(
-                (new Column())->setLabel('order.label.id')->setTranslateDomain('forms')
-                    ->setSort(['o.id' => 'asc'])
+                (new Column())->setLabel('order.label.identifier')->setTranslateDomain('forms')
+                    ->setSort(['o.identifier' => 'asc'])
                     ->setFilter((new Filter())
-                        ->setField('o.id')
-                        ->setName('o_id')
+                        ->setField('o.identifier')
+                        ->setName('o_identifier')
                     )
             )
             ->addColumn(

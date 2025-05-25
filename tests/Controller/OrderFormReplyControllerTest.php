@@ -25,7 +25,7 @@ final class OrderFormReplyControllerTest extends AbstractWebTestCase
             $form = $buttonCrawlerNode->form();
             $form['order_form_reply[memberData][firstName]'] = $faker->firstName();
             $form['order_form_reply[memberData][lastName]'] = $faker->lastName();
-            $form['order_form_reply[memberData][birthDate]'] = $faker->date('Y-m-d', 'yesterday');
+            $form['order_form_reply[memberData][birthDate]'] = $faker->date('Y-m-d', '-18 years');
             $form['order_form_reply[memberData][email]'] = $faker->email();
             $form['order_form_reply[memberData][phoneNumber]'] = $faker->phoneNumber();
             $form['order_form_reply[memberData][street1]'] = $faker->streetAddress();
@@ -46,7 +46,8 @@ final class OrderFormReplyControllerTest extends AbstractWebTestCase
                 $form["order_form_reply[fieldValues_{$field->getPosition()}]"]->select($choice->getActivity()?->getName() ?? $choice->getAllowanceLabel());
             }
             $this->client->submit($form);
-            $this->assertTrue($this->client->getResponse()->isRedirect($this->getUrl('homepage')));
+            $order = $this->em->getRepository(Order::class)->findBy([], ['id' => 'desc'], 1)[0];
+            $this->assertTrue($this->client->getResponse()->isRedirect($this->getUrl('order_pay', ['identifier' => $order->getIdentifier()])));
             $this->assertHasFlash('success', 'success.order.created');
             $this->assertEquals(++$replyCount, $this->em->getRepository(OrderFormReply::class)->count());
             $this->assertEquals(++$orderCount, $this->em->getRepository(Order::class)->count(['status' => Order::STATUS_PENDING]));

@@ -32,6 +32,7 @@ _meta:
 
 _menu:
     activity: Activités & Cotisations
+    configuration: Configuration OrcAsso
     homepage: Accueil
     member: Membres
     order: Commandes
@@ -55,6 +56,10 @@ admin:
             title: 'Modification de l''activité ou cotisation'
         list:
             title: 'Liste des activités et cotisations'
+
+    configuration:
+        edit:
+            title: 'Configuration de l''application OrcAsso'
 
     legal_representative:
         create:
@@ -188,6 +193,17 @@ home:
         title: 'Bienvenue'
         actions:
             reply_order_form: 'Adhérer !'
+
+order:
+    pay:
+        msg: |
+            Merci pour votre inscription !
+            
+            Vous pouvez régler votre commande en choisissant une des méthodes de paiement ci-dessous.
+
+        payment_method_bank_transfer_iban: 'IBAN'
+        payment_method_bank_transfer_bic: 'BIC'
+        payment_method_bank_transfer_msg: 'Merci d''indiquer le numéro de commande `%order%` dans la référence de virement.'
 
 security:
     authentication:

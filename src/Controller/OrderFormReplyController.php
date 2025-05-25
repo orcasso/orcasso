@@ -56,6 +56,10 @@ final class OrderFormReplyController extends AbstractController
                 $this->addFlash('danger', 'Unable to store order');
             }
 
+            if ($reply->getOrder()) {
+                return $this->redirectToRoute('order_pay', ['identifier' => $reply->getOrder()->getIdentifier()]);
+            }
+
             return $this->redirectToRoute('homepage');
         }
 

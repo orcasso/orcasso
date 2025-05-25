@@ -1,0 +1,50 @@
+{% extends 'public_layout.html.twig' %}
+
+{% block content_header_title %}{{ order.identifier }}{% endblock %}
+
+{% block content_body %}
+    <div class="row">
+        <div class="col-lg-12">
+            {% embed '_skeleton/_card.html.twig' %}
+                {% block card_tools %}
+                    <a href="{{ path('homepage') }}" class="btn btn-secondary btn-sm">
+                        <i class="fa fa-chevron-left"></i>
+                        <span class="d-none d-md-inline">{{ '_meta.word.back'|trans }}</span>
+                    </a>
+                {% endblock %}
+
+                {% block card_body %}
+                    <p>{{ 'order.pay.msg'|trans|nl2br }}</p>
+
+                    <strong>{{ 'order.label.member'|trans({}, 'forms') }} : </strong>
+                    {{ order.member.fullName }}
+
+                    <br />
+
+                    <strong>{{ 'order.label.due_amount'|trans({}, 'forms') }} : </strong>
+                    {{ order.dueAmount|format_currency('EUR') }}
+                {% endblock %}
+            {% endembed %}
+
+            {% if payment_method_cheque_instruction %}
+                {% embed '_skeleton/_card.html.twig' %}
+                    {% block card_title %}{{ 'payment.choice.method.cheque'|trans({}, 'forms') }}{% endblock %}
+                    {% block card_body %}
+                        <p>{{ payment_method_cheque_instruction|nl2br }}</p>
+                    {% endblock %}
+                {% endembed %}
+            {% endif %}
+
+            {% if payment_method_bank_transfer_iban %}
+                {% embed '_skeleton/_card.html.twig' %}
+                    {% block card_title %}{{ 'payment.choice.method.bank_transfer'|trans({}, 'forms') }}{% endblock %}
+                    {% block card_body %}
+                        <p>{{ 'order.pay.payment_method_bank_transfer_iban'|trans }} <strong>{{ payment_method_bank_transfer_iban }}</strong></p>
+                        <p>{{ 'order.pay.payment_method_bank_transfer_bic'|trans }} <strong>{{ payment_method_bank_transfer_bic }}</strong></p>
+                        <p>{{ 'order.pay.payment_method_bank_transfer_msg'|trans({'%order%':order.identifier}) }}</p>
+                    {% endblock %}
+                {% endembed %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

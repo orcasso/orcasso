@@ -10,6 +10,7 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Table(name: 't_order')]
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Order
 {
     use TimestampableEntity;
@@ -29,6 +30,9 @@ class Order
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+
+    #[ORM\Column(name: 'identifier', type: 'string', length: 20, unique: true)]
+    protected string $identifier;
 
     #[ORM\Column(name: 'notes', type: 'text', options: ['default' => ''])]
     protected string $notes = '';
@@ -70,6 +74,23 @@ class Order
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
+    }
+
+    #[ORM\PrePersist]
+    public function setIdentifier(): static
+    {
+        $alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        $this->identifier = 'CMD-'.date('Ymd-');
+        while (\strlen($this->identifier) < 20) {
+            $this->identifier .= $alphabet[random_int(0, \strlen($alphabet) - 1)];
+        }
+
+        return $this;
     }
 
     public function getNotes(): string
