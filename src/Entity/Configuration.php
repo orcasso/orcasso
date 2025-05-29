@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Form\Type\SummernoteTextareaType;
 use App\Repository\ConfigurationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -14,11 +15,13 @@ class Configuration
 {
     use TimestampableEntity;
 
+    public const ITEM_HOMEPAGE_INTRODUCTION = 'homepage_introduction';
     public const ITEM_PAYMENT_METHOD_CHEQUE_INSTRUCTION = 'payment_method_cheque_instruction';
     public const ITEM_PAYMENT_METHOD_BANK_TRANSFER_IBAN = 'payment_method_bank_transfer_iban';
     public const ITEM_PAYMENT_METHOD_BANK_TRANSFER_BIC = 'payment_method_bank_transfer_bic';
 
     public const ITEMS_FORM_TYPES = [
+        self::ITEM_HOMEPAGE_INTRODUCTION => SummernoteTextareaType::class,
         self::ITEM_PAYMENT_METHOD_CHEQUE_INSTRUCTION => TextareaType::class,
         self::ITEM_PAYMENT_METHOD_BANK_TRANSFER_IBAN => TextType::class,
         self::ITEM_PAYMENT_METHOD_BANK_TRANSFER_BIC => TextType::class,
