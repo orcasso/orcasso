@@ -2,6 +2,10 @@ import './styles/app.css';
 import bsCustomFileInput from 'bs-custom-file-input'
 import './jquery.collection.js'
 
+import './summernote-0.9.1/summernote-bs4.min.css'
+import './summernote-0.9.1/summernote-bs4.min.js'
+import './summernote-0.9.1/lang/summernote-fr-FR.min.js'
+
 window.initializeSelect2s = function () {
     $('.select2-ajax-loader').select2({
         ajax: {}
@@ -53,9 +57,34 @@ window.initializeCollections = function () {
     }
 };
 
+window.initializeSummernote = function () {
+    let jqSummernote = $('textarea.summernote');
+
+    if (jqSummernote.length > 0) {
+        jqSummernote.summernote({
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                ['para', ['ul', 'ol']],
+                ['insert', ['picture', 'link']]
+            ],
+            styleTags: ['blockquote'],
+            callbacks: {
+                onPaste(e) {
+                    const bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+                    e.preventDefault();
+                    document.execCommand('insertText', false, bufferText);
+                }
+            },
+            lang: 'fr-FR'
+        });
+    }
+};
+
 $(document).ready(function () {
     $.fn.select2.defaults.set('theme', 'bootstrap4');
     window.initializeSelect2s();
     window.initializeCollections();
+    window.initializeSummernote();
     bsCustomFileInput.init()
 });

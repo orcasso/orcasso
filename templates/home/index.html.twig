@@ -2,8 +2,19 @@
 
 {% block content_header_title %}{{ 'home.index.title'|trans }}{% endblock %}
 
-
 {% block content_body %}
+    {% if introduction is not empty %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card card-outline">
+                    <div class="card-body">
+                        <p class="card-text">{{ introduction|raw }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
     <div class="row">
         {% for order_form in order_forms %}
             <div class="col-lg-6">

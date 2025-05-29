@@ -18,6 +18,7 @@ activity:
 
 configuration:
     label:
+        homepage_introduction: 'Texte d''introduction sur la page d''accueil'
         payment_method_cheque_instruction: 'Indications pour le paiement par chèque'
         payment_method_bank_transfer_iban: 'IBAN'
         payment_method_bank_transfer_bic: 'BIC'
