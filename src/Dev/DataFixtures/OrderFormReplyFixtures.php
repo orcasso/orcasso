@@ -29,13 +29,21 @@ class OrderFormReplyFixtures extends Fixture implements DependentFixtureInterfac
     {
         $this->faker = Factory::create('fr_FR');
 
-        $forms = $manager->getRepository(OrderForm::class)->findAll();
+        $adultForms = $childForms = [];
+        foreach ($manager->getRepository(OrderForm::class)->findAll() as $form) {
+            if (str_contains($form->getTitle(), 'enfant')) {
+                $childForms[] = $form;
+                continue;
+            }
+            $adultForms[] = $form;
+        }
+
         foreach ($manager->getRepository(Member::class)->findAll() as $member) {
             if (UserFixtures::USERS[0] === $member->getEmail() || random_int(0, 1)) {
                 continue;
             }
             /** @var OrderForm $form */
-            $form = $this->faker->randomElement($forms);
+            $form = $this->faker->randomElement($member->getAge() >= 18 ? $adultForms : $childForms);
             $reply = new OrderFormReply($form);
             $reply->setCreatedAt($orderDate = $this->faker->dateTimeBetween('first day of january'))->setUpdatedAt($orderDate);
             $memberData = $reply->getMemberData();
