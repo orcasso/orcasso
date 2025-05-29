@@ -18,4 +18,6 @@ mkdir -p var/log
 
 docker compose up -d
 docker compose exec app composer install
+docker compose exec app bin/console importmap:install
+docker compose exec app composer reset:db
 ```
