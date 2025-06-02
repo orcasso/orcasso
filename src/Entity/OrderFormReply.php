@@ -121,7 +121,7 @@ class OrderFormReply
             if ($repliedChoice->getActivityAmount()) {
                 $amount += $repliedChoice->getActivityAmount();
             } elseif ($repliedChoice->getAllowancePercentage()) {
-                $amount -= ($amount * $repliedChoice->getAllowancePercentage() / 100);
+                $amount -= round($amount * $repliedChoice->getAllowancePercentage() / 100);
             }
         }
 
