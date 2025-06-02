@@ -6,6 +6,7 @@ use App\Repository\OrderFormFieldChoiceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
+#[ORM\Table(name: 't_order_form_field_choice')]
 #[ORM\Entity(repositoryClass: OrderFormFieldChoiceRepository::class)]
 #[ORM\UniqueConstraint(fields: ['field', 'activity'])]
 class OrderFormFieldChoice

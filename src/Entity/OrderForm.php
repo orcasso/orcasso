@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
+#[ORM\Table(name: 't_order_form')]
 #[ORM\Entity(repositoryClass: OrderFormRepository::class)]
 class OrderForm
 {

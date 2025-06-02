@@ -6,6 +6,7 @@ use App\Repository\PaymentOrderRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
+#[ORM\Table(name: 't_payment_order')]
 #[ORM\Entity(repositoryClass: PaymentOrderRepository::class)]
 class PaymentOrder
 {
