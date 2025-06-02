@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
+#[ORM\Table(name: 't_payment')]
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
 class Payment
 {
