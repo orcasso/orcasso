@@ -1,5 +1,6 @@
 parameters:
     app_directory_member_document_storage: '%env(resolve:DIRECTORY_MEMBER_DOCUMENT_STORAGE)%'
+    helloasso_api_url: '%env(HELLOASSO_API_URL)%'
 
 services:
     _defaults:
@@ -8,6 +9,7 @@ services:
 
         bind:
             string $appDirectoryMemberDocumentStorage: '%app_directory_member_document_storage%'
+            string $helloAssoApiUrl: '%helloasso_api_url%'
             string $kernelProjectDir: '%kernel.project_dir%'
 
     _instanceof:

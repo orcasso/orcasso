@@ -19,6 +19,9 @@ class ConfigurationFixtures extends Fixture
             ->setValue('Chèque à l\'ordre de "École de musique"'.\PHP_EOL.'à déposer dans la boite aux lettres'));
         $manager->persist((new Configuration(Configuration::ITEM_PAYMENT_METHOD_BANK_TRANSFER_IBAN))->setValue('FR76 1234 5123 4501 2345 6789 006'));
         $manager->persist((new Configuration(Configuration::ITEM_PAYMENT_METHOD_BANK_TRANSFER_BIC))->setValue('AAAAFRPPAAA'));
+        $manager->persist((new Configuration(Configuration::ITEM_HELLOASSO_CLIENT_ID))->setValue('cc1clientid'));
+        $manager->persist((new Configuration(Configuration::ITEM_HELLOASSO_CLIENT_SECRET))->setValue('SGUCLIENTSECRET'));
+        $manager->persist((new Configuration(Configuration::ITEM_HELLOASSO_ASSO_SLUG))->setValue('test-asso-slug'));
         $manager->flush();
     }
 }
