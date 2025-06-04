@@ -11,17 +11,13 @@ use Doctrine\Persistence\ObjectManager;
  */
 class ActivityFixtures extends Fixture
 {
-    public const FOR_THE_LITTLE_ONES = [
-        'Éveil musical',
-        'Initiation',
-    ];
-
     public const INSTRUMENTS = [
         'Chant',
         'Batterie',
         'Clarinette',
         'Flûte traversière',
         'Guitare',
+        'Guitare électrique',
         'Basse',
         'Piano',
         'Violon',
@@ -36,19 +32,29 @@ class ActivityFixtures extends Fixture
     ];
 
     public const COLLECTIVES = [
-        'Choeur Terpsichore',
+        'Initiation musicale (5-6 ans)',
+        'Chorale enfants (7-14 ans)',
         'Atelier musiques actuelles ado',
         'Atelier musiques actuelles adultes',
         'Atelier vocal adulte',
+        'Atelier musique à l\'image',
+        'Atelier de rythmique corporelle',
+        'Guitare - voix',
+        'Orchestre à danser',
+        'Batucada',
+    ];
+
+    public const CHOIR = [
+        'Choeur Terpsichore',
     ];
 
     public static function activities(): array
     {
         return array_merge(
-            static::FOR_THE_LITTLE_ONES,
             static::INSTRUMENTS,
             static::FM,
             static::COLLECTIVES,
+            static::CHOIR,
             ['Cotisation familiale']
         );
     }
