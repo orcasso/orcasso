@@ -21,3 +21,10 @@ docker compose exec app composer install
 docker compose exec app bin/console importmap:install
 docker compose exec app composer reset:db
 ```
+
+Create user via CLI
+----------------
+
+```bash
+docker compose exec app bin/console app:user:create
+```
