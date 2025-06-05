@@ -32,6 +32,7 @@ class OrderFormFieldType extends AbstractType
             ])
             ->add('required', CheckboxType::class, [
                 'label' => 'order_form_field.label.required',
+                'required' => false,
             ])
         ;
     }
