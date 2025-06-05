@@ -154,7 +154,7 @@ class OrderLine
         }
         $this->allowancePercentage = $allowancePercentage;
         if ($this->allowancePercentage) {
-            $this->amount = -($this->allowanceBaseAmount ?? 0) * $this->allowancePercentage / 100;
+            $this->amount = round(-($this->allowanceBaseAmount ?? 0) * $this->allowancePercentage / 100);
         }
 
         return $this;
@@ -176,7 +176,7 @@ class OrderLine
         }
         $this->allowanceBaseAmount = $allowanceBaseAmount;
         if ($this->allowanceBaseAmount) {
-            $this->amount = -$this->allowanceBaseAmount * ($this->allowancePercentage ?? 0) / 100;
+            $this->amount = round(-$this->allowanceBaseAmount * ($this->allowancePercentage ?? 0) / 100);
         }
 
         return $this;
