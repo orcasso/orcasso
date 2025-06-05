@@ -135,6 +135,7 @@ user:
         roles:
             ROLE_USER: 'Utilisateur'
             ROLE_ADMIN_ACTIVITY_EDIT: 'Configurer les activités'
+            ROLE_ADMIN_CONFIGURATION_EDIT: 'Configurer OrcAsso'
             ROLE_ADMIN_MEMBER_EDIT: 'Gérer les membres'
             ROLE_ADMIN_ORDER_EDIT: 'Gérer les commandes'
             ROLE_ADMIN_ORDER_FORM_EDIT: 'Gérer les formulaires'
