@@ -4,11 +4,13 @@ namespace App\Entity;
 
 use App\Repository\OrderLineRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Table(name: 't_order_line')]
 #[ORM\Entity(repositoryClass: OrderLineRepository::class)]
-class OrderLine
+#[Gedmo\Loggable(logEntryClass: MemberLog::class)]
+class OrderLine implements MemberLogObjectInterface
 {
     use TimestampableEntity;
 
@@ -26,12 +28,14 @@ class OrderLine
     private Order $order;
 
     #[ORM\Column(name: 'position', type: 'smallint')]
+    #[Gedmo\Versioned]
     private int $position = 0;
 
     #[ORM\Column(name: 'type', type: 'string', length: 255)]
     protected string $type = self::TYPE_SIMPLE;
 
     #[ORM\Column(name: 'label', type: 'text')]
+    #[Gedmo\Versioned]
     protected string $label = '';
 
     #[ORM\ManyToOne(targetEntity: Activity::class)]
@@ -45,6 +49,7 @@ class OrderLine
     protected string|int|float|null $allowanceBaseAmount = null;
 
     #[ORM\Column(name: 'amount', type: 'decimal', precision: 10, scale: 2)]
+    #[Gedmo\Versioned]
     protected string|int|float $amount = 0;
 
     protected function __construct(Order $order)
@@ -192,5 +197,15 @@ class OrderLine
         $this->amount = $amount;
 
         return $this;
+    }
+
+    public function getLogConcernedMember(): Member
+    {
+        return $this->getOrder()->getMember();
+    }
+
+    public function getFriendlyName(): string
+    {
+        return $this->order->getFriendlyName().' > Ligne '.($this->getPosition() + 1);
     }
 }

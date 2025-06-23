@@ -4,11 +4,13 @@ namespace App\Entity;
 
 use App\Repository\PaymentOrderRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Table(name: 't_payment_order')]
 #[ORM\Entity(repositoryClass: PaymentOrderRepository::class)]
-class PaymentOrder
+#[Gedmo\Loggable(logEntryClass: MemberLog::class)]
+class PaymentOrder implements MemberLogObjectInterface
 {
     use TimestampableEntity;
 
@@ -26,6 +28,7 @@ class PaymentOrder
     private ?Order $order = null;
 
     #[ORM\Column(name: 'amount', type: 'decimal', precision: 10, scale: 2)]
+    #[Gedmo\Versioned]
     private string|int|float $amount = 0;
 
     public function __construct(Payment $payment, ?Order $order = null)
@@ -71,5 +74,15 @@ class PaymentOrder
         $this->amount = $amount;
 
         return $this;
+    }
+
+    public function getLogConcernedMember(): Member
+    {
+        return $this->getOrder()->getMember();
+    }
+
+    public function getFriendlyName(): string
+    {
+        return $this->payment->getFriendlyName().' > '.$this->order->getFriendlyName();
     }
 }

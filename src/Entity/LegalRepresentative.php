@@ -4,11 +4,13 @@ namespace App\Entity;
 
 use App\Repository\LegalRepresentativeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Table(name: 't_legal_representative')]
 #[ORM\Entity(repositoryClass: LegalRepresentativeRepository::class)]
-class LegalRepresentative
+#[Gedmo\Loggable(logEntryClass: MemberLog::class)]
+class LegalRepresentative implements MemberLogObjectInterface
 {
     use TimestampableEntity;
 
@@ -18,15 +20,19 @@ class LegalRepresentative
     private ?int $id = null;
 
     #[ORM\Column(name: 'first_name', type: 'string', length: 255)]
+    #[Gedmo\Versioned]
     protected string $firstName = '';
 
     #[ORM\Column(name: 'last_name', type: 'string', length: 255)]
+    #[Gedmo\Versioned]
     protected string $lastName = '';
 
     #[ORM\Column(name: 'email', type: 'string', length: 255)]
+    #[Gedmo\Versioned]
     protected string $email = '';
 
     #[ORM\Column(name: 'phone_number', type: 'string', length: 35)]
+    #[Gedmo\Versioned]
     protected string $phoneNumber = '';
 
     #[ORM\ManyToOne(targetEntity: Member::class, inversedBy: 'legalRepresentatives')]
@@ -100,5 +106,15 @@ class LegalRepresentative
     public function getMember(): Member
     {
         return $this->member;
+    }
+
+    public function getLogConcernedMember(): Member
+    {
+        return $this->getMember();
+    }
+
+    public function getFriendlyName(): string
+    {
+        return $this->getFullName();
     }
 }
