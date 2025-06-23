@@ -6,10 +6,12 @@ use App\Repository\MemberRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Table(name: 't_member')]
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
+#[Gedmo\Loggable()]
 class Member
 {
     use TimestampableEntity;
@@ -31,6 +33,7 @@ class Member
     protected string $gender = self::GENDER_MALE;
 
     #[ORM\Column(name: 'first_name', type: 'string', length: 255)]
+    #[Gedmo\Versioned]
     protected string $firstName = '';
 
     #[ORM\Column(name: 'last_name', type: 'string', length: 255)]

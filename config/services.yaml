@@ -43,6 +43,7 @@ services:
             - { name: doctrine.event_listener, event: 'postPersist' }
         calls:
             - [ setAnnotationReader, [ '@gedmo.mapping.driver.attribute' ] ]
+            - [ setActorProvider, [ '@App\Utils\LogActorProvider' ] ]
 
     App\Utils\MenuBuilder:
         tags:
