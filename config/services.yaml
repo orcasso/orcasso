@@ -36,7 +36,7 @@ services:
             - { name: doctrine.event_listener, event: 'loadClassMetadata' }
 
     gedmo.listener.loggable:
-        class: Gedmo\Loggable\LoggableListener
+        class: App\Utils\LoggableListener
         tags:
             - { name: doctrine.event_listener, event: 'onFlush' }
             - { name: doctrine.event_listener, event: 'loadClassMetadata' }

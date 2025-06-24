@@ -2,15 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\LogEntryRepository;
+use App\Repository\MemberLogRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Loggable\Entity\MappedSuperclass\AbstractLogEntry;
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-#[ORM\Table(name: 't_log_entry')]
-#[ORM\Entity(repositoryClass: LogEntryRepository::class)]
-class LogEntry extends AbstractLogEntry
+#[ORM\Table(name: 't_member_log')]
+#[ORM\Entity(repositoryClass: MemberLogRepository::class)]
+class MemberLog extends AbstractLogEntry
 {
     #[ORM\Column(type: Types::INTEGER)]
     #[ORM\Id]

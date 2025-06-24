@@ -13,6 +13,6 @@ class LogActorProvider implements ActorProviderInterface
 
     public function getActor(): string
     {
-        return $this->security->getUser()?->getUserIdentifier();
+        return $this->security->getUser()?->getUserIdentifier() ?? '';
     }
 }

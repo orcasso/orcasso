@@ -6,12 +6,14 @@ use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Table(name: 't_order')]
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Order
+#[Gedmo\Loggable(logEntryClass: MemberLog::class)]
+class Order implements MemberLogObjectInterface
 {
     use TimestampableEntity;
 
@@ -32,22 +34,28 @@ class Order
     private ?int $id = null;
 
     #[ORM\Column(name: 'identifier', type: 'string', length: 20, unique: true)]
+    #[Gedmo\Versioned]
     protected string $identifier;
 
     #[ORM\Column(name: 'notes', type: 'text', options: ['default' => ''])]
+    #[Gedmo\Versioned]
     protected string $notes = '';
 
     #[ORM\ManyToOne(targetEntity: Member::class)]
     #[ORM\JoinColumn(name: 'member_id', referencedColumnName: 'id', nullable: false)]
+    #[Gedmo\Versioned]
     private Member $member;
 
     #[ORM\Column(name: 'total_amount', type: 'decimal', precision: 10, scale: 2)]
+    #[Gedmo\Versioned]
     protected string|int|float $totalAmount = 0;
 
     #[ORM\Column(name: 'paid_amount', type: 'decimal', precision: 10, scale: 2)]
+    #[Gedmo\Versioned]
     protected string|int|float $paidAmount = 0;
 
     #[ORM\Column(name: 'status', type: 'string', length: 10, options: ['default' => self::STATUS_PENDING])]
+    #[Gedmo\Versioned]
     protected string $status = self::STATUS_PENDING;
 
     /**
@@ -225,5 +233,10 @@ class Order
         $this->sourceFormReply = $sourceFormReply;
 
         return $this;
+    }
+
+    public function getLogConcernedMember(): Member
+    {
+        return $this->member;
     }
 }
