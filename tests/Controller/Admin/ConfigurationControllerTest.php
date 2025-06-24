@@ -35,7 +35,6 @@ final class ConfigurationControllerTest extends AbstractWebTestCase
             'configurations[payment_method_cheque_instruction][value]' => $newInstruction = 'Lorem ipsum',
         ]);
 
-        dump($this->getResponseContent());
         $this->assertTrue($this->client->getResponse()->isRedirect($editUrl));
         $this->assertHasFlash('success', 'success.configuration.updated');
 
