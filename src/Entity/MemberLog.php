@@ -20,6 +20,9 @@ class MemberLog extends AbstractLogEntry
     #[ORM\JoinColumn(name: 'member_id', nullable: false)]
     protected Member $member;
 
+    #[ORM\Column(type: 'json', nullable: true)]
+    protected $data = [];
+
     public function getId(): ?int
     {
         return $this->id;

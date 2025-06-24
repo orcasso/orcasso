@@ -24,7 +24,7 @@ final class Version20250624202957 extends AbstractMigration
             object_id VARCHAR(64) DEFAULT NULL,
             object_class VARCHAR(191) NOT NULL,
             version INT NOT NULL,
-            data LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:array)\',
+            data JSON DEFAULT NULL COMMENT \'(DC2Type:json)\',
             username VARCHAR(191) DEFAULT NULL,
             INDEX IDX_EACE75EE7597D3FE (member_id),
             PRIMARY KEY(id)
