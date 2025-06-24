@@ -148,8 +148,6 @@
                     {% endif %}
                 {% endblock %}
             {% endembed %}
-        </div>
-        <div class="col-lg-6">
             {% embed '_skeleton/_card.html.twig' %}
                 {% block card_title %}{{ '_menu.activity'|trans }}{% endblock %}
                 {% block card_body %}
@@ -179,6 +177,21 @@
                     {% else %}
                         <i>{{ 'admin.member.show.no_activity'|trans }}</i>
                     {% endif %}
+                {% endblock %}
+            {% endembed %}
+        </div>
+        <div class="col-lg-6">
+            {% embed '_skeleton/_card.html.twig' %}
+                {% block card_title %}{{ 'member_log'|trans }}{% endblock %}
+                {% block card_body %}
+                    <ul>
+                        {% for log in member_logs %}
+                            <li>
+                                {{ log.objectClass }} #{{ log.objectId}} : {{ log.action }} {% if log.action != 'create' %}: {{ log.data|json_encode }}{% endif %}
+                                {% if log.username %}<i class="fa fa-user fa-fw"></i> {{ log.username }}{% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
                 {% endblock %}
             {% endembed %}
         </div>
