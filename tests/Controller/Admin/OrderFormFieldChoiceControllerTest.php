@@ -54,8 +54,9 @@ final class OrderFormFieldChoiceControllerTest extends AbstractWebTestCase
     public function testCreate()
     {
         $this->authenticateUser();
-        $field = $this->getFixtureOrderFormField();
-        $choiceCount = $field->getChoices()->count();
+        $type = random_int(0, 1) ? OrderFormField::TYPE_ALLOWANCE_CHOICE : OrderFormField::TYPE_ACTIVITY_CHOICE;
+        $field = (new OrderFormField($this->getFixtureOrderFormField()->getForm()))->setType($type);
+        $this->updateEntity($field);
         $this->client->request(Request::METHOD_GET, $this->getCreateUrl($field));
         $this->assertResponseIsSuccessful();
         $this->client->followRedirects(false);
@@ -70,7 +71,7 @@ final class OrderFormFieldChoiceControllerTest extends AbstractWebTestCase
             $form['order_form_field_choice[allowancePercentage]'] = 5;
         }
         $this->client->submit($form);
-        $this->assertEquals($choiceCount + 1, $this->getFixtureOrderFormField()->getChoices()->count());
+        $this->assertEquals(1, $this->getFixtureOrderFormField($field->getId())->getChoices()->count());
         $this->assertTrue($this->client->getResponse()->isRedirect($this->getUrl('admin_order_form_field_edit', ['field' => $field->getId()])));
         $this->assertHasFlash('success', 'success.order_form_field.updated');
     }
