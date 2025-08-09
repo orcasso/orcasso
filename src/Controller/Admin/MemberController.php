@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Member;
 use App\Entity\User;
 use App\Form\MemberType;
+use App\Repository\MemberLogRepository;
 use App\Repository\MemberRepository;
 use App\Repository\OrderRepository;
 use App\Table\MemberTableFactory;
@@ -59,11 +60,12 @@ final class MemberController extends AbstractController
     }
 
     #[Route('/{member}', name: 'admin_member_show', methods: ['GET'])]
-    public function show(Member $member, OrderRepository $orderRepository): Response
+    public function show(Member $member, OrderRepository $orderRepository, MemberLogRepository $logRepository): Response
     {
         return $this->render('admin/member/show.html.twig', [
             'member' => $member,
             'orders' => $orderRepository->findActivesForMember($member),
+            'member_logs' => $logRepository->findBy(['member' => $member], ['loggedAt' => 'DESC', 'id' => 'DESC']),
         ]);
     }
 

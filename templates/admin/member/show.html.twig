@@ -148,8 +148,6 @@
                     {% endif %}
                 {% endblock %}
             {% endembed %}
-        </div>
-        <div class="col-lg-6">
             {% embed '_skeleton/_card.html.twig' %}
                 {% block card_title %}{{ '_menu.activity'|trans }}{% endblock %}
                 {% block card_body %}
@@ -179,6 +177,36 @@
                     {% else %}
                         <i>{{ 'admin.member.show.no_activity'|trans }}</i>
                     {% endif %}
+                {% endblock %}
+            {% endembed %}
+        </div>
+        <div class="col-lg-6">
+            {% embed '_skeleton/_card.html.twig' %}
+                {% block card_title %}{{ 'admin.member.show.member_logs'|trans }}{% endblock %}
+                {% block card_body %}
+                    <table style="font-size: 80%;" class="table table-sm">
+                        {% for log in member_logs %}
+                            <tr>
+                                <td  style="white-space: nowrap">
+                                    <i class="{{ member_log_action_icon(log) }}"></i>
+                                    <abbr title="{{ ('member_log.choice.action.'~log.action)|trans({}, 'forms') }} {{ log.loggedAt|format_datetime('long', 'medium') }}">{{ log.loggedAt|format_date('relative_short') }}</abbr>
+                                </td>
+                                <td style="white-space: normal;word-wrap: break-word;word-break: break-word;">
+                                    <details>
+                                        <summary>
+                                            {{ member_log_object_friendly_name(log) }}
+                                        </summary>
+                                        {% set url = member_log_object_show_url(log) %}
+                                        {% if url %}<a href="{{ member_log_object_show_url(log) }}">{{ '_meta.word.show'|trans }}</a>{% endif %}
+                                        <pre style="white-space: pre-wrap; word-break: break-word;margin:0;padding:0;">{{ log.data|json_encode(constant('JSON_PRETTY_PRINT') + constant('JSON_UNESCAPED_UNICODE')) }}</pre>
+                                    </details>
+                                </td>
+                                <td style="white-space:nowrap;">
+                                    <span title="{{ log.username }}">{% if log.username %}<i class="fa fa-user fa-fw"></i> {{ log.username|split('@')[0] }}</span>{% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
                 {% endblock %}
             {% endembed %}
         </div>
