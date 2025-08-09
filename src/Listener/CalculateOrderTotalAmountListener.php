@@ -61,8 +61,10 @@ class CalculateOrderTotalAmountListener
     protected function recalculateAmount(Order $order, EntityManager $em): void
     {
         $repository = $em->getRepository(Order::class);
-        $totalAmount = $order->getLinesTotalAmount(ignoreAllowances: false);
-        $order->setTotalAmount(round($totalAmount, 2));
-        $repository->update($order);
+        $totalAmount = round($order->getLinesTotalAmount(ignoreAllowances: false), 2);
+        if ($totalAmount != $order->getTotalAmount()) {
+            $order->setTotalAmount($totalAmount);
+            $repository->update($order);
+        }
     }
 }
