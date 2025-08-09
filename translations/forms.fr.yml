@@ -48,6 +48,23 @@ member_document:
     label:
         name: Titre du document
 
+member_log:
+    choice:
+        action:
+            create: 'Création'
+            remove: 'Suppression'
+            update: 'Modification'
+        objectClass:
+            App\Entity\LegalRepresentative: 'Représentant légal'
+            App\Entity\Member: 'Membre'
+            App\Entity\MemberDocument: 'Document'
+            App\Entity\Order: 'Commande'
+            App\Entity\OrderLine: 'Ligne commande'
+            App\Entity\Payment: 'Paiement'
+            App\Entity\PaymentOrder: 'Paiement commande'
+    label:
+        data: 'Détails'
+
 order:
     choice:
         status:
@@ -77,6 +94,7 @@ order_form_field:
         type:
             activity_choice: 'Choix d''une activité/cotisation'
             allowance_choice: 'Sélection d''une remise'
+            document: Document
     label:
         required: Obligatoire ?
         type: Type

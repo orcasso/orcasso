@@ -26,6 +26,7 @@ _meta:
         save: Enregistrer
         select: Sélectionner
         send: Envoyer
+        show: Voir
         submit: Valider
         welcome: Bienvenue
         yes: Oui
@@ -85,6 +86,7 @@ admin:
             no_order: 'Aucune commande'
             no_document: 'Aucun document'
             no_legal_representative: 'Aucun représentant légal'
+            member_logs: 'Historique du membre'
 
     member_document:
         create:

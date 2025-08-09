@@ -7,11 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Table(name: 't_payment')]
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
-class Payment
+#[Gedmo\Loggable(logEntryClass: MemberLog::class)]
+class Payment implements MemberLogObjectInterface
 {
     use TimestampableEntity;
 
@@ -47,18 +49,22 @@ class Payment
     private \DateTimeImmutable $issuedAt;
 
     #[ORM\Column(name: 'received_at', type: 'datetime_immutable', nullable: true)]
+    #[Gedmo\Versioned]
     private ?\DateTimeImmutable $receivedAt = null;
 
     #[ORM\Column(name: 'amount', type: Types::DECIMAL, precision: 10, scale: 2)]
     private string|int|float $amount = 0;
 
     #[ORM\Column(name: 'identifier', length: 255)]
+    #[Gedmo\Versioned]
     private string $identifier = '';
 
     #[ORM\Column(name: 'notes', type: Types::TEXT)]
+    #[Gedmo\Versioned]
     private string $notes = '';
 
     #[ORM\Column(name: 'method', length: 20)]
+    #[Gedmo\Versioned]
     private ?string $method = self::METHOD_CASH;
 
     /**
@@ -171,5 +177,15 @@ class Payment
     public function getOrders(): Collection
     {
         return $this->orders;
+    }
+
+    public function getLogConcernedMember(): Member
+    {
+        return $this->getMember();
+    }
+
+    public function getFriendlyName(): string
+    {
+        return 'Paiement '.$this->getIdentifier();
     }
 }

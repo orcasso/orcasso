@@ -87,14 +87,16 @@ final class ActivityControllerTest extends AbstractWebTestCase
 
     public function testDelete()
     {
+        $activity = (new Activity())->setName('teet');
+        $this->updateEntity($activity);
         $this->authenticateUser();
-        $this->client->request(Request::METHOD_GET, $this->getDeleteUrl($this->getFixtureActivity()));
+        $this->client->request(Request::METHOD_GET, $this->getDeleteUrl($activity));
         $this->assertResponseIsSuccessful();
 
         $this->client->followRedirects(false);
         $this->client->submitForm($this->trans('_meta.word.delete'), []);
 
-        $this->assertEquals(\count(ActivityFixtures::activities()) - 1, $this->getDoctrine()->getRepository(Activity::class)->count());
+        $this->assertEquals(\count(ActivityFixtures::activities()), $this->getDoctrine()->getRepository(Activity::class)->count());
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->getUrl('admin_activity_list')));
         $this->assertHasFlash('success', 'success.activity.deleted');

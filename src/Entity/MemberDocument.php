@@ -4,11 +4,13 @@ namespace App\Entity;
 
 use App\Repository\MemberDocumentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Table(name: 't_member_document')]
 #[ORM\Entity(repositoryClass: MemberDocumentRepository::class)]
-class MemberDocument
+#[Gedmo\Loggable(logEntryClass: MemberLog::class)]
+class MemberDocument implements MemberLogObjectInterface
 {
     use TimestampableEntity;
 
@@ -22,6 +24,7 @@ class MemberDocument
     protected Member $member;
 
     #[ORM\Column(name: 'name', type: 'string', length: 255)]
+    #[Gedmo\Versioned]
     protected string $name = '';
 
     #[ORM\Column(name: 'file_name', type: 'string', length: 255)]
@@ -101,5 +104,15 @@ class MemberDocument
         $this->mimeType = $mimeType;
 
         return $this;
+    }
+
+    public function getLogConcernedMember(): Member
+    {
+        return $this->getMember();
+    }
+
+    public function getFriendlyName(): string
+    {
+        return "Document {$this->getName()}";
     }
 }

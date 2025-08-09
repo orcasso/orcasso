@@ -6,11 +6,13 @@ use App\Repository\MemberRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Table(name: 't_member')]
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
-class Member
+#[Gedmo\Loggable(logEntryClass: MemberLog::class)]
+class Member implements MemberLogObjectInterface
 {
     use TimestampableEntity;
 
@@ -28,36 +30,47 @@ class Member
     private ?int $id = null;
 
     #[ORM\Column(name: 'gender', type: 'string', length: 10)]
+    #[Gedmo\Versioned]
     protected string $gender = self::GENDER_MALE;
 
     #[ORM\Column(name: 'first_name', type: 'string', length: 255)]
+    #[Gedmo\Versioned]
     protected string $firstName = '';
 
     #[ORM\Column(name: 'last_name', type: 'string', length: 255)]
+    #[Gedmo\Versioned]
     protected string $lastName = '';
 
     #[ORM\Column(name: 'birth_date', type: 'date_immutable')]
+    #[Gedmo\Versioned]
     protected \DateTimeImmutable $birthDate;
 
     #[ORM\Column(name: 'email', type: 'string', length: 255)]
+    #[Gedmo\Versioned]
     protected string $email = '';
 
     #[ORM\Column(name: 'phone_number', type: 'string', length: 35)]
+    #[Gedmo\Versioned]
     protected string $phoneNumber = '';
 
     #[ORM\Column(name: 'street1', type: 'string', length: 255)]
+    #[Gedmo\Versioned]
     protected string $street1 = '';
 
     #[ORM\Column(name: 'street2', type: 'string', length: 255)]
+    #[Gedmo\Versioned]
     protected string $street2 = '';
 
     #[ORM\Column(name: 'street3', type: 'string', length: 255)]
+    #[Gedmo\Versioned]
     protected string $street3 = '';
 
     #[ORM\Column(name: 'postal_code', type: 'string', length: 10)]
+    #[Gedmo\Versioned]
     protected string $postalCode = '';
 
     #[ORM\Column(name: 'city', type: 'string', length: 255)]
+    #[Gedmo\Versioned]
     protected string $city = '';
 
     /**
@@ -290,5 +303,15 @@ class Member
         $this->legalRepresentatives->removeElement($representative);
 
         return $this;
+    }
+
+    public function getLogConcernedMember(): self
+    {
+        return $this;
+    }
+
+    public function getFriendlyName(): string
+    {
+        return $this->getFullName();
     }
 }
