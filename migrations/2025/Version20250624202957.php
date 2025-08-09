@@ -26,12 +26,11 @@ final class Version20250624202957 extends AbstractMigration
             version INT NOT NULL,
             data JSON DEFAULT NULL COMMENT \'(DC2Type:json)\',
             username VARCHAR(191) DEFAULT NULL,
-            INDEX IDX_EACE75EE7597D3FE (member_id),
+            INDEX IDX_60879D247597D3FE (member_id),
             PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
 
-        $this->addSql('ALTER TABLE t_member_log
-            ADD CONSTRAINT FK_EACE75EE7597D3FE FOREIGN KEY (member_id) REFERENCES t_member (id)');
+        $this->addSql('ALTER TABLE t_member_log ADD CONSTRAINT FK_EACE75EE7597D3FE FOREIGN KEY (member_id) REFERENCES t_member (id) ON DELETE CASCADE');
     }
 
     public function down(Schema $schema): void

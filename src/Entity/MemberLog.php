@@ -17,7 +17,7 @@ class MemberLog extends AbstractLogEntry
     protected $id;
 
     #[ORM\ManyToOne(targetEntity: Member::class)]
-    #[ORM\JoinColumn(name: 'member_id', nullable: false)]
+    #[ORM\JoinColumn(name: 'member_id', nullable: false, onDelete: 'CASCADE')]
     protected Member $member;
 
     #[ORM\Column(type: 'json', nullable: true)]
