@@ -94,6 +94,7 @@ order_form_field:
         type:
             activity_choice: 'Choix d''une activité/cotisation'
             allowance_choice: 'Sélection d''une remise'
+            document: Document
     label:
         required: Obligatoire ?
         type: Type
