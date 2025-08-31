@@ -116,6 +116,7 @@ admin:
                 cancel: 'Annuler la commande'
                 set_pending: 'Mettre en attente'
                 validate: 'Valider la commande'
+                link_to_pay: 'Lien pour payer'
             title: 'Modification de la commande'
         list:
             title: 'Liste des commandes'

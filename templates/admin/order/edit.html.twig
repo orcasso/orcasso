@@ -84,6 +84,16 @@
                                 </a>
                             </td>
                         </tr>
+                        {% if order.dueAmount > 0 %}
+                            <tr>
+                                <th>{{ 'admin.order.edit.actions.link_to_pay'|trans }}</th>
+                                <td>
+                                    <a href="{{ path('order_pay', {'identifier':order.identifier}) }}" target="_blank">
+                                        {{ url('order_pay', {'identifier':order.identifier}) }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endif %}
                     </table>
                 </div>
                 <div class="col-lg-6">
