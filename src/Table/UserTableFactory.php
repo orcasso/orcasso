@@ -12,7 +12,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class UserTableFactory
+class UserTableFactory implements TableFactoryInterface
 {
     public function __construct(protected UserRepository $repository, protected TranslatorInterface $translator,
         protected RouterInterface $router, protected Environment $twig)

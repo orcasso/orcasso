@@ -11,7 +11,7 @@ use Kilik\TableBundle\Components\Table;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class PaymentTableFactory
+class PaymentTableFactory implements TableFactoryInterface
 {
     public function __construct(protected PaymentRepository $repository, protected RouterInterface $router, protected TranslatorInterface $translator)
     {

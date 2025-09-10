@@ -11,7 +11,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class MemberTableFactory
+class MemberTableFactory implements TableFactoryInterface
 {
     public function __construct(protected MemberRepository $repository, protected TranslatorInterface $translator,
         protected RouterInterface $router, protected Environment $twig)
@@ -69,6 +69,14 @@ class MemberTableFactory
                     ->setFilter((new Filter())
                         ->setField('m.email')
                         ->setName('m_email')
+                    )
+            )
+            ->addColumn(
+                (new Column())->setLabel('member.label.phone_number')->setTranslateDomain('forms')
+                    ->setSort(['m.phoneNumber' => 'asc'])
+                    ->setFilter((new Filter())
+                        ->setField('m.phoneNumber')
+                        ->setName('m_phoneNumber')
                     )
             )
             ->addColumn(

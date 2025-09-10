@@ -6,6 +6,15 @@
             var table = new KilikTableFA("{{ table.id }}", "{{ table.path }}", JSON.parse('{{ table.options | json_encode | raw }}'));
             table.init();
             window.kilikTable = table;
+
+            const jqBtnExportXlsx = $('.btn-export-xlsx-table');
+            if (1 <= jqBtnExportXlsx.length) {
+                jqBtnExportXlsx.click(function () {
+                    const urlExportCsv = '{{ path('admin_table_export', {'id':table.id}) }}';
+
+                    $('form[name=' + table.getFormName() + ']').attr('action', urlExportCsv).submit();
+                });
+            }
         });
     </script>
 {% endblock %}
