@@ -66,6 +66,16 @@
             {% block card_tools_container %}
                 <div class="card-tools">
                     {% block card_tools %}
+                        {% block card_tools_button_export_table %}
+                            <a href="#" class="btn btn-primary btn-sm btn-export-xlsx-table">
+                                <i aria-hidden="true" class="fa fa-file-excel"></i>
+                                <span class="d-none d-md-inline">{{ '_meta.word.export'|trans }}</span>
+                            </a>
+                            {% if url_cancel is defined or url_create is defined %}
+                                -
+                            {% endif %}
+                        {% endblock %}
+
                         {% if url_cancel is defined and url_cancel is not null %}
                             <a href="{{ url_cancel }}" class="btn btn-secondary btn-sm">
                                 <i class="fa fa-chevron-left"></i>

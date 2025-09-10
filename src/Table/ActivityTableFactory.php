@@ -11,7 +11,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-class ActivityTableFactory
+class ActivityTableFactory implements TableFactoryInterface
 {
     public function __construct(protected ActivityRepository $repository, protected TranslatorInterface $translator,
         protected RouterInterface $router, protected Environment $twig)
