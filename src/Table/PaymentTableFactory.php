@@ -3,6 +3,7 @@
 namespace App\Table;
 
 use App\Entity\Payment;
+use App\Entity\User;
 use App\Repository\PaymentRepository;
 use Kilik\TableBundle\Components\Column;
 use Kilik\TableBundle\Components\Filter;
@@ -20,6 +21,11 @@ class PaymentTableFactory implements TableFactoryInterface
     public function getTableId(): string
     {
         return 'payment_table';
+    }
+
+    public function getExpectedRole(): string
+    {
+        return User::ROLE_ADMIN_PAYMENT_EDIT;
     }
 
     public function getTable(): Table

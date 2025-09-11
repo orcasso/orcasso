@@ -3,6 +3,7 @@
 namespace App\Table;
 
 use App\Entity\Member;
+use App\Entity\User;
 use App\Repository\MemberRepository;
 use Kilik\TableBundle\Components\Column;
 use Kilik\TableBundle\Components\Filter;
@@ -21,6 +22,11 @@ class MemberTableFactory implements TableFactoryInterface
     public function getTableId(): string
     {
         return 'member_table';
+    }
+
+    public function getExpectedRole(): string
+    {
+        return User::ROLE_ADMIN_MEMBER_EDIT;
     }
 
     public function getTable(): Table

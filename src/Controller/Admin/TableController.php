@@ -2,22 +2,21 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\User;
 use App\Table\TableExporter;
 use App\Table\TableFactoryCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[\Symfony\Component\Routing\Attribute\Route('/table')]
-#[IsGranted(User::ROLE_ADMIN_ACTIVITY_EDIT)]
 class TableController extends AbstractController
 {
     #[\Symfony\Component\Routing\Attribute\Route('/export-table/{id}', name: 'admin_table_export')]
     public function export(Request $request, TableExporter $exporter, TableFactoryCollection $factoryCollection, string $id): StreamedResponse
     {
-        $writer = $exporter->exportToSpreadsheet($factoryCollection->get($id)->getTable(), $request);
+        $factory = $factoryCollection->get($id);
+        $this->denyAccessUnlessGranted($factory->getExpectedRole());
+        $writer = $exporter->exportToSpreadsheet($factory->getTable(), $request);
         $response = new StreamedResponse(
             function () use ($writer) {
                 $writer->save('php://output');

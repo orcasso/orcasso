@@ -3,6 +3,7 @@
 namespace App\Table;
 
 use App\Entity\Order;
+use App\Entity\User;
 use App\Repository\OrderRepository;
 use Kilik\TableBundle\Components\Column;
 use Kilik\TableBundle\Components\Filter;
@@ -22,6 +23,11 @@ class OrderTableFactory implements TableFactoryInterface
     public function getTableId(): string
     {
         return 'order_table';
+    }
+
+    public function getExpectedRole(): string
+    {
+        return User::ROLE_ADMIN_ORDER_EDIT;
     }
 
     public function getTable(): Table

@@ -24,6 +24,11 @@ class UserTableFactory implements TableFactoryInterface
         return 'user_table';
     }
 
+    public function getExpectedRole(): string
+    {
+        return User::ROLE_ADMIN_USER_EDIT;
+    }
+
     public function getTable(): Table
     {
         $queryBuilder = $this->repository->createQueryBuilder('u');

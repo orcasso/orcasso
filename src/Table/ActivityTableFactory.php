@@ -3,6 +3,7 @@
 namespace App\Table;
 
 use App\Entity\Activity;
+use App\Entity\User;
 use App\Repository\ActivityRepository;
 use Kilik\TableBundle\Components\Column;
 use Kilik\TableBundle\Components\Filter;
@@ -21,6 +22,11 @@ class ActivityTableFactory implements TableFactoryInterface
     public function getTableId(): string
     {
         return 'activity_table';
+    }
+
+    public function getExpectedRole(): string
+    {
+        return User::ROLE_ADMIN_ACTIVITY_EDIT;
     }
 
     public function getTable(): Table
