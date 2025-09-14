@@ -19,6 +19,9 @@ activity:
 configuration:
     label:
         homepage_introduction: 'Texte d''introduction sur la page d''accueil'
+        helloasso_client_id: 'HelloAsso — ClientId API'
+        helloasso_client_secret: 'HelloAsso — Secret API'
+        helloasso_asso_slug: 'HelloAsso — Slug Association'
         payment_method_cheque_instruction: 'Indications pour le paiement par chèque'
         payment_method_bank_transfer_iban: 'IBAN'
         payment_method_bank_transfer_bic: 'BIC'
@@ -132,6 +135,11 @@ payment:
             cash: 'Espèces'
             top_depart: 'Top départ'
             holiday_voucher: 'Chèques vacances'
+            hello_asso: 'HelloAsso'
+        status:
+            cancelled: Annulée
+            pending: En attente
+            validated: Validée
     label:
         amount: Montant
         identifier: 'Référence'
@@ -141,6 +149,16 @@ payment:
         notes: Notes
         orders: Commandes
         received_at: 'Date réception'
+        status: 'Statut'
+    help:
+        method:
+            hello_asso: |
+                HelloAsso vous permet de régler votre cotisation, par carte bancaire, sans frais.
+                Lors du paiement, une contribution facultative aux frais d'HelloAsso vous sera proposée.
+            hello_asso_regulatory_text: |                
+                HelloAsso aide les associations à collecter des paiements en ligne et propose ses services gratuitement. 
+                Elle prend à sa charge tous les frais de transaction pour que vous puissiez bénéficier de la totalité des sommes versées par vos publics, sans frais. 
+                Les contributions volontaires laissées par ces derniers sont leur unique source de revenus.
 
 payment_order:
     label:

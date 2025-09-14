@@ -1,0 +1,45 @@
+{% extends 'public_layout.html.twig' %}
+
+{% block content_header_title %}{{ order.identifier }}{% endblock %}
+
+{% block content_body %}
+    <div class="row">
+        <div class="col-lg-12">
+            {% embed '_skeleton/_card.html.twig' %}
+                {% block card_tools %}
+                    <a href="{{ path('homepage') }}" class="btn btn-secondary btn-sm">
+                        <i class="fa fa-chevron-left"></i>
+                        <span class="d-none d-md-inline">{{ '_meta.word.back'|trans }}</span>
+                    </a>
+                {% endblock %}
+                {% block card_body %}
+                    <p>{{ 'order.show_payment.msg'|trans|nl2br }}</p>
+
+                    <strong>{{ 'order.label.member'|trans({}, 'forms') }} : </strong>
+                    {{ order.member.fullName }}
+
+                    <br />
+
+                    <strong>{{ 'order.label.due_amount'|trans({}, 'forms') }} : </strong>
+                    {{ order.dueAmount|format_currency('EUR') }}
+
+                    <br />
+
+                    <strong>{{ 'payment_order.label.payment'|trans({}, 'forms') }} : </strong>
+                    {{ payment.amount|format_currency('EUR') }}
+
+                    <br />
+
+                    <strong>{{ 'payment.label.status'|trans({}, 'forms') }}</strong>
+                    {% if payment.status == constant('App\\Entity\\Payment::STATUS_VALIDATED') %}
+                        <span class="badge badge-success">{{ 'payment.choice.status.validated'|trans({}, 'forms') }}</span>
+                    {% elseif payment.status == constant('App\\Entity\\Payment::STATUS_PENDING') %}
+                        <span class="badge badge-info">{{ 'payment.choice.status.pending'|trans({}, 'forms') }}</span>
+                    {% elseif payment.status == constant('App\\Entity\\Payment::STATUS_CANCELLED') %}
+                        <span class="badge badge-warning">{{ 'payment.choice.status.cancelled'|trans({}, 'forms') }}</span>
+                    {% endif %}
+                {% endblock %}
+            {% endembed %}
+        </div>
+    </div>
+{% endblock %}

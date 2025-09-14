@@ -2,6 +2,7 @@
 
 namespace App\Table;
 
+use App\Entity\Order;
 use App\Entity\Payment;
 use App\Entity\User;
 use App\Repository\PaymentRepository;
@@ -107,6 +108,24 @@ class PaymentTableFactory implements TableFactoryInterface
                         ->setPlaceholder('--')
                     )
                     ->setDisplayCallback(fn ($value, $row) => $this->translator->trans("payment.choice.method.$value", [], 'forms'))
+            )
+            ->addColumn(
+                (new Column())->setLabel('payment.label.status')->setTranslateDomain('forms')
+                    ->setSort(['p.status' => 'asc'])
+                    ->setFilter((new FilterSelect())
+                        ->setField('.status')
+                        ->setName('p_status')
+                        ->setChoices(Payment::STATUSES)
+                        ->setChoiceLabel(fn (string $status) => "payment.choice.status.$status")
+                        ->setChoiceTranslationDomain('forms')
+                        ->setPlaceholder('--')
+                    )
+                    ->setDisplayCallback(function ($value, $row) {
+                        $class = Order::STATUS_VALIDATED === $value ? '' : (Order::STATUS_PENDING === $value ? 'text-warning' : 'text-danger');
+
+                        return '<span class="'.$class.'">'.$this->translator->trans("payment.choice.status.$value", [], 'forms').'</span>';
+                    })
+                    ->setRaw(true)
             )
         ;
 

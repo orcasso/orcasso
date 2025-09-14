@@ -111,7 +111,6 @@ class OrderTableFactory implements TableFactoryInterface
                         ->setChoiceTranslationDomain('forms')
                         ->setPlaceholder('--')
                     )
-                    ->setDisplayCallback(fn ($value, $row) => $this->translator->trans("order.choice.status.$value", [], 'forms'))
                     ->setDisplayCallback(function ($value, $row) {
                         $class = Order::STATUS_VALIDATED === $value ? '' : (Order::STATUS_PENDING === $value ? 'text-warning' : 'text-danger');
 

@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Member;
 use App\Entity\Order;
+use App\Entity\Payment;
+use App\Entity\PaymentOrder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
@@ -52,5 +54,19 @@ class OrderRepository extends AbstractRepository
             ->addOrderBy('o.createdAt', 'DESC');
 
         return $qb->getQuery()->getResult();
+    }
+
+    public function recalculatePaidAmount(Order $order): void
+    {
+        $orderPaidAmount = (float) $this->getEntityManager()->getRepository(PaymentOrder::class)->createQueryBuilder('po')
+            ->select('SUM(po.amount) as paid_amount')
+            ->innerJoin('po.payment', 'payment')
+            ->where('po.order =  :order')
+            ->andWhere('payment.status <> :cancelled')
+            ->setParameter('order', $order->getId())
+            ->setParameter('cancelled', Payment::STATUS_CANCELLED)
+            ->getQuery()->getSingleScalarResult();
+        $order->setPaidAmount($orderPaidAmount);
+        $this->update($order);
     }
 }

@@ -19,7 +19,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
         return is_a($entity, static::ENTITY_CLASS);
     }
 
-    public function preUpdate(object $entity)
+    protected function preUpdate(object $entity): void
     {
         // Extends this method if necessary.
     }
@@ -33,8 +33,15 @@ abstract class AbstractRepository extends ServiceEntityRepository
         $this->getEntityManager()->persist($entity);
 
         if ($andFlush) {
-            $this->getEntityManager()->flush($entity);
+            $this->getEntityManager()->flush();
         }
+
+        $this->postUpdate($entity);
+    }
+
+    protected function postUpdate(object $entity): void
+    {
+        // Extends this method if necessary.
     }
 
     public function isRemovable(object $entity): bool
@@ -54,7 +61,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
 
         $this->getEntityManager()->remove($entity);
         if ($andFlush) {
-            $this->getEntityManager()->flush($entity);
+            $this->getEntityManager()->flush();
         }
 
         return $entity;
