@@ -1,0 +1,27 @@
+{% extends 'public_layout.html.twig' %}
+
+{% block content_header_title %}{{ order.identifier }}{% endblock %}
+
+{% set url_cancel = path('order_pay', {'identifier':order.identifier}) %}
+
+{% block content_body %}
+    <div class="row">
+        <div class="col-lg-12">
+            {% embed '_skeleton/crud/_create.html.twig' %}
+                {% block card_body %}
+                    <p>{{ 'payment.help.method.hello_asso'|trans({}, 'forms')|nl2br }}</p>
+                    <div class="callout callout-info">{{ 'payment.help.method.hello_asso_regulatory_text'|trans({}, 'forms')|nl2br }}</div>
+                    {{ parent() }}
+                {% endblock %}
+                {% block card_form_btn_submit %}
+                    {%- if not form.vars.disabled %}
+                        <button type="submit" class="btn btn-success btn-sm">
+                            <span class="fa fa-check" aria-hidden="true"></span>
+                            <span class="d-none d-md-inline">{{ 'order.pay.actions.pay_with_hello_asso'|trans }}</span>
+                        </button>
+                    {% endif -%}
+                {% endblock %}
+            {% endembed %}
+        </div>
+    </div>
+{% endblock %}

@@ -10,8 +10,10 @@ use App\Form\PaymentType;
 use App\Repository\PaymentOrderRepository;
 use App\Repository\PaymentRepository;
 use App\Table\PaymentTableFactory;
+use App\Utils\HelloAsso;
 use Kilik\TableBundle\Services\TableService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -68,8 +70,12 @@ final class PaymentController extends AbstractController
     }
 
     #[Route('/{payment}', name: 'admin_payment_edit', methods: ['GET', 'POST'])]
-    public function edit(Payment $payment): Response
+    public function edit(Payment $payment, HelloAsso $helloAsso): Response
     {
+        if (Payment::STATUS_PENDING === $payment->getStatus()) {
+            $helloAsso->getCheckoutStatus($payment);
+        }
+
         return $this->render('admin/payment/edit.html.twig', [
             'payment' => $payment,
         ]);
@@ -115,6 +121,40 @@ final class PaymentController extends AbstractController
 
         return $this->render('admin/payment/delete.html.twig', [
             'payment' => $payment,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route('/{payment}/change-status/{status}', name: 'admin_payment_change_status', methods: ['GET', 'POST'])]
+    public function changeStatus(Request $request, Payment $payment, string $status): \Symfony\Component\HttpFoundation\RedirectResponse|Response
+    {
+        $form = $this->createFormBuilder($payment);
+        if (Payment::STATUS_VALIDATED === $status) {
+            $form->add('receivedAt', DateType::class, [
+                'label' => 'payment.label.received_at',
+                'widget' => 'single_text',
+                'required' => false,
+                'translation_domain' => 'forms',
+                'data' => date_create_immutable(),
+            ]);
+        }
+
+        $form = $form->setMethod(Request::METHOD_POST)->getForm();
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $payment->setStatus($status);
+            if (Payment::STATUS_VALIDATED !== $status) {
+                $payment->setReceivedAt(null);
+            }
+            $this->repository->update($payment);
+            $this->addFlash('success', 'success.payment.updated');
+
+            return $this->redirectToRoute('admin_payment_edit', ['payment' => $payment->getId()]);
+        }
+
+        return $this->render('admin/payment/change_status.html.twig', [
+            'payment' => $payment,
+            'status' => $status,
             'form' => $form->createView(),
         ]);
     }

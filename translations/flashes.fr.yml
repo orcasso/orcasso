@@ -1,3 +1,7 @@
+error:
+    order:
+        pay_with_hello_asso_failed: 'Le paiement par HelloAsso a échoué, merci de réitérer votre demande plus tard.'
+
 success:
     activity:
         created: 'L''activité a bien été créée'

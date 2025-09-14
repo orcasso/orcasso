@@ -19,44 +19,25 @@ class CalculatePaymentAmountListener
 {
     public function postPersist(PostPersistEventArgs $args): void
     {
-        $this->recalculateAmount($args->getObject(), $args->getObjectManager());
+        $this->recalculateAmounts($args->getObject(), $args->getObjectManager());
     }
 
     public function postUpdate(PostUpdateEventArgs $args): void
     {
-        $this->recalculateAmount($args->getObject(), $args->getObjectManager());
+        $this->recalculateAmounts($args->getObject(), $args->getObjectManager());
     }
 
     public function postRemove(PostRemoveEventArgs $args): void
     {
-        $this->recalculateAmount($args->getObject(), $args->getObjectManager());
+        $this->recalculateAmounts($args->getObject(), $args->getObjectManager());
     }
 
-    protected function recalculateAmount(object $paymentOrder, EntityManagerInterface $em): void
+    protected function recalculateAmounts(object $paymentOrder, EntityManagerInterface $em): void
     {
         if (!$paymentOrder instanceof PaymentOrder) {
             return;
         }
-        $paymentOrderRepository = $em->getRepository(PaymentOrder::class);
-        $order = $paymentOrder->getOrder();
-        $payment = $paymentOrder->getPayment();
-
-        $orderRepository = $em->getRepository(Order::class);
-        $orderPaidAmount = (float) $paymentOrderRepository->createQueryBuilder('po')
-            ->select('SUM(po.amount) as paid_amount')
-            ->where('po.order =  :order')
-            ->setParameter('order', $order->getId())
-            ->getQuery()->getSingleScalarResult();
-        $order->setPaidAmount($orderPaidAmount);
-        $orderRepository->update($order);
-
-        $paymentRepository = $em->getRepository(Payment::class);
-        $paymentAmount = (float) $paymentOrderRepository->createQueryBuilder('po')
-                ->select('SUM(po.amount) as paid_amount')
-                ->where('po.payment = :payment')
-                ->setParameter('payment', $payment->getId())
-                ->getQuery()->getSingleScalarResult();
-        $payment->setAmount($paymentAmount);
-        $paymentRepository->update($payment);
+        $em->getRepository(Order::class)->recalculatePaidAmount($paymentOrder->getOrder());
+        $em->getRepository(Payment::class)->recalculateAmount($paymentOrder->getPayment());
     }
 }

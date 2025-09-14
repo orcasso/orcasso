@@ -23,6 +23,7 @@ class Payment implements MemberLogObjectInterface
     public const METHOD_BANK_TRANSFER = 'bank_transfer';
     public const METHOD_CHEQUE = 'cheque';
     public const METHOD_CASH = 'cash';
+    public const METHOD_HELLO_ASSO = 'hello_asso';
     public const METHOD_TOP_DEPART = 'top_depart';
     public const METHOD_HOLIDAY_VOUCHER = 'holiday_voucher';
 
@@ -32,8 +33,19 @@ class Payment implements MemberLogObjectInterface
         self::METHOD_BANK_TRANSFER,
         self::METHOD_CHEQUE,
         self::METHOD_CASH,
+        self::METHOD_HELLO_ASSO,
         self::METHOD_TOP_DEPART,
         self::METHOD_HOLIDAY_VOUCHER,
+    ];
+
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_CANCELLED = 'cancelled';
+    public const STATUS_VALIDATED = 'validated';
+
+    public const STATUSES = [
+        self::STATUS_PENDING,
+        self::STATUS_CANCELLED,
+        self::STATUS_VALIDATED,
     ];
 
     #[ORM\Id]
@@ -66,6 +78,13 @@ class Payment implements MemberLogObjectInterface
     #[ORM\Column(name: 'method', length: 20)]
     #[Gedmo\Versioned]
     private ?string $method = self::METHOD_CASH;
+
+    #[ORM\Column(name: 'checkout_id', type: 'string', length: 250, unique: true, nullable: true)]
+    protected ?string $checkoutId = null;
+
+    #[ORM\Column(name: 'status', type: 'string', length: 10, options: ['default' => self::STATUS_PENDING])]
+    #[Gedmo\Versioned]
+    protected string $status = self::STATUS_PENDING;
 
     /**
      * @var Collection<PaymentOrder>
@@ -167,6 +186,33 @@ class Payment implements MemberLogObjectInterface
             throw new \InvalidArgumentException("Unexpected method {$method}.");
         }
         $this->method = $method;
+
+        return $this;
+    }
+
+    public function getCheckoutId(): ?string
+    {
+        return $this->checkoutId;
+    }
+
+    public function setCheckoutId(?string $checkoutId): static
+    {
+        $this->checkoutId = $checkoutId;
+
+        return $this;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        if (!\in_array($status, self::STATUSES, true)) {
+            throw new \InvalidArgumentException(\sprintf('Invalid status: %s', $status));
+        }
+        $this->status = $status;
 
         return $this;
     }

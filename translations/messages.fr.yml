@@ -161,6 +161,9 @@ admin:
             title: 'Modification de la ligne de commande'
 
     payment:
+        change_status:
+            confirmation_message: 'Êtes vous sûr de passer le paiement %id% en statut `%status%` ?'
+            title: 'Changer le statut'
         create:
             title: 'Ajout d''un paiement'
         delete:
@@ -169,6 +172,9 @@ admin:
         edit:
             actions:
                 add_payment_order: 'Règlement d''une commande'
+                cancel: 'Annuler le paiement'
+                set_pending: 'Mettre en attente'
+                validate: 'Valider la réception du paiement'
             title: 'Modification du paiement'
         list:
             title: 'Liste des paiements'
@@ -200,6 +206,9 @@ home:
 
 order:
     pay:
+        actions:
+            pay_with_hello_asso: 'Régler avec HelloAsso'
+
         msg: |
             Merci pour votre inscription !
             
@@ -208,6 +217,12 @@ order:
         payment_method_bank_transfer_iban: 'IBAN'
         payment_method_bank_transfer_bic: 'BIC'
         payment_method_bank_transfer_msg: 'Merci d''indiquer le numéro de commande `%order%` dans la référence de virement.'
+
+    show_payment:
+        msg: |
+            Merci pour votre règlement.
+            
+            Celui-ci va être comptabilisé dés validation.
 
 security:
     authentication:

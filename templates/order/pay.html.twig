@@ -26,11 +26,16 @@
                 {% endblock %}
             {% endembed %}
 
-            {% if payment_method_cheque_instruction %}
+            {% if hello_asso %}
                 {% embed '_skeleton/_card.html.twig' %}
-                    {% block card_title %}{{ 'payment.choice.method.cheque'|trans({}, 'forms') }}{% endblock %}
+                    {% block card_title %}{{ 'payment.choice.method.hello_asso'|trans({}, 'forms') }}{% endblock %}
                     {% block card_body %}
-                        <p>{{ payment_method_cheque_instruction|nl2br }}</p>
+                        <p>{{ 'payment.help.method.hello_asso'|trans({}, 'forms')|nl2br }}</p>
+                        <div class="callout callout-info">{{ 'payment.help.method.hello_asso_regulatory_text'|trans({}, 'forms')|nl2br }}</div>
+                        <a href="{{ path('order_pay_with_hello_asso', {'identifier':order.identifier}) }}" class="btn btn-primary btn-sm">
+                            <i class="far fa-credit-card"></i>
+                            {{ 'order.pay.actions.pay_with_hello_asso'|trans }}
+                        </a>
                     {% endblock %}
                 {% endembed %}
             {% endif %}
@@ -42,6 +47,15 @@
                         <p>{{ 'order.pay.payment_method_bank_transfer_iban'|trans }} <strong>{{ payment_method_bank_transfer_iban }}</strong></p>
                         <p>{{ 'order.pay.payment_method_bank_transfer_bic'|trans }} <strong>{{ payment_method_bank_transfer_bic }}</strong></p>
                         <p>{{ 'order.pay.payment_method_bank_transfer_msg'|trans({'%order%':order.identifier}) }}</p>
+                    {% endblock %}
+                {% endembed %}
+            {% endif %}
+
+            {% if payment_method_cheque_instruction %}
+                {% embed '_skeleton/_card.html.twig' %}
+                    {% block card_title %}{{ 'payment.choice.method.cheque'|trans({}, 'forms') }}{% endblock %}
+                    {% block card_body %}
+                        <p>{{ payment_method_cheque_instruction|nl2br }}</p>
                     {% endblock %}
                 {% endembed %}
             {% endif %}

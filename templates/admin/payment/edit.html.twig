@@ -38,6 +38,39 @@
                                 </a>
                             </td>
                         </tr>
+
+                        <tr>
+                            <th>{{ 'payment.label.status'|trans({}, 'forms') }}</th>
+                            <th>
+                                <h4>
+                                    {% if payment.status == constant('App\\Entity\\Payment::STATUS_VALIDATED') %}
+                                        <span class="badge badge-success">{{ 'payment.choice.status.validated'|trans({}, 'forms') }}</span>
+                                    {% elseif payment.status == constant('App\\Entity\\Payment::STATUS_PENDING') %}
+                                        <span class="badge badge-info">{{ 'payment.choice.status.pending'|trans({}, 'forms') }}</span>
+                                    {% elseif payment.status == constant('App\\Entity\\Payment::STATUS_CANCELLED') %}
+                                        <span class="badge badge-warning">{{ 'payment.choice.status.cancelled'|trans({}, 'forms') }}</span>
+                                    {% endif %}
+                                </h4>
+
+                                {% if constant('App\\Entity\\Payment::STATUS_CANCELLED') != payment.status %}
+                                    <a href="{{  path('admin_payment_change_status', {'payment':payment.id, 'status':constant('App\\Entity\\Payment::STATUS_CANCELLED')}) }}" class="btn btn-danger btn-xs">
+                                        <i class="fas fa-times"></i>
+                                        <span class="d-none d-md-inline">{{ 'admin.payment.edit.actions.cancel'|trans }}</span>
+                                    </a>
+                                {% endif %}
+                                {% if constant('App\\Entity\\Payment::STATUS_PENDING') != payment.status %}
+                                    <a href="{{  path('admin_payment_change_status', {'payment':payment.id, 'status':constant('App\\Entity\\Payment::STATUS_PENDING')}) }}" class="btn btn-primary btn-xs">
+                                        <i class="far fa-clock"></i>
+                                        <span class="d-none d-md-inline">{{ 'admin.payment.edit.actions.set_pending'|trans }}</span>
+                                    </a>
+                                {% elseif constant('App\\Entity\\Payment::STATUS_VALIDATED') != payment.status %}
+                                    <a href="{{  path('admin_payment_change_status', {'payment':payment.id, 'status':constant('App\\Entity\\Payment::STATUS_VALIDATED')}) }}" class="btn btn-success btn-xs">
+                                        <i class="fas fa-clipboard-check"></i>
+                                        <span class="d-none d-md-inline">{{ 'admin.payment.edit.actions.validate'|trans }}</span>
+                                    </a>
+                                {% endif %}
+                            </th>
+                        </tr>
                         <tr>
                             <th>{{ 'payment.label.issued_at'|trans({}, 'forms') }}</th>
                             <td>{{ payment.issuedAt|format_date }}</td>
@@ -56,7 +89,10 @@
                     <table class="table table-no-bpaymented">
                         <tr>
                             <th>{{ 'payment.label.method'|trans({}, 'forms') }}</th>
-                            <td class="text-left">{{ ('payment.choice.method.' ~ payment.method)|trans({}, 'forms') }}</td>
+                            <td class="text-left">
+                                {{ ('payment.choice.method.' ~ payment.method)|trans({}, 'forms') }}
+                                {% if payment.checkoutId %} <small>{{ payment.checkoutId }}</small>{% endif %}
+                            </td>
                         </tr>
                         <tr>
                             <th>{{ 'payment.label.notes'|trans({}, 'forms') }}</th>
@@ -107,26 +143,6 @@
                                         </a>
                                     </td>
                                 </tr>
-                                {#<tr>
-                                    <td><strong>{{ line.position + 1 }}</strong></td>
-                                    <td style="width: 70%">
-                                        {{ line.label|nl2br }}
-                                    </td>
-                                    <td class="text-right">
-                                        {% if line.type == constant('App\\Entity\\PaymentLine::TYPE_ALLOWANCE') and line.allowancePercentage %}
-                                            {{ line.allowancePercentage }}%  <i class="fa fa-times"></i>  {{ line.allowanceBaseAmount|format_currency('EUR') }}
-                                        {% endif %}
-                                    </td>
-                                    <td class="text-right">{{ line.amount|format_currency('EUR') }}</td>
-                                    <td class="text-center">
-                                        <a href="{{ path('admin_payment_line_edit', {'payment':payment.id, 'line':line.id }) }}" class="btn btn-primary btn-sm">
-                                            <span class="fa fa-edit"></span>
-                                        </a>
-                                        <a href="{{ path('admin_payment_line_delete', {'payment':payment.id, 'line':line.id }) }}" class="btn btn-danger btn-sm">
-                                            <span class="fa fa-trash"></span>
-                                        </a>
-                                    </td>
-                                </tr>#}
                             {% endfor %}
                             </tbody>
                         </table>

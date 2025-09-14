@@ -175,12 +175,14 @@
                                         <th class="text-right">
                                             {{ 'order.label.paid_amount'|trans({}, 'forms') }}
                                             {% for payment in order.payments %}
-                                                <br />
-                                                <a href="{{ path('admin_payment_edit', {'payment':payment.payment.id}) }}" class="btn btn-info btn-xs mt-1">
-                                                    <i class="fas fa-credit-card"></i>
-                                                    {{ payment.amount|format_currency('EUR')}}
-                                                    — {{ payment.payment.issuedAt|format_date('medium') }}
-                                                </a>
+                                                {% if payment.payment.status != constant('App\\Entity\\Payment::STATUS_CANCELLED') %}
+                                                    <br />
+                                                    <a href="{{ path('admin_payment_edit', {'payment':payment.payment.id}) }}" class="btn btn-info btn-xs mt-1">
+                                                        <i class="fas fa-credit-card"></i>
+                                                        {{ payment.amount|format_currency('EUR')}}
+                                                        — {{ payment.payment.issuedAt|format_date('medium') }}
+                                                    </a>
+                                                {% endif %}
                                             {% endfor %}
                                         </th>
                                         <th class="text-right">{{ order.paidAmount|format_currency('EUR') }}</th>
