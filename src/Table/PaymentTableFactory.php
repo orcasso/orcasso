@@ -113,7 +113,7 @@ class PaymentTableFactory implements TableFactoryInterface
                 (new Column())->setLabel('payment.label.status')->setTranslateDomain('forms')
                     ->setSort(['p.status' => 'asc'])
                     ->setFilter((new FilterSelect())
-                        ->setField('.status')
+                        ->setField('p.status')
                         ->setName('p_status')
                         ->setChoices(Payment::STATUSES)
                         ->setChoiceLabel(fn (string $status) => "payment.choice.status.$status")
