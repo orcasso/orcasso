@@ -189,7 +189,7 @@ class Order implements MemberLogObjectInterface
 
     public function canBeCancelled(): bool
     {
-        return $this->payments->isEmpty();
+        return 0 == $this->getPaidAmount();
     }
 
     /**
