@@ -89,7 +89,7 @@ class Payment implements MemberLogObjectInterface
     /**
      * @var Collection<PaymentOrder>
      */
-    #[ORM\OneToMany(targetEntity: PaymentOrder::class, mappedBy: 'payment')]
+    #[ORM\OneToMany(targetEntity: PaymentOrder::class, mappedBy: 'payment', cascade: ['persist', 'remove'])]
     private Collection $orders;
 
     public function __construct()

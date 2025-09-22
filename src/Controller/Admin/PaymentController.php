@@ -50,15 +50,13 @@ final class PaymentController extends AbstractController
         $payment = new Payment();
         if ($order) {
             $payment->setMember($order->getMember());
+            $payment->getOrders()->add((new PaymentOrder($payment, $order))->setAmount($order->getDueAmount()));
         }
         $form = $this->createForm(PaymentType::class, $payment);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->repository->update($payment);
-            if ($order) {
-                $paymentOrderRepository->update((new PaymentOrder($payment, $order))->setAmount($order->getDueAmount()));
-            }
             $this->addFlash('success', 'success.payment.created');
 
             return $this->redirectToRoute('admin_payment_edit', ['payment' => $payment->getId()]);
