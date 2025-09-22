@@ -35,8 +35,8 @@ class PaymentFixtures extends Fixture implements DependentFixtureInterface
                 ->setIdentifier($this->faker->uuid)
                 ->setMethod($this->faker->randomElement(Payment::METHODS))
                 ->setMember($order->getMember())
-                ->setIssuedAt(\DateTimeImmutable::createFromMutable($this->faker->dateTimeBetween('-2 months')))
-                ->setReceivedAt($payment->getIssuedAt())
+                ->setCreatedAt($this->faker->dateTimeBetween('-2 months'))
+                ->setReceivedAt(\DateTimeImmutable::createFromMutable($payment->getCreatedAt()))
             ;
 
             $paymentOrder = (new PaymentOrder($payment, $order))

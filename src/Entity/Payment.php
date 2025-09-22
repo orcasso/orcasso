@@ -57,9 +57,6 @@ class Payment implements MemberLogObjectInterface
     #[ORM\JoinColumn(name: 'member_id', nullable: false)]
     private Member $member;
 
-    #[ORM\Column(name: 'issued_at', type: 'datetime_immutable')]
-    private \DateTimeImmutable $issuedAt;
-
     #[ORM\Column(name: 'received_at', type: 'datetime_immutable', nullable: true)]
     #[Gedmo\Versioned]
     private ?\DateTimeImmutable $receivedAt = null;
@@ -94,7 +91,6 @@ class Payment implements MemberLogObjectInterface
 
     public function __construct()
     {
-        $this->issuedAt = date_create_immutable('now 00:00:00');
         $this->orders = new ArrayCollection();
     }
 
@@ -115,18 +111,6 @@ class Payment implements MemberLogObjectInterface
         return $this;
     }
 
-    public function getIssuedAt(): \DateTimeImmutable
-    {
-        return $this->issuedAt;
-    }
-
-    public function setIssuedAt(\DateTimeImmutable $issuedAt): static
-    {
-        $this->issuedAt = $issuedAt;
-
-        return $this;
-    }
-
     public function getReceivedAt(): ?\DateTimeImmutable
     {
         return $this->receivedAt;
@@ -134,6 +118,9 @@ class Payment implements MemberLogObjectInterface
 
     public function setReceivedAt(?\DateTimeImmutable $receivedAt): static
     {
+        if ($receivedAt) {
+            $this->setStatus(static::STATUS_VALIDATED);
+        }
         $this->receivedAt = $receivedAt;
 
         return $this;

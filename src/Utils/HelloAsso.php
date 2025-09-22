@@ -70,7 +70,6 @@ class HelloAsso
         );
 
         $data = $response->toArray();
-        $payment->setIssuedAt(date_create_immutable());
         $payment->setCheckoutId($data['id'] ?? throw new \RuntimeException('Unable to store checkout intent id '));
         $this->paymentRepository->update($payment);
         $this->paymentOrderRepository->update((new PaymentOrder($payment, $order))->setAmount($amount));
@@ -106,7 +105,7 @@ class HelloAsso
                 $payment->setStatus(Payment::STATUS_CANCELLED);
             }
             // if after 45 minutes, you are unable to retrieve any payment via polling, then the checkout can be considered abandoned.
-            if (null === $state && $payment->getIssuedAt() < date_create_immutable('-1 hour')) {
+            if (null === $state && $payment->getCreatedAt() < date_create_immutable('-1 hour')) {
                 $payment->setStatus(Payment::STATUS_CANCELLED);
             }
             $this->paymentRepository->update($payment);

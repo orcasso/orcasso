@@ -63,14 +63,14 @@ class PaymentTableFactory implements TableFactoryInterface
                     )
             )
             ->addColumn(
-                (new Column())->setLabel('payment.label.issued_at')->setTranslateDomain('forms')
-                    ->setSort(['p.issuedAt' => 'asc', 'p.id' => 'asc'])
+                (new Column())->setLabel('_meta.created_at')->setTranslateDomain('forms')
+                    ->setSort(['p.createdAt' => 'asc', 'p.id' => 'asc'])
                     ->setDisplayFormat(Column::FORMAT_DATE)
                     ->setDisplayFormatParams('d/m/Y')
                     ->setFilter(
                         (new Filter())
-                            ->setField('p.issuedAt')
-                            ->setName('p_issuedAt')
+                            ->setField('p.createdAt')
+                            ->setName('p_createdAt')
                             ->setDataFormat(Column::FORMAT_DATE)
                     )
             )
