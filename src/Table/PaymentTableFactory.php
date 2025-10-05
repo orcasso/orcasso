@@ -34,7 +34,7 @@ class PaymentTableFactory implements TableFactoryInterface
         $queryBuilder = $this->repository->createQueryBuilder('p');
         $queryBuilder->innerJoin('p.member', 'm');
         $member = 'CONCAT(m.firstName, \' \', m.lastName)';
-        $queryBuilder->addSelect('m', $member.' AS member');
+        $queryBuilder->addSelect('m', $member.' AS member')->orderBy($queryBuilder->expr()->desc('p.createdAt'));
 
         $table = (new Table())
             ->setId($this->getTableId())

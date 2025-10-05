@@ -37,7 +37,12 @@ class OrderTableFactory implements TableFactoryInterface
         $member = 'CONCAT(m.firstName, \' \', m.lastName)';
         $queryBuilder->addSelect('m', $member.' AS member');
         $lineConcat = 'GROUP_CONCAT(l.label SEPARATOR \' | \')';
-        $queryBuilder->addSelect($lineConcat.' AS lines')->leftjoin('o.lines', 'l')->groupBy('o.id');
+        $queryBuilder->addSelect($lineConcat.' AS lines')
+            ->leftjoin('o.lines', 'l')
+            ->groupBy('o.id')
+            ->orderBy($queryBuilder->expr()->desc('o.createdAt'))
+        ;
+
 
         $table = (new Table())
             ->setId($this->getTableId())
