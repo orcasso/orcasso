@@ -209,11 +209,8 @@ order:
         actions:
             pay_with_hello_asso: 'Régler avec HelloAsso'
 
-        msg: |
-            Merci pour votre inscription !
-            
-            Vous pouvez régler votre commande en choisissant une des méthodes de paiement ci-dessous.
-
+        msg_intro: 'Merci %member% pour votre inscription !'
+        msg_payment: 'Vous pouvez régler votre commande en choisissant une des méthodes de paiement ci-dessous.'
         payment_method_bank_transfer_iban: 'IBAN'
         payment_method_bank_transfer_bic: 'BIC'
         payment_method_bank_transfer_msg: 'Merci d''indiquer le numéro de commande `%order%` dans la référence de virement.'

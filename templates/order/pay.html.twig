@@ -14,15 +14,39 @@
                 {% endblock %}
 
                 {% block card_body %}
-                    <p>{{ 'order.pay.msg'|trans|nl2br }}</p>
-
-                    <strong>{{ 'order.label.member'|trans({}, 'forms') }} : </strong>
-                    {{ order.member.fullName }}
-
+                    <h5>{{ 'order.pay.msg_intro'|trans({'%member%':order.member.fullName})|nl2br }}</h5>
                     <br />
 
-                    <strong>{{ 'order.label.due_amount'|trans({}, 'forms') }} : </strong>
-                    {{ order.dueAmount|format_currency('EUR') }}
+                    <table class="table table-sm">
+                        {% for line in order.lines %}
+                            {# @var App\Entity\OrderLine line #}
+                            <tr>
+                                <td>
+                                    {{ line.label|nl2br }}
+                                    {% if line.type == constant('App\\Entity\\OrderLine::TYPE_ALLOWANCE') and line.allowancePercentage %}
+                                        (- {{ line.allowancePercentage }}%)
+                                    {% endif %}
+                                </td>
+                                <td class="text-right">{{ line.amount|format_currency('EUR') }}</td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <th>{{ 'order.label.total_amount'|trans({}, 'forms') }}</th>
+                            <td class="text-right">{{ order.totalAmount|format_currency('EUR') }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'order.label.paid_amount'|trans({}, 'forms') }}</th>
+                            <td class="text-right">{{ order.paidAmount|format_currency('EUR') }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'order.label.due_amount'|trans({}, 'forms') }}</th>
+                            <th class="text-right">{{ order.dueAmount|format_currency('EUR') }}</th>
+                        </tr>
+                    </table>
+
+                    <br />
+                    <p>{{ 'order.pay.msg_payment'|trans({'%member%':order.member.fullName})|nl2br }}</p>
+
                 {% endblock %}
             {% endembed %}
 

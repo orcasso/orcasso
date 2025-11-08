@@ -43,7 +43,6 @@ class OrderTableFactory implements TableFactoryInterface
             ->orderBy($queryBuilder->expr()->desc('o.createdAt'))
         ;
 
-
         $table = (new Table())
             ->setId($this->getTableId())
             ->setPath($this->router->generate('admin_order_list_ajax'))
