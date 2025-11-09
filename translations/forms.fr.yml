@@ -23,6 +23,7 @@ configuration:
         helloasso_client_secret: 'HelloAsso — Secret API'
         helloasso_asso_slug: 'HelloAsso — Slug Association'
         payment_method_cheque_instruction: 'Indications pour le paiement par chèque'
+        payment_method_other_instruction: 'Indications pour les autres moyens de paiement'
         payment_method_bank_transfer_iban: 'IBAN'
         payment_method_bank_transfer_bic: 'BIC'
 
