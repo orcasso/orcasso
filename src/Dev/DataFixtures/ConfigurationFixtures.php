@@ -17,6 +17,8 @@ class ConfigurationFixtures extends Fixture
             ->setValue('<b>Bienvenue</b> sur notre plateforme d\'inscription<br />Veuillez sélectionner votre adhésion'));
         $manager->persist((new Configuration(Configuration::ITEM_PAYMENT_METHOD_CHEQUE_INSTRUCTION))
             ->setValue('Chèque à l\'ordre de "École de musique"'.\PHP_EOL.'à déposer dans la boite aux lettres'));
+        $manager->persist((new Configuration(Configuration::ITEM_PAYMENT_METHOD_OTHER_INSTRUCTION))
+            ->setValue('Possibilité de payer par espèce ou carte Top départ'));
         $manager->persist((new Configuration(Configuration::ITEM_PAYMENT_METHOD_BANK_TRANSFER_IBAN))->setValue('FR76 1234 5123 4501 2345 6789 006'));
         $manager->persist((new Configuration(Configuration::ITEM_PAYMENT_METHOD_BANK_TRANSFER_BIC))->setValue('AAAAFRPPAAA'));
         $manager->persist((new Configuration(Configuration::ITEM_HELLOASSO_CLIENT_ID))->setValue('cc1clientid'));

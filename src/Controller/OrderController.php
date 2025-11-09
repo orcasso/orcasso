@@ -29,6 +29,7 @@ final class OrderController extends AbstractController
             'order' => $order,
             'hello_asso' => ((bool) $this->configuration->getValue(Configuration::ITEM_HELLOASSO_CLIENT_ID)),
             'payment_method_cheque_instruction' => $this->configuration->getValue(Configuration::ITEM_PAYMENT_METHOD_CHEQUE_INSTRUCTION),
+            'payment_method_other_instruction' => $this->configuration->getValue(Configuration::ITEM_PAYMENT_METHOD_OTHER_INSTRUCTION),
             'payment_method_bank_transfer_iban' => $this->configuration->getValue(Configuration::ITEM_PAYMENT_METHOD_BANK_TRANSFER_IBAN),
             'payment_method_bank_transfer_bic' => $this->configuration->getValue(Configuration::ITEM_PAYMENT_METHOD_BANK_TRANSFER_BIC),
         ]);

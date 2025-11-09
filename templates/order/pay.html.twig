@@ -83,6 +83,15 @@
                     {% endblock %}
                 {% endembed %}
             {% endif %}
+
+            {% if payment_method_other_instruction %}
+                {% embed '_skeleton/_card.html.twig' %}
+                    {% block card_title %}{{ 'order.pay.payment_method_other_title'|trans }}{% endblock %}
+                    {% block card_body %}
+                        <p>{{ payment_method_other_instruction|nl2br }}</p>
+                    {% endblock %}
+                {% endembed %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}
