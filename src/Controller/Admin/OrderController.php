@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\OrderType;
 use App\Repository\OrderRepository;
 use App\Table\OrderTableFactory;
+use App\Utils\ReceiptPdfGenerator;
 use Kilik\TableBundle\Services\TableService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,6 +63,17 @@ final class OrderController extends AbstractController
     {
         return $this->render('admin/order/edit.html.twig', [
             'order' => $order,
+        ]);
+    }
+
+    #[Route('/{order}/receipt-pdf', name: 'admin_order_export_receipt_pdf', methods: ['GET'])]
+    public function exportReceiptPdf(ReceiptPdfGenerator $generator, Order $order): Response
+    {
+        $content = $generator->generate($order);
+
+        return new Response($content, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="receipt-'.$order->getIdentifier().'.pdf"',
         ]);
     }
 
