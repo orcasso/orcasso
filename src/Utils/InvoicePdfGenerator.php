@@ -2,23 +2,22 @@
 
 namespace App\Utils;
 
+use App\Entity\Configuration;
 use App\Entity\Order;
 use App\Entity\OrderLine;
 use App\Entity\Payment;
+use App\Repository\ConfigurationRepository;
 use TCPDF;
 
 class InvoicePdfGenerator
 {
     // Informations de l'association
-    private const ASSOCIATION_NAME    = 'École de Musique Intercommunale des Ramières';
     private const ASSOCIATION_ADDRESS = 'Centre Rural d\'Animation';
     private const ASSOCIATION_STREET  = '4 impasse des Pompiers';
     private const ASSOCIATION_CITY    = '26400 Grâne';
     private const ASSOCIATION_EMAIL   = 'contact@edmir26.fr';
     private const ASSOCIATION_PHONE   = '09 80 55 94 88';
     private const ASSOCIATION_SIRET   = '433 309 895 00012';
-    private const ASSOCIATION_APE   = 'Agrément Jeunesse et Education Populaire n°26.05.JEP23';
-    private const ASSOCIATION_AGREMENT   = '8552Z';
 
     // Couleurs (RGB)
     private const COLOR_PRIMARY   = [41, 98, 152];   // bleu institutionnel
@@ -26,6 +25,11 @@ class InvoicePdfGenerator
     private const COLOR_WHITE     = [255, 255, 255];
     private const COLOR_DARK_TEXT = [30, 30, 30];
     private const COLOR_GREY_TEXT = [100, 100, 100];
+
+    public function __construct(private readonly ConfigurationRepository $configurationRepository)
+    {
+    }
+
 
     /**
      * Génère le PDF de la facture pour une commande donnée.
@@ -48,7 +52,7 @@ class InvoicePdfGenerator
 
         $this->renderHeader($pdf);
         $this->renderInvoiceMeta($pdf, $order);
-        $this->renderBilledTo($pdf, $order);
+        $this->renderBuyer($pdf, $order);
         $this->renderLinesTable($pdf, $order);
         $this->renderTotals($pdf, $order);
         $this->renderPayments($pdf, $order);
@@ -69,10 +73,9 @@ class InvoicePdfGenerator
         $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
 
         // Métadonnées
-        $pdf->SetCreator('EMIR – Application de gestion');
-        $pdf->SetAuthor(self::ASSOCIATION_NAME);
-        $pdf->SetTitle('Facture');
-        $pdf->SetSubject('Facture adhérent');
+        $pdf->SetCreator('OrcAsso');
+        $pdf->SetAuthor($this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_NAME));
+        $pdf->SetTitle('Facture'); // @todo numéro ?
 
         // Désactive l'en-tête et le pied de page par défaut de TCPDF
         $pdf->setPrintHeader(false);
@@ -103,7 +106,7 @@ class InvoicePdfGenerator
         // --- Bloc gauche : nom de l'association ---
         $pdf->SetFont('helvetica', 'B', 13);
         $pdf->SetTextColor(...self::COLOR_PRIMARY);
-        $pdf->MultiCell(95, 7, self::ASSOCIATION_NAME, 0, 'L', false, 0, 15, $startY);
+        $pdf->MultiCell(95, 7, $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_NAME), 0, 'L', false, 0, 15, $startY);
 
         // --- Bloc droit : adresse ---
         $pdf->SetFont('helvetica', '', 8);
@@ -135,7 +138,7 @@ class InvoicePdfGenerator
     {
         $pdf->SetFont('helvetica', 'B', 18);
         $pdf->SetTextColor(...self::COLOR_PRIMARY);
-        $pdf->Cell(0, 10, 'FACTURE', 0, 1, 'C');
+        $pdf->Cell(0, 10, 'FACTURE', 0, 1, 'C');  // @todo numéro ?
 
         $pdf->SetFont('helvetica', '', 9);
         $pdf->SetTextColor(...self::COLOR_GREY_TEXT);
@@ -155,7 +158,7 @@ class InvoicePdfGenerator
     /**
      * Bloc « Facturé à » avec les informations de l'adhérent.
      */
-    private function renderBilledTo(TCPDF $pdf, Order $order): void
+    private function renderBuyer(TCPDF $pdf, Order $order): void
     {
         $member = $order->getMember();
 
@@ -168,16 +171,8 @@ class InvoicePdfGenerator
         $pdf->SetTextColor(...self::COLOR_DARK_TEXT);
         $pdf->SetFont('helvetica', '', 9);
 
-        $lines = [$member->getFullName()];
-
-        // Ajoutez ici d'autres champs du membre si disponibles (adresse, email…)
-        // Exemple :
-        // if ($member->getEmail()) { $lines[] = $member->getEmail(); }
-        // if ($member->getAddress()) { $lines[] = $member->getAddress(); }
-
-        foreach ($lines as $line) {
-            $pdf->Cell(80, 5.5, $line, 0, 1, 'L');
-        }
+        $pdf->Cell(80, 5.5, $member->getFullName(), 0, 1, 'L');
+        $pdf->MultiCell(80, 5.5, $member->getFullAddress(), 0, 'L');
 
         if ($order->getNotes()) {
             $pdf->Ln(2);
@@ -205,6 +200,7 @@ class InvoicePdfGenerator
         $pdf->Cell(10,  7, '#',         'B', 0, 'C', true);
         $pdf->Cell(120, 7, 'Désignation', 'B', 0, 'L', true);
         $pdf->Cell(50,  7, 'Montant (€)', 'B', 1, 'R', true);
+        $pdf->Ln(1);
 
         // Lignes
         $pdf->SetFont('helvetica', '', 9);
@@ -226,7 +222,7 @@ class InvoicePdfGenerator
                 && $line->getAllowanceBaseAmount()
             ) {
                 $label .= sprintf(
-                    "\n  → %s%% × %s",
+                    PHP_EOL."%s%% × %s",
                     $line->getAllowancePercentage(),
                     $this->formatCurrency($line->getAllowanceBaseAmount()),
                 );
@@ -341,9 +337,11 @@ class InvoicePdfGenerator
         $pdf->Line(15, $pdf->GetY(), 195, $pdf->GetY());
         $pdf->Ln(3);
 
-        $note = 'TVA non applicable – article 261-7-1° b du Code Général des Impôts. '
-              . self::ASSOCIATION_NAME . ' est une association loi 1901 à but non lucratif.';
-        $pdf->MultiCell(0, 4, $note, 0, 'C');
+        $notes = [
+            'TVA non applicable, article 293 B du CGI',
+            'En cas de retard de paiement, indemnité forfaitaire de recouvrement : 40 €'
+        ];
+        $pdf->MultiCell(0, 4, implode(PHP_EOL, $notes), 0, 'C');
     }
 
     // -------------------------------------------------------------------------

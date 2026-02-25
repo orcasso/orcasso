@@ -15,6 +15,13 @@ class Configuration
 {
     use TimestampableEntity;
 
+    public const ITEM_ASSOCIATION_NAME = 'association_name';
+    public const ITEM_ASSOCIATION_TYPE = 'association_type';
+    public const ITEM_ASSOCIATION_SIRET = 'association_siret';
+    public const ITEM_ASSOCIATION_PHONE_NUMBER = 'association_phone_number';
+    public const ITEM_ASSOCIATION_EMAIL = 'association_email';
+    public const ITEM_ASSOCIATION_WEBSITE = 'association_website';
+    public const ITEM_ASSOCIATION_FULL_ADDRESS = 'association_full_address';
     public const ITEM_HOMEPAGE_INTRODUCTION = 'homepage_introduction';
     public const ITEM_PAYMENT_METHOD_CHEQUE_INSTRUCTION = 'payment_method_cheque_instruction';
     public const ITEM_PAYMENT_METHOD_OTHER_INSTRUCTION = 'payment_method_other_instruction';
@@ -25,6 +32,13 @@ class Configuration
     public const ITEM_HELLOASSO_ASSO_SLUG = 'helloasso_asso_slug';
 
     public const ITEMS_FORM_TYPES = [
+        self::ITEM_ASSOCIATION_NAME => TextType::class,
+        self::ITEM_ASSOCIATION_TYPE => TextType::class,
+        self::ITEM_ASSOCIATION_SIRET => TextType::class,
+        self::ITEM_ASSOCIATION_PHONE_NUMBER => TextType::class,
+        self::ITEM_ASSOCIATION_EMAIL => TextType::class,
+        self::ITEM_ASSOCIATION_WEBSITE => TextType::class,
+        self::ITEM_ASSOCIATION_FULL_ADDRESS => TextareaType::class,
         self::ITEM_HOMEPAGE_INTRODUCTION => SummernoteTextareaType::class,
         self::ITEM_PAYMENT_METHOD_CHEQUE_INSTRUCTION => TextareaType::class,
         self::ITEM_PAYMENT_METHOD_OTHER_INSTRUCTION => TextareaType::class,

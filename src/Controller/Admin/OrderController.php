@@ -74,7 +74,7 @@ final class OrderController extends AbstractController
 
         return new Response($content, 200, [
             'Content-Type'        => 'application/pdf',
-            'Content-Disposition' => 'attachment; filename="facture-' . $order->getIdentifier() . '.pdf"',
+            'Content-Disposition' => 'inline; filename="facture-' . $order->getIdentifier() . '.pdf"',
         ]);
     }
 
