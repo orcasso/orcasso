@@ -7,10 +7,9 @@ use App\Entity\User;
 use App\Form\OrderType;
 use App\Repository\OrderRepository;
 use App\Table\OrderTableFactory;
-use App\Utils\InvoicePdfGenerator;
+use App\Utils\ReceiptPdfGenerator;
 use Kilik\TableBundle\Services\TableService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -67,14 +66,14 @@ final class OrderController extends AbstractController
         ]);
     }
 
-    #[Route('/{order}/invoice-pdf', name: 'admin_order_print_invoice', methods: ['GET'])]
-    public function printInvoice(InvoicePdfGenerator $generator, Order $order): Response
+    #[Route('/{order}/receipt-pdf', name: 'admin_order_export_receipt_pdf', methods: ['GET'])]
+    public function exportReceiptPdf(ReceiptPdfGenerator $generator, Order $order): Response
     {
-        $content =  $generator->generate($order);
+        $content = $generator->generate($order);
 
         return new Response($content, 200, [
-            'Content-Type'        => 'application/pdf',
-            'Content-Disposition' => 'inline; filename="facture-' . $order->getIdentifier() . '.pdf"',
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="receipt-'.$order->getIdentifier().'.pdf"',
         ]);
     }
 

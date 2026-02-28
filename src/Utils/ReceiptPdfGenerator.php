@@ -7,44 +7,22 @@ use App\Entity\Order;
 use App\Entity\OrderLine;
 use App\Entity\Payment;
 use App\Repository\ConfigurationRepository;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use TCPDF;
 
-class InvoicePdfGenerator
+class ReceiptPdfGenerator
 {
-    // Informations de l'association
-    private const ASSOCIATION_ADDRESS = 'Centre Rural d\'Animation';
-    private const ASSOCIATION_STREET  = '4 impasse des Pompiers';
-    private const ASSOCIATION_CITY    = '26400 Grâne';
-    private const ASSOCIATION_EMAIL   = 'contact@edmir26.fr';
-    private const ASSOCIATION_PHONE   = '09 80 55 94 88';
-    private const ASSOCIATION_SIRET   = '433 309 895 00012';
-
-    // Couleurs (RGB)
-    private const COLOR_PRIMARY   = [41, 98, 152];   // bleu institutionnel
-    private const COLOR_LIGHT_BG  = [240, 245, 250]; // fond ligne paire
-    private const COLOR_WHITE     = [255, 255, 255];
+    private const COLOR_PRIMARY = [41, 98, 152];   // bleu institutionnel
+    private const COLOR_LIGHT_BG = [240, 245, 250]; // fond ligne paire
+    private const COLOR_WHITE = [255, 255, 255];
     private const COLOR_DARK_TEXT = [30, 30, 30];
     private const COLOR_GREY_TEXT = [100, 100, 100];
 
-    public function __construct(private readonly ConfigurationRepository $configurationRepository)
+    public function __construct(private readonly ConfigurationRepository $configurationRepository, private readonly TranslatorInterface $translator)
     {
     }
 
-
-    /**
-     * Génère le PDF de la facture pour une commande donnée.
-     *
-     * @param Order  $order      La commande à facturer
-     * @param string $outputMode Mode de sortie TCPDF :
-     *                           'S' → retourne le PDF comme chaîne binaire (recommandé pour Symfony)
-     *                           'I' → envoie directement au navigateur
-     *                           'D' → force le téléchargement
-     *                           'F' → sauvegarde dans un fichier (passer $filePath)
-     * @param string $filePath   Chemin de fichier si $outputMode = 'F'
-     *
-     * @return string Contenu binaire du PDF (si outputMode = 'S')
-     */
-    public function generate(Order $order, string $outputMode = 'S', string $filePath = ''): string
+    public function generate(Order $order, string $outputMode = 'S'): string
     {
         $pdf = $this->createTcpdf();
 
@@ -68,14 +46,14 @@ class InvoicePdfGenerator
     // Création et configuration de l'objet TCPDF
     // -------------------------------------------------------------------------
 
-    private function createTcpdf(): TCPDF
+    private function createTcpdf(): \TCPDF
     {
-        $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
+        $pdf = new \TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
 
         // Métadonnées
         $pdf->SetCreator('OrcAsso');
         $pdf->SetAuthor($this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_NAME));
-        $pdf->SetTitle('Facture'); // @todo numéro ?
+        $pdf->SetTitle('Reçu');
 
         // Désactive l'en-tête et le pied de page par défaut de TCPDF
         $pdf->setPrintHeader(false);
@@ -92,14 +70,7 @@ class InvoicePdfGenerator
         return $pdf;
     }
 
-    // -------------------------------------------------------------------------
-    // Blocs de contenu
-    // -------------------------------------------------------------------------
-
-    /**
-     * En-tête : logo/nom association à gauche, coordonnées à droite.
-     */
-    private function renderHeader(TCPDF $pdf): void
+    private function renderHeader(\TCPDF $pdf): void
     {
         $startY = $pdf->GetY();
 
@@ -111,13 +82,12 @@ class InvoicePdfGenerator
         // --- Bloc droit : adresse ---
         $pdf->SetFont('helvetica', '', 8);
         $pdf->SetTextColor(...self::COLOR_GREY_TEXT);
-        $addressBlock = implode("\n", array_filter([
-            self::ASSOCIATION_ADDRESS,
-            self::ASSOCIATION_STREET,
-            self::ASSOCIATION_CITY,
-            self::ASSOCIATION_EMAIL,
-            self::ASSOCIATION_PHONE,
-            self::ASSOCIATION_SIRET ? 'SIRET : ' . self::ASSOCIATION_SIRET : null,
+        $addressBlock = implode(\PHP_EOL, array_filter([
+            $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_NAME),
+            $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_FULL_ADDRESS),
+            $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_EMAIL),
+            $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_PHONE_NUMBER),
+            $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_SIRET),
             'Association loi 1901 – Non assujettie à la TVA',
         ]));
         $pdf->MultiCell(80, 4.5, $addressBlock, 0, 'R', false, 1, 110, $startY);
@@ -131,41 +101,39 @@ class InvoicePdfGenerator
         $pdf->SetTextColor(...self::COLOR_DARK_TEXT);
     }
 
-    /**
-     * Titre « FACTURE » + numéro + date + statut.
-     */
-    private function renderInvoiceMeta(TCPDF $pdf, Order $order): void
+    private function renderInvoiceMeta(\TCPDF $pdf, Order $order): void
     {
         $pdf->SetFont('helvetica', 'B', 18);
         $pdf->SetTextColor(...self::COLOR_PRIMARY);
-        $pdf->Cell(0, 10, 'FACTURE', 0, 1, 'C');  // @todo numéro ?
+        $pdf->Cell(0, 10, 'REÇU', 0, 1, 'C');
 
         $pdf->SetFont('helvetica', '', 9);
         $pdf->SetTextColor(...self::COLOR_GREY_TEXT);
 
-        $metaLine = sprintf(
+        $metaLine = \sprintf(
             'N° %s  |  Date : %s  |  Statut : %s',
             $order->getIdentifier(),
-            (new \DateTimeImmutable())->format('d/m/Y'),
-            $this->translateStatus($order->getStatus()),
+            $order->getCreatedAt()->format('d/m/Y'),
+            $this->translator->trans("order.choice.status.{$order->getStatus()}", domain: 'forms'),
         );
         $pdf->Cell(0, 6, $metaLine, 0, 1, 'C');
-        $pdf->Ln(4);
 
+        $pdf->SetFont('helvetica', 'B', 9);
+        $pdf->SetTextColor(...self::COLOR_PRIMARY);
+        $pdf->Cell(0, 5, 'Cotisation - Année associative '.$this->getAssociativeYear($order), 0, 1, 'C');
+
+        $pdf->Ln(4);
         $pdf->SetTextColor(...self::COLOR_DARK_TEXT);
     }
 
-    /**
-     * Bloc « Facturé à » avec les informations de l'adhérent.
-     */
-    private function renderBuyer(TCPDF $pdf, Order $order): void
+    private function renderBuyer(\TCPDF $pdf, Order $order): void
     {
         $member = $order->getMember();
 
         $pdf->SetFont('helvetica', 'B', 9);
         $pdf->SetFillColor(...self::COLOR_PRIMARY);
         $pdf->SetTextColor(...self::COLOR_WHITE);
-        $pdf->Cell(80, 6, 'FACTURÉ À', 0, 1, 'L', true);
+        $pdf->Cell(80, 6, strtoupper($this->translator->trans('order.label.member', domain: 'forms')), 0, 1, 'L', true);
 
         $pdf->SetFillColor(...self::COLOR_LIGHT_BG);
         $pdf->SetTextColor(...self::COLOR_DARK_TEXT);
@@ -178,17 +146,14 @@ class InvoicePdfGenerator
             $pdf->Ln(2);
             $pdf->SetFont('helvetica', 'I', 8);
             $pdf->SetTextColor(...self::COLOR_GREY_TEXT);
-            $pdf->MultiCell(160, 4.5, 'Note : ' . $order->getNotes(), 0, 'L');
+            $pdf->MultiCell(160, 4.5, 'Note : '.$order->getNotes(), 0, 'L');
         }
 
         $pdf->Ln(5);
         $pdf->SetTextColor(...self::COLOR_DARK_TEXT);
     }
 
-    /**
-     * Tableau des lignes de commande.
-     */
-    private function renderLinesTable(TCPDF $pdf, Order $order): void
+    private function renderLinesTable(\TCPDF $pdf, Order $order): void
     {
         // En-tête du tableau
         $pdf->SetFont('helvetica', 'B', 9);
@@ -197,9 +162,9 @@ class InvoicePdfGenerator
         $pdf->SetDrawColor(...self::COLOR_PRIMARY);
         $pdf->SetLineWidth(0.1);
 
-        $pdf->Cell(10,  7, '#',         'B', 0, 'C', true);
+        $pdf->Cell(10, 7, '#', 'B', 0, 'C', true);
         $pdf->Cell(120, 7, 'Désignation', 'B', 0, 'L', true);
-        $pdf->Cell(50,  7, 'Montant (€)', 'B', 1, 'R', true);
+        $pdf->Cell(50, 7, 'Montant (€)', 'B', 1, 'R', true);
         $pdf->Ln(1);
 
         // Lignes
@@ -209,20 +174,20 @@ class InvoicePdfGenerator
 
         $fill = false;
         foreach ($order->getLines() as $line) {
-            /** @var OrderLine $line */
+            /* @var OrderLine $line */
             $pdf->SetFillColor(...($fill ? self::COLOR_LIGHT_BG : self::COLOR_WHITE));
 
             $position = $line->getPosition() + 1;
-            $label    = $line->getLabel();
+            $label = $line->getLabel();
 
             // Pour les lignes de type remise, on précise le calcul dans le libellé
             if (
-                $line->getType() === OrderLine::TYPE_ALLOWANCE
+                OrderLine::TYPE_ALLOWANCE === $line->getType()
                 && $line->getAllowancePercentage()
                 && $line->getAllowanceBaseAmount()
             ) {
-                $label .= sprintf(
-                    PHP_EOL."%s%% × %s",
+                $label .= \sprintf(
+                    \PHP_EOL.'%s%% × %s',
                     $line->getAllowancePercentage(),
                     $this->formatCurrency($line->getAllowanceBaseAmount()),
                 );
@@ -230,9 +195,9 @@ class InvoicePdfGenerator
 
             $labelHeight = $this->estimateMultiCellHeight($pdf, 120, $label);
 
-            $pdf->Cell(10,  $labelHeight, (string) $position,  'B', 0, 'C', true);
+            $pdf->Cell(10, $labelHeight, (string) $position, 'B', 0, 'C', true);
             $pdf->MultiCell(120, $labelHeight, $label, 'B', 'L', true, 0);
-            $pdf->Cell(50,  $labelHeight, $this->formatCurrency($line->getAmount()), 'B', 1, 'R', true);
+            $pdf->Cell(50, $labelHeight, $this->formatCurrency($line->getAmount()), 'B', 1, 'R', true);
 
             $fill = !$fill;
         }
@@ -243,9 +208,9 @@ class InvoicePdfGenerator
     /**
      * Bloc des totaux (total, payé, reste dû).
      */
-    private function renderTotals(TCPDF $pdf, Order $order): void
+    private function renderTotals(\TCPDF $pdf, Order $order): void
     {
-        $colLabel  = 130;
+        $colLabel = 130;
         $colAmount = 50;
 
         // Total
@@ -279,11 +244,11 @@ class InvoicePdfGenerator
     /**
      * Détail des paiements enregistrés.
      */
-    private function renderPayments(TCPDF $pdf, Order $order): void
+    private function renderPayments(\TCPDF $pdf, Order $order): void
     {
         $activePayments = array_filter(
             $order->getPayments()->toArray(),
-            fn ($op) => $op->getPayment()->getStatus() !== Payment::STATUS_CANCELLED,
+            fn ($op) => Payment::STATUS_CANCELLED !== $op->getPayment()->getStatus(),
         );
 
         if (empty($activePayments)) {
@@ -306,7 +271,7 @@ class InvoicePdfGenerator
             $pdf->Cell(
                 130,
                 5.5,
-                sprintf(
+                \sprintf(
                     'Règlement du %s',
                     $payment->getCreatedAt()->format('d/m/Y'),
                 ),
@@ -324,10 +289,7 @@ class InvoicePdfGenerator
         $pdf->Ln(5);
     }
 
-    /**
-     * Mention légale en bas de page.
-     */
-    private function renderFooterNote(TCPDF $pdf): void
+    private function renderFooterNote(\TCPDF $pdf): void
     {
         $pdf->SetFont('helvetica', 'I', 7.5);
         $pdf->SetTextColor(...self::COLOR_GREY_TEXT);
@@ -339,43 +301,39 @@ class InvoicePdfGenerator
 
         $notes = [
             'TVA non applicable, article 293 B du CGI',
-            'En cas de retard de paiement, indemnité forfaitaire de recouvrement : 40 €'
+            'En cas de retard de paiement, indemnité forfaitaire de recouvrement : 40 €',
         ];
-        $pdf->MultiCell(0, 4, implode(PHP_EOL, $notes), 0, 'C');
-    }
-
-    // -------------------------------------------------------------------------
-    // Helpers
-    // -------------------------------------------------------------------------
-
-    private function translateStatus(string $status): string
-    {
-        return match ($status) {
-            Order::STATUS_VALIDATED => 'Validée',
-            Order::STATUS_PENDING   => 'En attente',
-            Order::STATUS_CANCELLED => 'Annulée',
-            default                 => $status,
-        };
+        $pdf->MultiCell(0, 4, implode(\PHP_EOL, $notes), 0, 'C');
     }
 
     private function formatCurrency(float|int $amount): string
     {
-        return number_format((float) $amount, 2, ',', ' ') . ' €';
+        return number_format((float) $amount, 2, ',', ' ').' €';
     }
 
     private function buildFilename(Order $order): string
     {
-        return sprintf('facture-%s.pdf', $order->getIdentifier());
+        return \sprintf('receipt-%s.pdf', $order->getIdentifier());
+    }
+
+    private function estimateMultiCellHeight(\TCPDF $pdf, float $width, string $text): float
+    {
+        $lineCount = max(1, substr_count($text, "\n") + 1);
+
+        // On ajoute 0.5 ligne de marge par retour à la ligne supplémentaire
+        return 6 + ($lineCount - 1) * 4.5;
     }
 
     /**
-     * Estime la hauteur d'une MultiCell pour aligner les cellules sur la même ligne.
-     * TCPDF ne propose pas de méthode native simple pour ça avant de rendre la cellule.
+     * @todo store current exercice in order
      */
-    private function estimateMultiCellHeight(TCPDF $pdf, float $width, string $text): float
+    private function getAssociativeYear(Order $order): string
     {
-        $lineCount = max(1, substr_count($text, "\n") + 1);
-        // On ajoute 0.5 ligne de marge par retour à la ligne supplémentaire
-        return 6 + ($lineCount - 1) * 4.5;
+        $date = $order->getCreatedAt();
+        $month = (int) $date->format('n');
+        $year  = (int) $date->format('Y');
+        $start = $month < 9 ? $year-1 : $year;
+
+        return \sprintf('%d / %d', $start, $start + 1);
     }
 }

@@ -115,6 +115,7 @@ admin:
                     simple: Ligne simple
                 add_payment: 'Ajouter un paiement'
                 cancel: 'Annuler la commande'
+                export_receipt_pdf: 'Reçu'
                 set_pending: 'Mettre en attente'
                 validate: 'Valider la commande'
                 link_to_pay: 'Lien pour payer'

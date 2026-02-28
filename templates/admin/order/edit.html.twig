@@ -6,6 +6,15 @@
     {% embed '_skeleton/_card.html.twig' with {'entity': order} %}
         {% block card_tools %}
             {% if order.dueAmount > 0 %}
+                <a href="{{ path('admin_order_export_receipt_pdf', {'order':order.id}) }}"
+                   class="btn btn-primary btn-sm">
+                    <i class="fas fa-file-pdf"></i>
+                    <span class="d-none d-md-inline">{{ 'admin.order.edit.actions.export_receipt_pdf'|trans }}</span>
+                </a>
+                &nbsp;-&nbsp;
+            {% endif %}
+
+            {% if order.dueAmount > 0 %}
                 <a href="{{ path('admin_payment_create_for_order', {'order':order.id}) }}"
                    class="btn btn-primary btn-sm">
                     <i class="fas fa-credit-card"></i>

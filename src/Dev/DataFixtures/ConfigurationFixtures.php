@@ -22,7 +22,7 @@ class ConfigurationFixtures extends Fixture
         $manager->persist((new Configuration(Configuration::ITEM_ASSOCIATION_EMAIL))->setValue('ecole-de-musique@domain.net'));
         $manager->persist((new Configuration(Configuration::ITEM_ASSOCIATION_WEBSITE))->setValue('https://domain.net'));
         $manager->persist((new Configuration(Configuration::ITEM_ASSOCIATION_FULL_ADDRESS))->setValue(
-            implode(PHP_EOL, [$faker->streetAddress(), $faker->secondaryAddress, $faker->postcode.' '.$faker->city])
+            implode(\PHP_EOL, [$faker->streetAddress(), $faker->secondaryAddress, $faker->postcode.' '.$faker->city])
         ));
         $manager->persist((new Configuration(Configuration::ITEM_HOMEPAGE_INTRODUCTION))
             ->setValue('<b>Bienvenue</b> sur notre plateforme d\'inscription<br />Veuillez sélectionner votre adhésion'));
