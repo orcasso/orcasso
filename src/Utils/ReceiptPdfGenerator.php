@@ -219,7 +219,6 @@ class ReceiptPdfGenerator
             $pdf->Cell($colAmount, 6, $this->formatCurrency($order->getPaidAmount()), 0, 1, 'R', true);
 
             $pdf->SetFont('helvetica', 'B', 10);
-            $pdf->SetFillColor(250, 250, 250);
             $pdf->Cell($colLabel, 7, $this->translator->trans('order.label.due_amount', domain: 'forms'), 0, 0, 'R', true);
             $pdf->Cell($colAmount, 7, $this->formatCurrency($order->getDueAmount()), 0, 1, 'R', true);
         }
