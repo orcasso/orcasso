@@ -117,7 +117,7 @@ class ReceiptPdfGenerator
         $pdf->SetFont('helvetica', 'B', 9);
         $pdf->SetTextColor(...self::COLOR_PRIMARY);
         // @todo translate and configure associative year
-        $pdf->Cell(0, 5, 'Cotisation - Année associative '.$this->getAssociativeYear($order), 0, 1, 'C');
+        $pdf->Cell(0, 5, 'Cotisation - Année associative 2025/2026', 0, 1, 'C');
 
         $pdf->Ln(4);
         $pdf->SetTextColor(...self::COLOR_DARK_TEXT);
@@ -298,15 +298,5 @@ class ReceiptPdfGenerator
         $lineCount = max(1, substr_count($text, "\n") + 1);
 
         return 6 + ($lineCount - 1) * 4.5;
-    }
-
-    private function getAssociativeYear(Order $order): string
-    {
-        $date = $order->getCreatedAt();
-        $month = (int) $date->format('n');
-        $year = (int) $date->format('Y');
-        $start = $month < 9 ? $year - 1 : $year;
-
-        return \sprintf('%d / %d', $start, $start + 1);
     }
 }
