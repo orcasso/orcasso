@@ -78,12 +78,11 @@ class ReceiptPdfGenerator
         $pdf->SetFont('helvetica', '', 8);
         $pdf->SetTextColor(...self::COLOR_GREY_TEXT);
         $addressBlock = implode(\PHP_EOL, array_filter([
-            $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_NAME),
             $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_FULL_ADDRESS),
             $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_EMAIL),
             $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_PHONE_NUMBER),
             $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_SIRET),
-            'Association loi 1901 – Non assujettie à la TVA',
+            $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_TYPE)
         ]));
         $pdf->MultiCell(80, 4.5, $addressBlock, 0, 'R', false, 1, 110, $startY);
 
