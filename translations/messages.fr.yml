@@ -120,6 +120,8 @@ admin:
                 validate: 'Valider la commande'
                 link_to_pay: 'Lien pour payer'
             title: 'Modification de la commande'
+        export_receipt_pdf:
+            payments: 'Détail des règlements'
         list:
             title: 'Liste des commandes'
 
