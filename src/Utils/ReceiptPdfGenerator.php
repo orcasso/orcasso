@@ -139,13 +139,6 @@ class ReceiptPdfGenerator
         $pdf->Cell(80, 5.5, $member->getFullName(), 0, 1, 'L');
         $pdf->MultiCell(80, 5.5, $member->getFullAddress(), 0, 'L');
 
-        if ($order->getNotes()) {
-            $pdf->Ln(2);
-            $pdf->SetFont('helvetica', 'I', 8);
-            $pdf->SetTextColor(...self::COLOR_GREY_TEXT);
-            $pdf->MultiCell(160, 4.5, 'Note : '.$order->getNotes(), 0, 'L');
-        }
-
         $pdf->Ln(5);
         $pdf->SetTextColor(...self::COLOR_DARK_TEXT);
     }
