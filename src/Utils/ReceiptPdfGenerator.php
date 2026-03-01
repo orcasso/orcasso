@@ -252,7 +252,7 @@ class ReceiptPdfGenerator
                     $this->translator->trans('payment_order.label.payment', domain: 'forms'),
                     $this->translator->trans("payment.choice.method.{$payment->getMethod()}", domain: 'forms'),
                     $this->translator->trans('payment.label.received_at', domain: 'forms'),
-                    $payment->getReceivedAt()->format('d/m/Y'),
+                    $payment->getReceivedAt() ? $payment->getReceivedAt()->format('d/m/Y') : '--',
                 ),
                 0, 0, 'L', true,
             );
