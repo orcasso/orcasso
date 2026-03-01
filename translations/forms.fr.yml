@@ -18,6 +18,13 @@ activity:
 
 configuration:
     label:
+        association_name: 'Nom de l''association'
+        association_type: 'Type d''association'
+        association_siret: 'SIRET'
+        association_phone_number: 'Téléphone'
+        association_email: 'Adresse E-mail'
+        association_website: 'Site web'
+        association_full_address: 'Adresse complète'
         homepage_introduction: 'Texte d''introduction sur la page d''accueil'
         helloasso_client_id: 'HelloAsso — ClientId API'
         helloasso_client_secret: 'HelloAsso — Secret API'
