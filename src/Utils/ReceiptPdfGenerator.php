@@ -82,7 +82,7 @@ class ReceiptPdfGenerator
             $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_EMAIL),
             $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_PHONE_NUMBER),
             $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_SIRET),
-            $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_TYPE)
+            $this->configurationRepository->getValue(Configuration::ITEM_ASSOCIATION_TYPE),
         ]));
         $pdf->MultiCell(80, 4.5, $addressBlock, 0, 'R', false, 1, 110, $startY);
 
@@ -240,6 +240,7 @@ class ReceiptPdfGenerator
         $pdf->SetFillColor(...self::COLOR_LIGHT_BG);
 
         $fill = false;
+        /** @var PaymentOrder $orderPayment */
         foreach ($activePayments as $orderPayment) {
             $payment = $orderPayment->getPayment();
             $pdf->SetFillColor(...($fill ? self::COLOR_LIGHT_BG : self::COLOR_WHITE));
@@ -247,9 +248,11 @@ class ReceiptPdfGenerator
                 130,
                 5.5,
                 \sprintf(
-                    '%s - %s',
+                    '%s - %s - %s : %s',
                     $this->translator->trans('payment_order.label.payment', domain: 'forms'),
-                    $payment->getCreatedAt()->format('d/m/Y'),
+                    $this->translator->trans("payment.choice.method.{$payment->getMethod()}", domain: 'forms'),
+                    $this->translator->trans('payment.label.received_at', domain: 'forms'),
+                    $payment->getReceivedAt()->format('d/m/Y'),
                 ),
                 0, 0, 'L', true,
             );

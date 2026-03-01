@@ -177,7 +177,7 @@ admin:
                 add_payment_order: 'Règlement d''une commande'
                 cancel: 'Annuler le paiement'
                 set_pending: 'Mettre en attente'
-                validate: 'Valider la réception du paiement'
+                validate: 'Valider l''encaissement du paiement'
             title: 'Modification du paiement'
         list:
             title: 'Liste des paiements'
