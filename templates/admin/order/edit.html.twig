@@ -5,7 +5,7 @@
 {% block content_body %}
     {% embed '_skeleton/_card.html.twig' with {'entity': order} %}
         {% block card_tools %}
-            {% if order.dueAmount > 0 %}
+            {% if order.status == constant('App\\Entity\\Order::STATUS_VALIDATED') %}
                 <a href="{{ path('admin_order_export_receipt_pdf', {'order':order.id}) }}"
                    class="btn btn-primary btn-sm">
                     <i class="fas fa-file-pdf"></i>
