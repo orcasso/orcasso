@@ -5,6 +5,7 @@ namespace App\Dev\DataFixtures;
 use App\Entity\Configuration;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 
 /**
  * @codeCoverageIgnore
@@ -13,6 +14,16 @@ class ConfigurationFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        $faker = Factory::create('fr_FR');
+        $manager->persist((new Configuration(Configuration::ITEM_ASSOCIATION_NAME))->setValue('École de musique intercommunale'));
+        $manager->persist((new Configuration(Configuration::ITEM_ASSOCIATION_TYPE))->setValue('Association loi 1901 – Non assujettie à la TVA'));
+        $manager->persist((new Configuration(Configuration::ITEM_ASSOCIATION_SIRET))->setValue($faker->siret));
+        $manager->persist((new Configuration(Configuration::ITEM_ASSOCIATION_PHONE_NUMBER))->setValue($faker->phoneNumber));
+        $manager->persist((new Configuration(Configuration::ITEM_ASSOCIATION_EMAIL))->setValue('ecole-de-musique@domain.net'));
+        $manager->persist((new Configuration(Configuration::ITEM_ASSOCIATION_WEBSITE))->setValue('https://domain.net'));
+        $manager->persist((new Configuration(Configuration::ITEM_ASSOCIATION_FULL_ADDRESS))->setValue(
+            implode(\PHP_EOL, [$faker->streetAddress(), $faker->secondaryAddress, $faker->postcode.' '.$faker->city])
+        ));
         $manager->persist((new Configuration(Configuration::ITEM_HOMEPAGE_INTRODUCTION))
             ->setValue('<b>Bienvenue</b> sur notre plateforme d\'inscription<br />Veuillez sélectionner votre adhésion'));
         $manager->persist((new Configuration(Configuration::ITEM_PAYMENT_METHOD_CHEQUE_INSTRUCTION))
