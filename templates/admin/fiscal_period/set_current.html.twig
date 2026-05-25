@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_fiscal_period_edit', {'fiscalPeriod': fiscal_period.id}) %}
+
+{% block content_header_title %}{{ 'admin.fiscal_period.set_current.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/_card_with_form.html.twig' %}
+        {% block card_body %}
+            {{ parent() }}
+            <p class="lead">{{ 'admin.fiscal_period.set_current.confirmation_message'|trans({
+                    '%name%': fiscal_period.name,
+                }) }}</p>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

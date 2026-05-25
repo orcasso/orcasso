@@ -116,7 +116,7 @@ class ReceiptPdfGenerator
         $pdf->SetFont('helvetica', 'B', 9);
         $pdf->SetTextColor(...self::COLOR_PRIMARY);
         // @todo translate and configure associative year
-        $pdf->Cell(0, 5, 'Cotisation - Année associative 2025/2026', 0, 1, 'C');
+        $pdf->Cell(0, 5, 'Cotisation - Année associative '.$order->getFiscalPeriod()->getName(), 0, 1, 'C');
 
         $pdf->Ln(4);
         $pdf->SetTextColor(...self::COLOR_DARK_TEXT);

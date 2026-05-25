@@ -18,6 +18,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Timesta
     public const ROLE_USER = 'ROLE_USER';
     public const ROLE_ADMIN_ACTIVITY_EDIT = 'ROLE_ADMIN_ACTIVITY_EDIT';
     public const ROLE_ADMIN_CONFIGURATION_EDIT = 'ROLE_ADMIN_CONFIGURATION_EDIT';
+    public const ROLE_ADMIN_FISCAL_PERIOD_EDIT = 'ROLE_ADMIN_FISCAL_PERIOD_EDIT';
     public const ROLE_ADMIN_MEMBER_EDIT = 'ROLE_ADMIN_MEMBER_EDIT';
     public const ROLE_ADMIN_ORDER_EDIT = 'ROLE_ADMIN_ORDER_EDIT';
     public const ROLE_ADMIN_ORDER_FORM_EDIT = 'ROLE_ADMIN_ORDER_FORM_EDIT';
@@ -28,6 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Timesta
         self::ROLE_USER,
         self::ROLE_ADMIN_ACTIVITY_EDIT,
         self::ROLE_ADMIN_CONFIGURATION_EDIT,
+        self::ROLE_ADMIN_FISCAL_PERIOD_EDIT,
         self::ROLE_ADMIN_MEMBER_EDIT,
         self::ROLE_ADMIN_ORDER_EDIT,
         self::ROLE_ADMIN_ORDER_FORM_EDIT,

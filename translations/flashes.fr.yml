@@ -11,6 +11,12 @@ success:
     configuration:
         updated: 'La configuration a bien été enregistrée'
 
+    fiscal_period:
+        created: 'La période fiscale a bien été créée'
+        deleted: 'La période fiscale a été supprimée'
+        set_current: 'La période fiscale a bien été définie comme période en cours'
+        updated: 'La période fiscale a bien été modifiée'
+
     legal_representative:
         created: 'Le responsable légal a bien été créé'
         deleted: 'Le responsable légal a été supprimé'
@@ -62,6 +68,9 @@ success:
 warning:
     activity:
         not_removable: 'L''activité ne peut être supprimée car il y a des adhésions liées.'
+    fiscal_period:
+        none_current: 'Aucune période fiscale n''est définie comme en cours. Merci d''en créer une et la marquer comme période en cours.'
+        not_removable: 'La période fiscale ne peut être supprimée car elle est en cours ou des commandes y sont liées.'
     order:
         not_removable: 'Une commande avec des paiements, ne peut être supprimée'
     payment:

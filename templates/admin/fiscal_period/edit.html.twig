@@ -1,0 +1,30 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_fiscal_period_list') %}
+{% set url_delete = path('admin_fiscal_period_delete', {'fiscalPeriod':fiscal_period.id}) %}
+
+{% block content_header_title %}{{ 'admin.fiscal_period.edit.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_edit.html.twig' with {'entity': fiscal_period} %}
+        {% block card_body %}
+            {{ parent() }}
+
+            <div class="row">
+                <div class="col-sm-2">{{ 'fiscal_period.label.is_current'|trans({}, 'forms') }}</div>
+                <div class="col-sm-10">
+                    {% if fiscal_period.current %}
+                        <p class="lead">
+                            <span class="badge badge-success">{{ 'fiscal_period.current_badge'|trans({}, 'forms') }}</span>
+                        </p>
+                    {% else %}
+                        <a href="{{ path('admin_fiscal_period_set_current', {'fiscalPeriod': fiscal_period.id}) }}"
+                            class="btn btn-primary">
+                            {{ 'admin.fiscal_period.edit.actions.set_current'|trans }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

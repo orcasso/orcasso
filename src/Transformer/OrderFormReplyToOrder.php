@@ -5,12 +5,15 @@ namespace App\Transformer;
 use App\Entity\Order;
 use App\Entity\OrderFormReply;
 use App\Entity\OrderLine;
+use App\Repository\FiscalPeriodRepository;
 use App\Repository\MemberRepository;
 
 class OrderFormReplyToOrder
 {
-    public function __construct(protected MemberRepository $memberRepository)
-    {
+    public function __construct(
+        private readonly MemberRepository $memberRepository,
+        private readonly FiscalPeriodRepository $fiscalPeriodRepository,
+    ) {
     }
 
     public function toOrder(OrderFormReply $reply): Order
@@ -20,7 +23,7 @@ class OrderFormReplyToOrder
             'lastName' => $reply->getMemberData()->lastName]
         );
         $member = $reply->getMemberData()->toMember($member);
-        $order = (new Order())->setMember($member)->setNotes($reply->notes);
+        $order = (new Order($this->fiscalPeriodRepository->getCurrentOrFail()))->setMember($member)->setNotes($reply->notes);
         $reply->setOrder($order);
 
         $form = $reply->getForm();

@@ -35,6 +35,7 @@ _meta:
 _menu:
     activity: Activités & Cotisations
     configuration: Configuration OrcAsso
+    fiscal_period: Périodes fiscales
     homepage: Accueil
     member: Membres
     order: Commandes
@@ -62,6 +63,22 @@ admin:
     configuration:
         edit:
             title: 'Configuration de l''application OrcAsso'
+
+    fiscal_period:
+        create:
+            title: 'Création d''une période fiscale'
+        delete:
+            confirmation_message: 'Êtes-vous sûr de vouloir supprimer la période fiscale %name% ?'
+            title: 'Suppression de la période fiscale'
+        edit:
+            actions:
+                set_current: 'Définir comme période en cours'
+            title: 'Modification de la période fiscale'
+        list:
+            title: 'Liste des périodes fiscales'
+        set_current:
+            confirmation_message: 'Voulez-vous passer utiliser %name% comme période fiscale en cours ?'
+            title: 'Définir comme période en cours'
 
     legal_representative:
         create:

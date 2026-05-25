@@ -1,0 +1,10 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_fiscal_period_list') %}
+{% set confirmation_message = 'admin.fiscal_period.delete.confirmation_message'|trans({'%name%':fiscal_period.name}) %}
+
+{% block content_header_title %}{{ 'admin.fiscal_period.delete.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_delete.html.twig' %}{% endembed %}
+{% endblock %}
