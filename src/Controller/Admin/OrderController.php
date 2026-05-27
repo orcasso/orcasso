@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Order;
 use App\Entity\User;
 use App\Form\OrderType;
+use App\Repository\FiscalPeriodRepository;
 use App\Repository\OrderRepository;
 use App\Table\OrderTableFactory;
 use App\Utils\ReceiptPdfGenerator;
@@ -19,7 +20,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted(User::ROLE_ADMIN_ORDER_EDIT)]
 final class OrderController extends AbstractController
 {
-    public function __construct(protected OrderRepository $repository)
+    public function __construct(
+        private readonly OrderRepository $repository)
     {
     }
 
@@ -40,9 +42,15 @@ final class OrderController extends AbstractController
     }
 
     #[Route('/new', name: 'admin_order_create', methods: ['GET', 'POST'])]
-    public function create(Request $request): Response
+    public function create(Request $request, FiscalPeriodRepository $fiscalPeriodRepository): Response
     {
-        $order = new Order();
+        try {
+            $order = new Order($fiscalPeriodRepository->getCurrentOrFail());
+        } catch (\RuntimeException) {
+            $this->addFlash('warning', 'warning.fiscal_period.none_current');
+
+            return $this->redirectToRoute('admin_fiscal_period_list');
+        }
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
 
@@ -97,7 +105,7 @@ final class OrderController extends AbstractController
     }
 
     #[Route('/{order}/change-status/{status}', name: 'admin_order_change_status', methods: ['GET', 'POST'])]
-    public function changeStatus(Request $request, Order $order, string $status)
+    public function changeStatus(Request $request, Order $order, string $status): Response
     {
         $form = $this->createFormBuilder()->setMethod(Request::METHOD_POST)->getForm();
         $form->handleRequest($request);

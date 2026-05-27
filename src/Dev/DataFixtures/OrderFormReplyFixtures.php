@@ -70,6 +70,6 @@ class OrderFormReplyFixtures extends Fixture implements DependentFixtureInterfac
 
     public function getDependencies(): array
     {
-        return [OrderFormFixtures::class];
+        return [OrderFormFixtures::class, FiscalPeriodFixtures::class];
     }
 }

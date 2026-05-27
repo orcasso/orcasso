@@ -80,6 +80,18 @@ class MenuBuilder
             ]);
         }
 
+        if ($this->authorizationChecker->isGranted(User::ROLE_ADMIN_FISCAL_PERIOD_EDIT)) {
+            $menu->addChild('_menu.fiscal_period', [
+                'route' => 'admin_fiscal_period_list',
+                'extras' => [
+                    'icon_class' => 'fas fa-calendar-alt',
+                    'routes' => [
+                        ['pattern' => '/^admin_fiscal_period_/'],
+                    ],
+                ],
+            ]);
+        }
+
         if ($this->authorizationChecker->isGranted(User::ROLE_ADMIN_ORDER_FORM_EDIT)) {
             $menu->addChild('_menu.order_form', [
                 'route' => 'admin_order_form_list',

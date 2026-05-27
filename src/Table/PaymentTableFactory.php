@@ -2,9 +2,12 @@
 
 namespace App\Table;
 
+use App\Entity\FiscalPeriod;
 use App\Entity\Order;
 use App\Entity\Payment;
+use App\Entity\PaymentOrder;
 use App\Entity\User;
+use App\Repository\FiscalPeriodRepository;
 use App\Repository\PaymentRepository;
 use Kilik\TableBundle\Components\Column;
 use Kilik\TableBundle\Components\Filter;
@@ -15,7 +18,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PaymentTableFactory implements TableFactoryInterface
 {
-    public function __construct(protected PaymentRepository $repository, protected RouterInterface $router, protected TranslatorInterface $translator)
+    public function __construct(
+        private readonly PaymentRepository $repository,
+        private readonly RouterInterface $router,
+        private readonly TranslatorInterface $translator,
+        private readonly FiscalPeriodRepository $fiscalPeriodRepository)
     {
     }
 
@@ -35,6 +42,9 @@ class PaymentTableFactory implements TableFactoryInterface
         $queryBuilder->innerJoin('p.member', 'm');
         $member = 'CONCAT(m.firstName, \' \', m.lastName)';
         $queryBuilder->addSelect('m', $member.' AS member')->orderBy($queryBuilder->expr()->desc('p.createdAt'));
+
+        $fiscalPeriods = $this->fiscalPeriodRepository->findAllOrderedByCurrentFirst();
+        $currentFiscalPeriod = $this->fiscalPeriodRepository->getCurrent();
 
         $table = (new Table())
             ->setId($this->getTableId())
@@ -108,6 +118,40 @@ class PaymentTableFactory implements TableFactoryInterface
                         ->setPlaceholder('--')
                     )
                     ->setDisplayCallback(fn ($value, $row) => $this->translator->trans("payment.choice.method.$value", [], 'forms'))
+            )
+            ->addColumn(
+                (new Column())->setLabel('payment.label.fiscal_period')->setTranslateDomain('forms')
+                    ->setDisplayCallback(function ($value, $row) {
+                        /** @var Payment $payment */
+                        $payment = $row['object'];
+
+                        return implode(', ', array_unique(
+                            array_map(fn (PaymentOrder $po) => $po->getOrder()->getFiscalPeriod()->getName(),
+                                $payment->getOrders()->toArray())
+                        ));
+                    })
+                    ->setFilter((new FilterSelect())
+                        ->setField('p.id')
+                        ->setName('p_fiscalPeriod')
+                        ->setChoices($fiscalPeriods)
+                        ->setChoiceLabel(fn (FiscalPeriod $fp) => $fp->getName())
+                        ->setChoiceValue(fn (?FiscalPeriod $fp) => $fp?->getId())
+                        ->setPlaceholder('--')
+                        ->setDefaultValue($currentFiscalPeriod)
+                        ->setQueryPartBuilder(function (Filter $filter, Table $table, $qb, $value): void {
+                            if (null === $value || '' === $value) {
+                                return;
+                            }
+                            $sub = $qb->getEntityManager()->createQueryBuilder()
+                                ->select('1')
+                                ->from(PaymentOrder::class, 'fpo')
+                                ->innerJoin('fpo.order', 'fpo_o')
+                                ->where('fpo.payment = p')
+                                ->andWhere('IDENTITY(fpo_o.fiscalPeriod) = :fp_filter');
+                            $qb->andWhere($qb->expr()->exists($sub->getDQL()))
+                                ->setParameter('fp_filter', $value);
+                        })
+                    )
             )
             ->addColumn(
                 (new Column())->setLabel('payment.label.status')->setTranslateDomain('forms')

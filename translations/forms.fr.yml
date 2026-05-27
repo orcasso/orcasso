@@ -16,6 +16,12 @@ activity:
     label:
         name: 'Nom'
 
+fiscal_period:
+    current_badge: 'Période en cours'
+    label:
+        is_current: 'En cours'
+        name: 'Nom'
+
 configuration:
     label:
         association_name: 'Nom de l''association'
@@ -84,6 +90,7 @@ order:
             validated: Validée
     label:
         due_amount: 'Montant dû'
+        fiscal_period: 'Période fiscale'
         identifier: Numéro
         lines: Lignes
         member: Membre
@@ -150,6 +157,7 @@ payment:
             validated: Validée
     label:
         amount: Montant
+        fiscal_period: 'Période fiscale'
         identifier: 'Référence'
         member: Membre
         method: Mode
@@ -179,6 +187,7 @@ user:
             ROLE_USER: 'Utilisateur'
             ROLE_ADMIN_ACTIVITY_EDIT: 'Configurer les activités'
             ROLE_ADMIN_CONFIGURATION_EDIT: 'Configurer OrcAsso'
+            ROLE_ADMIN_FISCAL_PERIOD_EDIT: 'Gérer les périodes fiscales'
             ROLE_ADMIN_MEMBER_EDIT: 'Gérer les membres'
             ROLE_ADMIN_ORDER_EDIT: 'Gérer les commandes'
             ROLE_ADMIN_ORDER_FORM_EDIT: 'Gérer les formulaires'

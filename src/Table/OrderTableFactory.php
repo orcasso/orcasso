@@ -2,8 +2,10 @@
 
 namespace App\Table;
 
+use App\Entity\FiscalPeriod;
 use App\Entity\Order;
 use App\Entity\User;
+use App\Repository\FiscalPeriodRepository;
 use App\Repository\OrderRepository;
 use Kilik\TableBundle\Components\Column;
 use Kilik\TableBundle\Components\Filter;
@@ -11,12 +13,14 @@ use Kilik\TableBundle\Components\FilterSelect;
 use Kilik\TableBundle\Components\Table;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Twig\Environment;
 
 class OrderTableFactory implements TableFactoryInterface
 {
-    public function __construct(protected OrderRepository $repository, protected TranslatorInterface $translator,
-        protected RouterInterface $router, protected Environment $twig)
+    public function __construct(
+        private readonly OrderRepository $repository,
+        private readonly TranslatorInterface $translator,
+        private readonly RouterInterface $router,
+        private readonly FiscalPeriodRepository $fiscalPeriodRepository)
     {
     }
 
@@ -34,6 +38,7 @@ class OrderTableFactory implements TableFactoryInterface
     {
         $queryBuilder = $this->repository->createQueryBuilder('o');
         $queryBuilder->innerJoin('o.member', 'm');
+        $queryBuilder->innerJoin('o.fiscalPeriod', 'fp')->addSelect('fp');
         $member = 'CONCAT(m.firstName, \' \', m.lastName)';
         $queryBuilder->addSelect('m', $member.' AS member');
         $lineConcat = 'GROUP_CONCAT(l.label SEPARATOR \' | \')';
@@ -42,6 +47,9 @@ class OrderTableFactory implements TableFactoryInterface
             ->groupBy('o.id')
             ->orderBy($queryBuilder->expr()->desc('o.createdAt'))
         ;
+
+        $fiscalPeriods = $this->fiscalPeriodRepository->findAllOrderedByCurrentFirst();
+        $currentFiscalPeriod = $this->fiscalPeriodRepository->getCurrent();
 
         $table = (new Table())
             ->setId($this->getTableId())
@@ -121,6 +129,25 @@ class OrderTableFactory implements TableFactoryInterface
                         return '<span class="'.$class.'">'.$this->translator->trans("order.choice.status.$value", [], 'forms').'</span>';
                     })
                     ->setRaw(true)
+            )
+            ->addColumn(
+                (new Column())->setLabel('order.label.fiscal_period')->setTranslateDomain('forms')
+                    ->setSort(['fp.name' => 'desc'])
+                    ->setDisplayCallback(function ($value, $row) {
+                        /** @var Order $order */
+                        $order = $row['object'];
+
+                        return $order->getFiscalPeriod()->getName();
+                    })
+                    ->setFilter((new FilterSelect())
+                        ->setField('fp.id')
+                        ->setName('o_fiscalPeriod')
+                        ->setChoices($fiscalPeriods)
+                        ->setChoiceLabel(fn (FiscalPeriod $fp) => $fp->getName())
+                        ->setChoiceValue(fn (?FiscalPeriod $fp) => $fp?->getId())
+                        ->setPlaceholder('--')
+                        ->setDefaultValue($currentFiscalPeriod)
+                    )
             )
             ->addColumn(
                 (new Column())->setLabel('_meta.created_at')->setTranslateDomain('forms')

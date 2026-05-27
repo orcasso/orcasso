@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\FiscalPeriod;
 use App\Entity\Member;
 use App\Entity\Order;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -16,6 +17,11 @@ class OrderType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('fiscalPeriod', EntityType::class, [
+                'label' => 'order.label.fiscal_period',
+                'class' => FiscalPeriod::class,
+                'choice_label' => fn (FiscalPeriod $fp) => $fp->getName(),
+            ])
             ->add('member', EntityType::class, [
                 'label' => 'order.label.member',
                 'class' => Member::class,

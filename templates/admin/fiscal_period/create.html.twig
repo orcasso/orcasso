@@ -1,0 +1,9 @@
+{% extends 'layout.html.twig' %}
+
+{% set url_cancel = path('admin_fiscal_period_list') %}
+
+{% block content_header_title %}{{ 'admin.fiscal_period.create.title'|trans }}{% endblock %}
+
+{% block content_body %}
+    {% embed '_skeleton/crud/_create.html.twig' %}{% endembed %}
+{% endblock %}

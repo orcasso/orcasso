@@ -45,6 +45,11 @@ class Order implements MemberLogObjectInterface
     #[Gedmo\Versioned]
     private Member $member;
 
+    #[ORM\ManyToOne(targetEntity: FiscalPeriod::class)]
+    #[ORM\JoinColumn(name: 'fiscal_period_id', referencedColumnName: 'id', nullable: false, onDelete: 'RESTRICT')]
+    #[Gedmo\Versioned]
+    private FiscalPeriod $fiscalPeriod;
+
     #[ORM\Column(name: 'total_amount', type: 'decimal', precision: 10, scale: 2)]
     protected string|int|float $totalAmount = 0;
 
@@ -70,10 +75,11 @@ class Order implements MemberLogObjectInterface
     #[ORM\OneToOne(targetEntity: OrderFormReply::class, mappedBy: 'order')]
     protected ?OrderFormReply $sourceFormReply = null;
 
-    public function __construct()
+    public function __construct(FiscalPeriod $fiscalPeriod)
     {
         $this->lines = new ArrayCollection();
         $this->payments = new ArrayCollection();
+        $this->fiscalPeriod = $fiscalPeriod;
     }
 
     public function getId(): ?int
@@ -118,6 +124,18 @@ class Order implements MemberLogObjectInterface
     public function setMember(Member $member): static
     {
         $this->member = $member;
+
+        return $this;
+    }
+
+    public function getFiscalPeriod(): FiscalPeriod
+    {
+        return $this->fiscalPeriod;
+    }
+
+    public function setFiscalPeriod(FiscalPeriod $fiscalPeriod): static
+    {
+        $this->fiscalPeriod = $fiscalPeriod;
 
         return $this;
     }

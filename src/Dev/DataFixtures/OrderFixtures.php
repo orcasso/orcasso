@@ -2,6 +2,7 @@
 
 namespace App\Dev\DataFixtures;
 
+use App\Entity\FiscalPeriod;
 use App\Entity\Member;
 use App\Entity\Order;
 use App\Entity\OrderLine;
@@ -36,13 +37,17 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
 
     public function getDependencies(): array
     {
-        return [MemberFixtures::class, ActivityFixtures::class];
+        return [MemberFixtures::class, ActivityFixtures::class, FiscalPeriodFixtures::class];
     }
 
     protected function createOrder(Member $member): Order
     {
-        $order = (new Order())
+        /** @var FiscalPeriod $currentPeriod */
+        $currentPeriod = $this->getReference(FiscalPeriodFixtures::CURRENT, FiscalPeriod::class);
+
+        $order = (new Order($this->getReference(FiscalPeriodFixtures::CURRENT, FiscalPeriod::class)))
             ->setMember($member)
+            ->setFiscalPeriod($currentPeriod)
             ->setNotes($this->faker->text)
             ->setStatus(Order::STATUS_VALIDATED)
             ->setCreatedAt($orderDate = $this->faker->dateTimeBetween('first day of january'))
