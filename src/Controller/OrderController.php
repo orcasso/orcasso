@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Validator\Constraints\GreaterThan;
 
 #[Route('/order')]
 final class OrderController extends AbstractController
@@ -51,7 +52,8 @@ final class OrderController extends AbstractController
         $form = $this->createFormBuilder(['amount' => $order->getDueAmount()], ['translation_domain' => 'forms'])
             ->add('amount', MoneyType::class, [
                 'label' => 'payment.label.amount',
-                'attr' => ['readonly' => 'readonly'],
+                'attr' => ['class' => 'col-lg-3'],
+                'constraints' => [new GreaterThan(0)],
             ])
             ->getForm();
         $form->handleRequest($request);

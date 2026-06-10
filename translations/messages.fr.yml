@@ -236,6 +236,9 @@ order:
         payment_method_bank_transfer_msg: 'Merci d''indiquer le numéro de commande `%order%` dans la référence de virement.'
         payment_method_other_title: 'Autres moyens de paiement'
 
+    pay_with_hello_asso:
+        msg: Veuillez renseigner le montant que vous souhaitez régler dés maintenant
+
     show_payment:
         msg: |
             Merci pour votre règlement.
