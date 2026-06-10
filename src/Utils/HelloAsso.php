@@ -35,8 +35,8 @@ class HelloAsso
         /* @todo url https ? */
         $backUrl = str_replace('http:', 'https:', $this->router->generate('order_pay_with_hello_asso', ['identifier' => $order->getIdentifier()], RouterInterface::ABSOLUTE_URL));
         $body = [
-            'totalAmount' => round($order->getDueAmount() * 100),
-            'initialAmount' => round($order->getDueAmount() * 100),
+            'totalAmount' => round($amount * 100),
+            'initialAmount' => round($amount * 100),
             'itemName' => substr(implode(' | ', $lines), 0, 250),
             'backUrl' => $backUrl,
             'errorUrl' => $backUrl,
