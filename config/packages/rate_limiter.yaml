@@ -1,0 +1,17 @@
+framework:
+    rate_limiter:
+        # public order form submissions, keyed by client IP
+        order_form_reply:
+            policy: sliding_window
+            limit: 10
+            interval: '1 hour'
+            lock_factory: null
+
+when@test:
+    framework:
+        rate_limiter:
+            order_form_reply:
+                policy: sliding_window
+                limit: 5
+                interval: '1 hour'
+                lock_factory: null

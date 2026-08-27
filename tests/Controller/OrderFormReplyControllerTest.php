@@ -12,9 +12,18 @@ use Faker\Factory;
 use Symfony\Component\DomCrawler\Form;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 final class OrderFormReplyControllerTest extends AbstractWebTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // the rate limiter state lives in the cache pool, it is not rolled back between tests
+        static::getContainer()->get('limiter.order_form_reply')->create('127.0.0.1')->reset();
+    }
+
     public function testReply()
     {
         $this->client->disableReboot();
@@ -59,6 +68,25 @@ final class OrderFormReplyControllerTest extends AbstractWebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('.alert-danger', $this->trans('order_form_reply.error.anti_spam', [], 'forms'));
         $this->assertEquals($replyCount, $this->em->getRepository(OrderFormReply::class)->count());
+    }
+
+    public function testReplyIsRateLimited()
+    {
+        $orderForm = $this->getDoctrine()->getRepository(OrderForm::class)->findAll()[0];
+        $url = $this->getUrl('order_form_reply', ['orderForm' => $orderForm->getId()]);
+
+        // limit configured to 5 per hour in test (see config/packages/rate_limiter.yaml)
+        for ($i = 0; $i < 5; ++$i) {
+            $this->client->request(Request::METHOD_POST, $url);
+            $this->assertResponseIsSuccessful();
+        }
+
+        $this->client->request(Request::METHOD_POST, $url);
+        $this->assertResponseStatusCodeSame(Response::HTTP_TOO_MANY_REQUESTS);
+
+        // GET requests are not rate limited
+        $this->client->request(Request::METHOD_GET, $url);
+        $this->assertResponseIsSuccessful();
     }
 
     protected function fillReplyForm(OrderForm $orderForm): Form

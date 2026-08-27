@@ -16,6 +16,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/order-form-reply')]
@@ -27,8 +29,15 @@ final class OrderFormReplyController extends AbstractController
     }
 
     #[Route('/{orderForm}', name: 'order_form_reply', methods: ['GET', 'POST'])]
-    public function reply(Request $request, OrderForm $orderForm, OrderFormReplyToOrder $toOrder): Response
+    public function reply(Request $request, OrderForm $orderForm, OrderFormReplyToOrder $toOrder, RateLimiterFactory $orderFormReplyLimiter): Response
     {
+        if ($request->isMethod(Request::METHOD_POST)) {
+            $limit = $orderFormReplyLimiter->create($request->getClientIp())->consume();
+            if (!$limit->isAccepted()) {
+                throw new TooManyRequestsHttpException($limit->getRetryAfter()->getTimestamp() - time());
+            }
+        }
+
         $reply = new OrderFormReply($orderForm);
         $form = $this->createForm(OrderFormReplyType::class, $reply);
         $form->handleRequest($request);
