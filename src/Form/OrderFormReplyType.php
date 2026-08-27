@@ -5,19 +5,30 @@ namespace App\Form;
 use App\Entity\OrderFormField;
 use App\Entity\OrderFormFieldChoice;
 use App\Entity\OrderFormReply;
+use App\Utils\AntiSpam;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class OrderFormReplyType extends AbstractType
 {
+    public function __construct(
+        private readonly AntiSpam $antiSpam,
+        private readonly TranslatorInterface $translator)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         /** @var OrderFormReply $reply */
@@ -51,6 +62,8 @@ class OrderFormReplyType extends AbstractType
             'required' => false,
             'empty_data' => '',
         ]);
+
+        $this->buildAntiSpamFields($builder);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -64,6 +77,34 @@ class OrderFormReplyType extends AbstractType
     public static function getFieldName(OrderFormField $field): string
     {
         return "fieldValues_{$field->getPosition()}";
+    }
+
+    /**
+     * Adds a honeypot field (hidden from humans by CSS, usually filled by bots)
+     * and a signed timestamp rejecting submissions faster than a human can type.
+     */
+    protected function buildAntiSpamFields(FormBuilderInterface $builder): void
+    {
+        $builder
+            ->add('website', TextType::class, [
+                'label' => false,
+                'mapped' => false,
+                'required' => false,
+                'row_attr' => ['class' => 'd-none'],
+                'attr' => ['autocomplete' => 'off', 'tabindex' => '-1'],
+            ])
+            ->add('antiSpamToken', HiddenType::class, [
+                'mapped' => false,
+                'data' => $this->antiSpam->generateToken(),
+            ])
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+                $form = $event->getForm();
+                if (!$form->get('website')->getData() && $this->antiSpam->isTokenValid($form->get('antiSpamToken')->getData())) {
+                    return;
+                }
+                $form->addError(new FormError($this->translator->trans('order_form_reply.error.anti_spam', [], 'forms')));
+            })
+        ;
     }
 
     protected function buildFieldType(FormBuilderInterface $builder, OrderFormField $field, OrderFormReply $reply): void

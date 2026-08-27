@@ -126,6 +126,8 @@ order_form_field_choice:
         allowance_percentage: 'Pourcentage de remise'
 
 order_form_reply:
+    error:
+        anti_spam: 'Votre envoi n''a pas pu être vérifié. Merci de patienter quelques secondes puis de réessayer.'
     label:
         fieldValues: 'Formulaire d''adhésion'
         member_data: 'Informations de l''adhérent'
